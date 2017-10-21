@@ -25,8 +25,11 @@ public class MainActivity extends AppCompatActivity  {
     {
         super.onResume();
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        final String ime = mUser.getDisplayName();
-        ((TextView) findViewById(R.id.textView)).setText("Prijavljeni ste kao: " + ime);
+        if(mUser != null) {
+            final String ime = mUser.getDisplayName();
+            ((TextView) findViewById(R.id.textView)).setText("Prijavljeni ste kao: " + ime);
+        }
+        else ((TextView) findViewById(R.id.textView)).setText("Odjavljeni ste");
     }
 
 
