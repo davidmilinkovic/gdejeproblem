@@ -10,4 +10,13 @@
     <string name="string_vrsta_problema">Vrsta problema:</string>
     <string name="string_opis_problema">Opis problema (opciono):</string>
     <string name="string_slika_problema">Dodatna slika (opciono):</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_glavni">GlavniActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

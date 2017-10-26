@@ -1,38 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="net.geasoft.ksp.ksp.GooglePrijava"
-    android:orientation="vertical"
-    android:weightSum="4">
+    tools:context="net.geasoft.ksp.ksp.KorisnikFragment">
+
+    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="3"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/status"
-            android:text="Odjavljen"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
+            android:text="Odjavljen" />
 
         <TextView
             android:id="@+id/detail"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            />
-
-    </LinearLayout>
-
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
+            android:layout_height="wrap_content" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -68,6 +58,9 @@
                 android:text="Diskonekt" />
         </LinearLayout>
 
-    </RelativeLayout>
 
-</LinearLayout>
+    </LinearLayout>
+
+
+
+</FrameLayout>
