@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -28,6 +31,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.Executor;
 
@@ -94,14 +98,14 @@ public class KorisnikFragment extends Fragment implements
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_korisnik, container, false);
 
-        mStatusTextView = v.findViewById(R.id.status);
-        mDetailTextView = v.findViewById(R.id.detail);
 
         // Button listeners
-        v.findViewById(R.id.sign_in_button).setOnClickListener(this);
         v.findViewById(R.id.sign_out_button).setOnClickListener(this);
-        v.findViewById(R.id.disconnect_button).setOnClickListener(this);
 
+        SignInButton btn = v.findViewById(R.id.sign_in_button);
+        btn.setOnClickListener(this);
+        TextView textView = (TextView)btn.getChildAt(0);
+        textView.setText(R.string.prijavi_se);
 
         return v;
     }
@@ -156,9 +160,6 @@ public class KorisnikFragment extends Fragment implements
     private FirebaseAuth mAuth;
     // [END declare_auth]
 
-    private TextView mStatusTextView;
-    private TextView mDetailTextView;
-
 
     // [START on_start_check_user]
     @Override
@@ -209,6 +210,7 @@ public class KorisnikFragment extends Fragment implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            ((GlavniActivity) getActivity()).promeniKorisnika();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -242,35 +244,25 @@ public class KorisnikFragment extends Fragment implements
                         updateUI(null);
                     }
                 });
+        ((GlavniActivity) getActivity()).promeniKorisnika();
     }
 
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        Auth.GoogleSignInApi.revokeAccess(((GlavniActivity)getActivity()).mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        updateUI(null);
-                    }
-                });
-    }
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            mStatusTextView.setText(user.getEmail());
-            mDetailTextView.setText(user.getUid());
+            ((TextView)getView().findViewById(R.id.korisnik_txt1)).setText(user.getDisplayName());
+            ((TextView)getView().findViewById(R.id.korisnik_txt2)).setText(user.getEmail());
+            Picasso.with(getActivity()).load(user.getPhotoUrl()).into((ImageView)getView().findViewById(R.id.korisnik_slika));
 
             getView().findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            getView().findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
         } else {
-            mStatusTextView.setText("Odjavljen");
-            mDetailTextView.setText(null);
+            ((TextView)getView().findViewById(R.id.korisnik_txt1)).setText(R.string.prijava_za_aplikaciju_ksp);
+            ((TextView)getView().findViewById(R.id.korisnik_txt2)).setText(R.string.da_biste_mogli);
+            ((ImageView)getView().findViewById(R.id.korisnik_slika)).setImageResource(R.drawable.gloglo);
 
             getView().findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            getView().findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+            getView().findViewById(R.id.sign_out_button).setVisibility(View.GONE);
         }
     }
 
@@ -289,8 +281,6 @@ public class KorisnikFragment extends Fragment implements
             signIn();
         } else if (i == R.id.sign_out_button) {
             signOut();
-        } else if (i == R.id.disconnect_button) {
-            revokeAccess();
         }
     }
 

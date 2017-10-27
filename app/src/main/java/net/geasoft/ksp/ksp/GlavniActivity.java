@@ -1,5 +1,6 @@
 package net.geasoft.ksp.ksp;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +28,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class GlavniActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PrijaviProblemFragment.OnFragmentInteractionListener,
         MojiProblemiFragment.OnFragmentInteractionListener,  OpcijeFragment.OnFragmentInteractionListener, KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
@@ -33,11 +41,13 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
 
              public GoogleApiClient mGoogleApiClient;
              private FirebaseAuth mAuth;
+             private TextView txtNavNaslov;
+             private TextView txtNavPodNaslov;
+             private ImageView headerSlika;
 
              @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //((TextView)findViewById(R.id.header_naslov)).setText("Niste prijavljeni");
         setContentView(R.layout.activity_glavni);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -52,6 +62,11 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+                 View nav_header = navigationView.getHeaderView(0);
+                 txtNavNaslov = nav_header.findViewById(R.id.header_naslov);
+                 txtNavPodNaslov = nav_header.findViewById(R.id.header_podnaslov);
+                 headerSlika = nav_header.findViewById(R.id.headerSlika);
 
          GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                  .requestIdToken(getString(R.string.default_web_client_id))
@@ -81,17 +96,27 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     public void onResume()
     {
         super.onResume();
-        FirebaseUser currentUser = mAuth.getCurrentUser();/*
+
+        promeniKorisnika();
+
+
+    }
+
+    public void promeniKorisnika() {
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null)
         {
-            ((TextView)findViewById(R.id.header_naslov)).setText(currentUser.getDisplayName());
-            ((TextView)findViewById(R.id.header_podnaslov)).setText(currentUser.getEmail());
+            txtNavNaslov.setText(currentUser.getDisplayName());
+            txtNavPodNaslov.setText(currentUser.getEmail());
+            Picasso.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
         }
         else
         {
-            ((TextView)findViewById(R.id.header_naslov)).setText("Niste prijavljeni");
-            ((TextView)findViewById(R.id.header_podnaslov)).setText("");
-        }*/
+            txtNavNaslov.setText(R.string.niste_prijavljeni);
+            txtNavPodNaslov.setText("");
+            headerSlika.setImageResource(R.mipmap.ic_launcher);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -130,8 +155,8 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
      }
 
 
-             @Override
-             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+     @Override
+     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-             }
-         }
+     }
+ }
