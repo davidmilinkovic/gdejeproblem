@@ -109,13 +109,13 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         {
             txtNavNaslov.setText(currentUser.getDisplayName());
             txtNavPodNaslov.setText(currentUser.getEmail());
-            //Picasso.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
+            Picasso.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
         }
         else
         {
             txtNavNaslov.setText(R.string.niste_prijavljeni);
             txtNavPodNaslov.setText("");
-            //headerSlika.setImageResource(R.mipmap.ic_launcher);
+            headerSlika.setImageResource(R.mipmap.ic_launcher);
         }
     }
 
