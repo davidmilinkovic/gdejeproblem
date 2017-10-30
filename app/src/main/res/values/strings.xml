@@ -23,4 +23,8 @@
     <string name="prijava_za_aplikaciju_ksp">Prijava za aplikaciju KSP</string>
     <string name="da_biste_mogli">Da biste mogli da koristite aplikaciju KSP, morate se prijaviti pomoću Vašeg Google naloga</string>
     <string name="odjavi_se">Odjavi se</string>
+    <string name="btn_izaberi_vrstu">Izaberi vrstu problema...</string>
+    <string name="btn_lokacija">Izaberi lokaciju</string>
+    <string name="btn_add_fotografiju">Izaberi fotografiju</string>
+    <string name="txt_opis_problema">Opis problema</string>
 </resources>

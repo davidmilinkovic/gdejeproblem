@@ -1,5 +1,6 @@
 package net.geasoft.ksp.ksp;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,18 +35,18 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class GlavniActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, PrijaviProblemFragment.OnFragmentInteractionListener,
-        MojiProblemiFragment.OnFragmentInteractionListener,  OpcijeFragment.OnFragmentInteractionListener, KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
+public class GlavniActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        MojiProblemiFragment.OnFragmentInteractionListener, OpcijeFragment.OnFragmentInteractionListener, KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
 
-         {
+{
 
-             public GoogleApiClient mGoogleApiClient;
-             private FirebaseAuth mAuth;
-             private TextView txtNavNaslov;
-             private TextView txtNavPodNaslov;
-             private ImageView headerSlika;
+    public GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mAuth;
+    private TextView txtNavNaslov;
+    private TextView txtNavPodNaslov;
+    private ImageView headerSlika;
 
-             @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glavni);
@@ -63,23 +64,23 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-                 View nav_header = navigationView.getHeaderView(0);
-                 txtNavNaslov = nav_header.findViewById(R.id.header_naslov);
-                 txtNavPodNaslov = nav_header.findViewById(R.id.header_podnaslov);
-                 headerSlika = nav_header.findViewById(R.id.headerSlika);
+        View nav_header = navigationView.getHeaderView(0);
+        txtNavNaslov = nav_header.findViewById(R.id.header_naslov);
+        txtNavPodNaslov = nav_header.findViewById(R.id.header_podnaslov);
+        headerSlika = nav_header.findViewById(R.id.headerSlika);
 
-         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                 .requestIdToken(getString(R.string.default_web_client_id))
-                 .requestEmail()
-                 .build();
-         // [END config_signin]
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
 
-         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                 .enableAutoManage(this, this)
-                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                 .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         mAuth = FirebaseAuth.getInstance();
+        promeniKorisnika();
     }
 
     @Override
@@ -93,26 +94,17 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
-
-        promeniKorisnika();
-
-
     }
 
-    public void promeniKorisnika() {
-
+    public void promeniKorisnika() { // menja header navigacije na osnovu trenutnog korisnika
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null)
-        {
+        if (currentUser != null) {
             txtNavNaslov.setText(currentUser.getDisplayName());
             txtNavPodNaslov.setText(currentUser.getEmail());
             Picasso.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
-        }
-        else
-        {
+        } else {
             txtNavNaslov.setText(R.string.niste_prijavljeni);
             txtNavPodNaslov.setText("");
             headerSlika.setImageResource(R.mipmap.ic_launcher);
@@ -126,19 +118,23 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         Fragment fragment = null;
         Class fragmentClass = null;
         if (id == R.id.nav_prijava) {
-            fragmentClass = PrijaviProblemFragment.class;
+            Intent intent = new Intent(this, PrijaviProblemActivity.class);
+            startActivity(intent);
+            return true;
         } else if (id == R.id.nav_moji_problemi) {
             fragmentClass = MojiProblemiFragment.class;
         } else if (id == R.id.nav_opcije) {
             fragmentClass = OpcijeFragment.class;
-        } else if(id == R.id.nav_korisnik) {
+        } else if (id == R.id.nav_korisnik) {
             fragmentClass = KorisnikFragment.class;
         }
+
         try {
             fragment = (Fragment) fragmentClass.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
 
@@ -148,15 +144,14 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     }
 
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
-     @Override
-     public void onFragmentInteraction(Uri uri) {
-
-     }
+    }
 
 
-     @Override
-     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-     }
- }
+    }
+}
