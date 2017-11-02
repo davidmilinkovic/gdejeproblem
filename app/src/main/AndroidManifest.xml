@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PrijaviProblemActivity"  android:parentActivityName=".GlavniActivity"></activity>
+        <activity android:name=".PrijaviProblemActivity" android:label="@string/prijavi_problem"  android:parentActivityName=".GlavniActivity"></activity>
     </application>
 
 </manifest>
