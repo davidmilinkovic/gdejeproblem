@@ -28,4 +28,5 @@
     <string name="btn_add_fotografiju">Izaberi fotografiju</string>
     <string name="txt_opis_problema">Opis problema</string>
     <string name="prijavi_problem">Prijavi problem</string>
+    <string name="greska_token">Greška pri pribavljanju tokena</string>
 </resources>

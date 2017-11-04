@@ -61,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:onClick="onClick"
             android:text="@string/btn_lokacija"
             android:visibility="gone" />
 
