@@ -41,6 +41,7 @@
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
+            android:onClick="onClick"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="?attr/colorPrimary"
@@ -83,6 +84,7 @@
                 android:id="@+id/button4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="onClick"
                 android:layout_weight="80"
                 android:background="?attr/colorPrimary"
                 android:text="@string/btn_add_fotografiju"
@@ -90,8 +92,8 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_weight="20"
                 app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
