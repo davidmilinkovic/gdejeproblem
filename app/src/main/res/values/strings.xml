@@ -29,4 +29,9 @@
     <string name="txt_opis_problema">Opis problema</string>
     <string name="prijavi_problem">Prijavi problem</string>
     <string name="greska_token">Greška pri pribavljanju tokena</string>
+    <string name="title_vrstaproblema_list">Vrste problema</string>
+    <string name="title_vrstaproblema_detail">Vrsta problema Detail</string>
+    <string name="title_sluzba_list">Sluzbe</string>
+    <string name="title_sluzba_detail">Sluzba Detail</string>
+    <string name="title_activity_sluzbe">SluzbeActivity</string>
 </resources>

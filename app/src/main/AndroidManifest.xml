@@ -2,18 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.geasoft.ksp.ksp">
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.hardware.camera.flash"/>
-    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera.flash" />
+
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.hardware.camera.autofocus" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -32,18 +39,38 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PrijaviProblemActivity" android:label="@string/prijavi_problem"  android:parentActivityName=".GlavniActivity"></activity>
+        <activity
+            android:name=".PrijaviProblemActivity"
+            android:label="@string/prijavi_problem"
+            android:parentActivityName=".GlavniActivity" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="net.geasoft.ksp.ksp.fileprovider"
+            android:name=".GenericFileProvider"
+            android:authorities="${applicationId}.net.geasoft.ksp.ksp.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
+        <activity
+            android:name=".SluzbaListActivity"
+            android:label="@string/title_sluzba_list"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.geasoft.ksp.ksp.PrijaviProblemActivity" />
+        </activity>
+        <activity
+            android:name=".SluzbaDetailActivity"
+            android:label="@string/title_sluzba_detail"
+            android:parentActivityName=".SluzbaListActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="net.geasoft.ksp.ksp.SluzbaListActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -59,7 +59,6 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:checked="true"
-                    android:enabled="false"
                     android:onClick="onClick"
                     android:text="Problem je na trenutnoj lokaciji" />
 
