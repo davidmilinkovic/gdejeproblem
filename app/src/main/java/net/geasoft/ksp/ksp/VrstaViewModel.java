@@ -46,28 +46,28 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
  * <p>
  * TODO: Replace all uses of this class before publishing your app.
  */
-public class SluzbaViewModel extends ViewModel {
+public class VrstaViewModel extends ViewModel {
 
     /**
      * An array of sample (dummy) items.
      */
-    private MutableLiveData<List<Sluzba>> sluzbe;
+    private MutableLiveData<List<Vrsta>> vrste;
 
-    public LiveData<List<Sluzba>> dajSluzbe() {
-        if (sluzbe == null) {
-            sluzbe = new MutableLiveData<List<Sluzba>>();
-            ucitajSluzbe();
+    public LiveData<List<Vrsta>> dajVrste(final int id) {
+        if (vrste == null) {
+            vrste = new MutableLiveData<List<Vrsta>>();
+            ucitajVrste(id);
         }
-        return sluzbe;
+        return vrste;
     }
 
-    private void ucitajSluzbe()  {
+    private void ucitajVrste(final int id)  {
         Thread thread = new Thread() {
             public void run() {
                 try {
-                    final List<Sluzba> lista = new ArrayList<>();
+                    final List<Vrsta> lista = new ArrayList<>();
                     java.net.URL uu;
-                    uu =new URL("https://www.kspclient.geasoft.net/sluzba_api.php");
+                    uu =new URL("https://www.kspclient.geasoft.net/vrsta_api.php?id_sluzbe="+Integer.toString(id));
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -84,10 +84,10 @@ public class SluzbaViewModel extends ViewModel {
                     for(int i = 0; i < niz.length();i++)
                     {
                         JSONObject obj = niz.getJSONObject(i);
-                        Sluzba s = new Sluzba(obj.getInt("id"), obj.getString("naziv"));
+                        Vrsta s = new Vrsta(obj.getInt("id"), obj.getString("naziv"));
                         lista.add(s);
                     }
-                    sluzbe.postValue(lista);
+                    vrste.postValue(lista);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -95,12 +95,11 @@ public class SluzbaViewModel extends ViewModel {
         };
         thread.start();
     }
-
-    public static class Sluzba {
+    public static class Vrsta {
         public final int id;
         public final String naziv;
 
-        public Sluzba(int id, String naziv) {
+        public Vrsta(int id, String naziv) {
             this.id = id;
             this.naziv = naziv;
         }
@@ -110,5 +109,6 @@ public class SluzbaViewModel extends ViewModel {
             return naziv;
         }
     }
-
 }
+
+

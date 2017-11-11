@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "237434110922-1prdb44dc40db69vv56ut291j0vle91u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geasoft.ksp.ksp",
+            "certificate_hash": "80f87255a9c872883cb840c614307fb192cb6c80"
+          }
+        },
+        {
+          "client_id": "237434110922-c4hm032anc747cvgrivdqil40k1f8fd7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "net.geasoft.ksp.ksp",
+            "certificate_hash": "2e6d17f4dc5f66171ba7d5dd3298b43e894acc68"
+          }
+        },
+        {
           "client_id": "237434110922-gn7t3158h7d109ihi3cc4qaltptn0ma8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

@@ -40,7 +40,6 @@ public class SluzbaListActivity extends AppCompatActivity {
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
-    private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +57,6 @@ public class SluzbaListActivity extends AppCompatActivity {
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
-        if (findViewById(R.id.sluzba_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
-        }
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -89,13 +81,12 @@ public class SluzbaListActivity extends AppCompatActivity {
         // Check which request we're responding to
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 69) {
-            // Make sure the request was successful
-                Toast.makeText(this, data.getStringExtra("poruka"), Toast.LENGTH_LONG).show();
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
+            Intent intent=new Intent();
+            intent.putExtra("id_vrste", data.getStringExtra("id_vrste"));
+            intent.putExtra("naziv_vrste", data.getStringExtra("naziv_vrste"));
 
-                // Do something with the contact here (bigger example below)
-
+            setResult(666, intent);
+            finish();
         }
     }
 
@@ -128,21 +119,13 @@ public class SluzbaListActivity extends AppCompatActivity {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mTwoPane) {
-                        Bundle arguments = new Bundle();
-                        arguments.putString(SluzbaDetailFragment.ARG_ITEM_ID, Integer.toString(holder.mItem.id));
-                        SluzbaDetailFragment fragment = new SluzbaDetailFragment();
-                        fragment.setArguments(arguments);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.sluzba_detail_container, fragment)
-                                .commit();
-                    } else {
-                        Activity context = (Activity) v.getContext();
-                        Intent intent = new Intent(context, SluzbaDetailActivity.class);
-                        intent.putExtra(SluzbaDetailFragment.ARG_ITEM_ID, Integer.toString(holder.mItem.id));
-                        intent.putExtra("naslov", holder.mItem.naziv);
-                        context.startActivityForResult(intent, 69);
-                    }
+
+                    Activity context = (Activity) v.getContext();
+                    Intent intent = new Intent(context, SluzbaDetailActivity.class);
+                    intent.putExtra(SluzbaDetailActivity.ARG_ITEM_ID, Integer.toString(holder.mItem.id));
+                    intent.putExtra("naslov", holder.mItem.naziv);
+                    context.startActivityForResult(intent, 69);
+
                 }
             });
         }
@@ -169,4 +152,5 @@ public class SluzbaListActivity extends AppCompatActivity {
             }
         }
     }
+
 }

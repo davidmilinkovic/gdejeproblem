@@ -3,6 +3,8 @@ package net.geasoft.ksp.ksp;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +18,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -34,6 +37,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -54,6 +58,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import android.support.v4.app.NotificationCompat.Builder;
 
 public class PrijaviProblemActivity extends AppCompatActivity implements View.OnClickListener {
@@ -81,6 +87,8 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
     }
 
+
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -100,7 +108,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.button2:
                 Intent intent = new Intent(this, SluzbaListActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 666);
                 break;
         }
     }
@@ -369,8 +377,16 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     slikaFajl = new File(getRealPathFromURI(selectedImage));
 
                     Picasso.with(this).load(selectedImage).resize(200, 200).centerInside().into(img);
+                }
                 break;
-        }
+            case 666:
+                int idVrste = Integer.parseInt(data.getStringExtra("id_vrste"));
+                TextView txt = (TextView)findViewById(R.id.textView2);
+                txt.setText("Izabrana vrsta: "+data.getStringExtra("naziv_vrste"));
+                txt.setVisibility(View.VISIBLE);
+
+
+                break;
         }
     }
 
