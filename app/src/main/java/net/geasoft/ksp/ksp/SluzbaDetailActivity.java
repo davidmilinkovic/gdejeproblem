@@ -44,6 +44,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sluzba_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_sluzba);
         setSupportActionBar(toolbar);
+
         // Show the Up button in the action bar.
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -79,6 +80,13 @@ public class SluzbaDetailActivity extends AppCompatActivity {
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -148,7 +156,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
                     Intent intent=new Intent();
                     intent.putExtra("id_vrste", Integer.toString(holder.mItem.id));
                     intent.putExtra("naziv_vrste", holder.mItem.naziv);
-                    setResult(69, intent);
+                    setResult(RESULT_OK, intent);
                     finish();
                 }
             });

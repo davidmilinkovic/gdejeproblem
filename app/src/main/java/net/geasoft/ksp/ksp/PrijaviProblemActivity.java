@@ -25,6 +25,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +71,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     private boolean imaSlike = false;
     private File slikaFajl;
     private ImageView img;
+    private String izabranId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +88,11 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
         img = (ImageView)findViewById(R.id.imageView);
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
 
 
@@ -95,15 +103,31 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         switch (id) {
             case R.id.checkBox:
                 CheckBox boks = (CheckBox) findViewById(R.id.checkBox);
-                Button dugme = (Button) findViewById(R.id.button3);
-                if (boks.isChecked()) dugme.setVisibility(View.GONE);
-                else dugme.setVisibility(View.VISIBLE);
+                FrameLayout frejm = (FrameLayout) findViewById(R.id.lokacija_frame);
+                if (boks.isChecked()) {
+                    for (int i = 0; i < frejm.getChildCount(); i++) {
+                        View vv = frejm.getChildAt(i);
+                        vv.setVisibility(View.GONE);
+                        vv.postInvalidate();
+                    }
+                    frejm.setVisibility(View.GONE);
+                    pribaviLokaciju();
+                }
+                else {
+                    for (int i = 0; i < frejm.getChildCount(); i++) {
+                        View vv = frejm.getChildAt(i);
+                        vv.setVisibility(View.VISIBLE);
+                        vv.postInvalidate();
+                    }
+                    frejm.setVisibility(View.VISIBLE);
+                    curLocation = null;
+                }
                 break;
             case R.id.button3:
                 // ovde ide na mapu
                 break;
 
-            case R.id.button4:
+            case R.id.fab:
                 izaberiSliku();
                 break;
             case R.id.button2:
@@ -120,6 +144,12 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             case 10: // lokacija
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     pribaviLokaciju();
+                else {
+                    CheckBox boks = (CheckBox) findViewById(R.id.checkBox);
+                    boks.setChecked(false);
+                    FrameLayout frejm = (FrameLayout) findViewById(R.id.lokacija_frame);
+                    frejm.setVisibility(View.VISIBLE);
+                }
                 return;
             case 69: // kamera
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
@@ -136,11 +166,24 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     
     private  void pribaviLokaciju()
     {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.INTERNET
+            }, 10);
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+            }, 10);
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.INTERNET,
             }, 10);
             return;
         }
@@ -193,6 +236,23 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     {
         ProblemModel problem = new ProblemModel();
 
+        if(izabranId == null) {
+            greska("Greška", "Niste izabrali vrstu problema.");
+            return;
+        }
+        problem.id_vrste = Integer.parseInt(izabranId);
+        izabranId = null;
+        TextView txt = (TextView) findViewById(R.id.textView2);
+        txt.setText("Izaberite vrstu problema");
+
+        if(curLocation == null) {
+            greska("Greška", "Niste izabrali lokaciju problema.");
+            return;
+        }
+        problem.latitude = Double.toString(curLocation.getLatitude());
+        problem.longitude = Double.toString(curLocation.getLongitude());
+
+
         if(imaSlike) {
             mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mBuilder = new NotificationCompat.Builder(this);
@@ -205,17 +265,18 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             task.execute();
             problem.slika = "https://www.geasoft.net/" + slikaFajl.getPath().substring(slikaFajl.getPath().lastIndexOf('/')+1);
             imaSlike = false;
-            Picasso.with(this).load(R.mipmap.ic_kamerica).into(img);
+            ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
+            img.setVisibility(View.GONE);
+            Picasso.with(this).load(R.drawable.ic_menu_camera).into(img);
         }
         else problem.slika = "";
 
-        pribaviLokaciju();
         problem.id_korisnika = 69;
-        problem.id_vrste = 69;
+
         problem.opis = ((EditText)findViewById(R.id.editText)).getText().toString();
         problem.opstina = "Bogac";
-        problem.latitude = Double.toString(curLocation.getLatitude());
-        problem.longitude = Double.toString(curLocation.getLongitude());
+
+        ((EditText) findViewById(R.id.editText)).setText("");
         ProblemModel.Dodaj(problem, this, token, uid);
     }
 
@@ -281,7 +342,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
             //Build the notification using Notification.Builder
             Notification.Builder builder = new Notification.Builder(ctx)
-                    .setSmallIcon(R.mipmap.ic_probni_logo)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setAutoCancel(true)
                     .setContentTitle(contentTitle)
                     .setContentText(contentText);
@@ -299,9 +360,9 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
     private void izaberiSliku() {
 
-        final CharSequence[] items = {"Kamera", "Izaberi iz galerije", "Zatvori"};
+        final CharSequence[] items = {"Kamera", "Izaberi iz galerije", "Ukloni fotografiju", "Zatvori"};
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle("Izaberi sliku");
+        builder.setTitle("Izaberi fotografiju");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -310,7 +371,15 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 } else if (item == 1) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent,SELECT_FILE);
-                } else {
+                }
+                else if(item == 2)
+                {
+                    imaSlike = false;
+                    ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
+                    img.setVisibility(View.GONE);
+                    Picasso.with(PrijaviProblemActivity.this).load(R.drawable.ic_menu_camera).into(img);
+                }
+                else {
                     dialog.dismiss();
                 }
             }
@@ -360,33 +429,52 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private void greska(String naslov, String tekst)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(naslov)
+                .setMessage(tekst)
+                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(R.drawable.ic_warning_black_24dp)
+                .show();
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case REQUEST_CAMERA:
                 if(resultCode == RESULT_OK){
                     imaSlike = true;
-                    Picasso.with(this).load(slikaFajl).resize(200, 200).centerInside().into(img);
+                    ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
+                    img.setVisibility(View.VISIBLE);
+                    Picasso.with(this).load(slikaFajl).resize(1500, 1500).centerInside().into(img);
                 }
                 break;
             case SELECT_FILE:
                 if(resultCode == RESULT_OK){
                     imaSlike = true;
-
                     Uri selectedImage = data.getData();
                     slikaFajl = new File(getRealPathFromURI(selectedImage));
-
-                    Picasso.with(this).load(selectedImage).resize(200, 200).centerInside().into(img);
+                    ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
+                    img.setVisibility(View.VISIBLE);
+                    Picasso.with(this).load(selectedImage).resize(1500, 1500).centerInside().into(img);
                 }
                 break;
             case 666:
-                int idVrste = Integer.parseInt(data.getStringExtra("id_vrste"));
-                TextView txt = (TextView)findViewById(R.id.textView2);
-                txt.setText("Izabrana vrsta: "+data.getStringExtra("naziv_vrste"));
-                txt.setVisibility(View.VISIBLE);
-
-
+                if(resultCode == RESULT_OK) {
+                    int idVrste = Integer.parseInt(data.getStringExtra("id_vrste"));
+                    TextView txt = (TextView) findViewById(R.id.textView2);
+                    txt.setText("Izabrana vrsta: " + data.getStringExtra("naziv_vrste"));
+                    txt.setVisibility(View.VISIBLE);
+                    izabranId = data.getStringExtra("id_vrste");
+                }
+                else Toast.makeText(this, "Nije uspesan", Toast.LENGTH_LONG).show();
                 break;
+
         }
     }
 
@@ -394,6 +482,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
     }
+
 
 
     public String getRealPathFromURI(Uri contentUri) {

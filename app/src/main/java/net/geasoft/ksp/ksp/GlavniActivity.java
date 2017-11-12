@@ -1,14 +1,17 @@
 package net.geasoft.ksp.ksp;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -45,6 +48,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     private TextView txtNavNaslov;
     private TextView txtNavPodNaslov;
     private ImageView headerSlika;
+    private boolean prijavljen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +108,27 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
             txtNavNaslov.setText(currentUser.getDisplayName());
             txtNavPodNaslov.setText(currentUser.getEmail());
             Picasso.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
+            prijavljen = true;
         } else {
             txtNavNaslov.setText(R.string.niste_prijavljeni);
             txtNavPodNaslov.setText("");
-            headerSlika.setImageResource(R.mipmap.ic_launcher);
+            headerSlika.setImageResource(android.R.drawable.sym_def_app_icon);
+            prijavljen = false;
         }
+    }
+
+    private void greska(String naslov, String tekst)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(naslov)
+                .setMessage(tekst)
+                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(R.drawable.ic_warning_black_24dp)
+                .show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -118,9 +138,16 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         Fragment fragment = null;
         Class fragmentClass = null;
         if (id == R.id.nav_prijava) {
-            Intent intent = new Intent(this, PrijaviProblemActivity.class);
-            startActivity(intent);
-            return true;
+            if(prijavljen) {
+                Intent intent = new Intent(this, PrijaviProblemActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            else {
+                greska("Greška", "Morate biti prijavljeni kako biste prijavili problem.");
+                fragmentClass = KorisnikFragment.class;
+            }
+
         } else if (id == R.id.nav_moji_problemi) {
             fragmentClass = MojiProblemiFragment.class;
         } else if (id == R.id.nav_opcije) {

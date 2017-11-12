@@ -24,9 +24,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_probni_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_probni_logo"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -41,7 +41,7 @@
         </activity>
         <activity
             android:name=".PrijaviProblemActivity"
-            android:label="@string/prijavi_problem"
+            android:windowSoftInputMode="adjustNothing"
             android:parentActivityName=".GlavniActivity" />
 
         <provider

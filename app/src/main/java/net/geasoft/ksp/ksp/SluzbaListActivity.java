@@ -76,17 +76,27 @@ public class SluzbaListActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 69) {
-            Intent intent=new Intent();
-            intent.putExtra("id_vrste", data.getStringExtra("id_vrste"));
-            intent.putExtra("naziv_vrste", data.getStringExtra("naziv_vrste"));
+            if(resultCode == RESULT_OK) {
+                Intent intent = new Intent();
+                intent.putExtra("id_vrste", data.getStringExtra("id_vrste"));
+                intent.putExtra("naziv_vrste", data.getStringExtra("naziv_vrste"));
 
-            setResult(666, intent);
-            finish();
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+            else Toast.makeText(this, "Nije uspesan", Toast.LENGTH_LONG).show();
         }
     }
 
