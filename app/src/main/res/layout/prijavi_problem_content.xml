@@ -126,33 +126,39 @@
             android:paddingLeft="24dp"
             android:text="Problem je na trenutnoj lokaciji" />
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="108dp">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center_vertical"
-                android:paddingLeft="16dp"
-                android:tint="?attr/colorAccent"
-                app:srcCompat="@drawable/ic_edit_black_24dp" />
-
-            <EditText
-                android:id="@+id/editText"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="72dp"
-                android:layout_marginRight="16dp"
-                android:contentDescription="@string/txt_opis_problema"
-                android:gravity="top"
-                android:hint="@string/txt_opis_problema"
-                android:inputType="textMultiLine"
-                android:selectAllOnFocus="false"
-                android:singleLine="false"
-                android:visibility="visible" />
+                android:layout_height="match_parent">
 
-        </FrameLayout>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="16dp"
+                    android:tint="?attr/colorAccent"
+                    app:srcCompat="@drawable/ic_edit_black_24dp" />
+
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="72dp"
+                    android:layout_marginRight="16dp"
+                    android:contentDescription="@string/txt_opis_problema"
+                    android:gravity="top"
+                    android:hint="@string/txt_opis_problema"
+                    android:inputType="textMultiLine"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="false"
+                    android:visibility="visible" />
+
+            </FrameLayout>
+        </LinearLayout>
 
 
     </LinearLayout>
