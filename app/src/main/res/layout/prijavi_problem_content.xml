@@ -63,18 +63,6 @@
                 android:textColor="@android:color/white" />
         </FrameLayout>
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="6dp"
-            android:checked="false"
-            android:onClick="onClick"
-            android:paddingLeft="24dp"
-            android:text="Problem je na trenutnoj lokaciji" />
-
         <FrameLayout
             android:id="@+id/lokacija_frame"
             android:layout_width="match_parent"
@@ -126,6 +114,18 @@
 
         </FrameLayout>
 
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp"
+            android:checked="false"
+            android:onClick="onClick"
+            android:paddingLeft="24dp"
+            android:text="Problem je na trenutnoj lokaciji" />
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="108dp">
@@ -147,7 +147,11 @@
                 android:contentDescription="@string/txt_opis_problema"
                 android:gravity="top"
                 android:hint="@string/txt_opis_problema"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine"
+                android:selectAllOnFocus="false"
+                android:singleLine="false"
+                android:visibility="visible" />
+
         </FrameLayout>
 
 

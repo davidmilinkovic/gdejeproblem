@@ -258,7 +258,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             mBuilder = new NotificationCompat.Builder(this);
             mBuilder.setContentTitle("Gde je problem?")
                     .setContentText("Postavljanje slike na server je u toku...")
-                    .setSmallIcon(R.mipmap.ic_probni_logo);
+                    .setSmallIcon(R.mipmap.ic_launcher);
 
 
             AsinhroniFTPUpload task = new AsinhroniFTPUpload(slikaFajl, this);
@@ -360,7 +360,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
     private void izaberiSliku() {
 
-        final CharSequence[] items = {"Kamera", "Izaberi iz galerije", "Ukloni fotografiju", "Zatvori"};
+        final CharSequence[] items = {"Kamera", "Izaberi iz galerije", "Ukloni fotografiju" };
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
         builder.setTitle("Izaberi fotografiju");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -372,15 +372,11 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent,SELECT_FILE);
                 }
-                else if(item == 2)
-                {
+                else if(item == 2) {
                     imaSlike = false;
-                    ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
+                    ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                     img.setVisibility(View.GONE);
                     Picasso.with(PrijaviProblemActivity.this).load(R.drawable.ic_menu_camera).into(img);
-                }
-                else {
-                    dialog.dismiss();
                 }
             }
         });
