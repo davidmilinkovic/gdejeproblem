@@ -109,7 +109,7 @@ public class KorisnikFragment extends Fragment implements
 
         return v;
     }
-
+    //neki komentar
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
