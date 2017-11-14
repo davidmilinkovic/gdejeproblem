@@ -78,10 +78,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="net.geasoft.ksp.ksp.SluzbaListActivity" />
         </activity>
-        <activity
-            android:name=".PodesavanjaActivity"
-            android:parentActivityName=".GlavniActivity"
-            android:label="@string/title_activity_podesavanja"></activity>
     </application>
 
 </manifest>
