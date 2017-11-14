@@ -31,7 +31,16 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/sluzba_list" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/sluzba_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:paddingTop="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/sluzba_list_content" />
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

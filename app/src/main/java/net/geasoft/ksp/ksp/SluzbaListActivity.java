@@ -18,10 +18,14 @@ import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,14 +69,15 @@ public class SluzbaListActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(recyclerViewAdapter);
-
+/*
         SluzbaViewModel model = ViewModelProviders.of(this).get(SluzbaViewModel.class);
         model.dajSluzbe().observe(SluzbaListActivity.this, new Observer<List<SluzbaViewModel.Sluzba>>() {
             @Override
             public void onChanged(@Nullable List<SluzbaViewModel.Sluzba> sluzbe) {
                 recyclerViewAdapter.addItems(sluzbe);
             }
-        });
+        });*/
+        recyclerViewAdapter.addItems(StaticDataProvider.sluzbe);
 
     }
 
@@ -81,6 +86,20 @@ public class SluzbaListActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
         super.onBackPressed();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, resultIntent);
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -96,7 +115,6 @@ public class SluzbaListActivity extends AppCompatActivity {
                 setResult(RESULT_OK, intent);
                 finish();
             }
-            else Toast.makeText(this, "Nije uspesan", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -124,7 +142,8 @@ public class SluzbaListActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mValues.get(position);
-            holder.mContentView.setText(mValues.get(position).naziv);
+            holder.mContentView.setText(holder.mItem.naziv);
+            holder.mImgView.setImageResource(getResources().getIdentifier(holder.mItem.ikonica, "drawable", getPackageName()));
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -140,6 +159,7 @@ public class SluzbaListActivity extends AppCompatActivity {
             });
         }
 
+
         @Override
         public int getItemCount() {
             return mValues.size();
@@ -148,12 +168,14 @@ public class SluzbaListActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mContentView;
+            public final ImageView mImgView;
             public SluzbaViewModel.Sluzba mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mContentView = (TextView) view.findViewById(R.id.content);
+                mImgView = (ImageView) view.findViewById(R.id.ikonica_sluzba);
             }
 
             @Override

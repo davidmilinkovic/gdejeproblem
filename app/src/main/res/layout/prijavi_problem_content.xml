@@ -50,16 +50,17 @@
                     android:text="Izaberite vrstu problema" />
             </LinearLayout>
 
-            <Button
+            <ImageButton
                 android:id="@+id/button2"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginLeft="72dp"
+                android:layout_marginLeft="70dp"
                 android:layout_marginRight="16dp"
-                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:onClick="onClick"
+                android:scaleType="fitEnd"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:textColor="@android:color/white" />
         </FrameLayout>
 
@@ -100,7 +101,7 @@
 
             </LinearLayout>
 
-            <Button
+            <ImageButton
                 android:id="@+id/button3"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
@@ -108,7 +109,8 @@
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginLeft="72dp"
                 android:layout_marginRight="16dp"
-                android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:scaleType="fitEnd"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
                 android:onClick="onClick"
                 android:visibility="visible" />
 

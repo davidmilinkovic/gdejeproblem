@@ -53,7 +53,7 @@ public class SluzbaViewModel extends ViewModel {
      */
     private MutableLiveData<List<Sluzba>> sluzbe;
 
-    public LiveData<List<Sluzba>> dajSluzbe() {
+    public LiveData<List<Sluzba>> dajaSluzbe() {
         if (sluzbe == null) {
             sluzbe = new MutableLiveData<List<Sluzba>>();
             ucitajSluzbe();
@@ -61,7 +61,7 @@ public class SluzbaViewModel extends ViewModel {
         return sluzbe;
     }
 
-    private void ucitajSluzbe()  {
+    private void ucitajSluzbe()  {/*
         Thread thread = new Thread() {
             public void run() {
                 try {
@@ -93,16 +93,18 @@ public class SluzbaViewModel extends ViewModel {
                 }
             }
         };
-        thread.start();
+        thread.start();*/
     }
 
     public static class Sluzba {
         public final int id;
         public final String naziv;
+        public final String ikonica;
 
-        public Sluzba(int id, String naziv) {
+        public Sluzba(int id, String naziv, String ikonica) {
             this.id = id;
             this.naziv = naziv;
+            this.ikonica = ikonica;
         }
 
         @Override

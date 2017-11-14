@@ -53,7 +53,7 @@ public class VrstaViewModel extends ViewModel {
      */
     private MutableLiveData<List<Vrsta>> vrste;
 
-    public LiveData<List<Vrsta>> dajVrste(final int id) {
+    public LiveData<List<Vrsta>> dajVrstea(final int id) {
         if (vrste == null) {
             vrste = new MutableLiveData<List<Vrsta>>();
             ucitajVrste(id);
@@ -61,7 +61,7 @@ public class VrstaViewModel extends ViewModel {
         return vrste;
     }
 
-    private void ucitajVrste(final int id)  {
+    private void ucitajVrste(final int id)  {/*
         Thread thread = new Thread() {
             public void run() {
                 try {
@@ -93,15 +93,17 @@ public class VrstaViewModel extends ViewModel {
                 }
             }
         };
-        thread.start();
+        thread.start();*/
     }
     public static class Vrsta {
         public final int id;
         public final String naziv;
+        public final int id_sluzbe;
 
-        public Vrsta(int id, String naziv) {
+        public Vrsta(int id, String naziv, int id_sluzbe) {
             this.id = id;
             this.naziv = naziv;
+            this.id_sluzbe = id_sluzbe;
         }
 
         @Override

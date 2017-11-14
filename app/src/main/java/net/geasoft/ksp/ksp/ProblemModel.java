@@ -18,7 +18,7 @@ public class ProblemModel {
 
     public int id;
     public int id_vrste;
-    public int id_korisnika;
+    public String id_korisnika;
     public String opis;
     public String slika;
     public String opstina;
@@ -41,14 +41,15 @@ public class ProblemModel {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(kontekst, "Greška u ProblemModel.Dodaj() metodu", Toast.LENGTH_LONG).show();
+
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("id_korisnika", Integer.toString(pr.id_korisnika));
-                params.put("id_vrste", Integer.toString(pr.id_korisnika));
+                params.put("id_korisnika", pr.id_korisnika);
+                params.put("id_vrste", Integer.toString(pr.id_vrste));
                 params.put("opis", pr.opis);
                 params.put("slika", pr.slika);
                 params.put("opstina", pr.opstina);

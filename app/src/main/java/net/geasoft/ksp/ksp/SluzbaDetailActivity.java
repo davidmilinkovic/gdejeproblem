@@ -1,5 +1,6 @@
 package net.geasoft.ksp.ksp;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -58,16 +59,12 @@ public class SluzbaDetailActivity extends AppCompatActivity {
         final int id = Integer.parseInt(getIntent().getStringExtra(ARG_ITEM_ID));
         trenutni_id = id;
         SluzbaViewModel model = ViewModelProviders.of(this).get(SluzbaViewModel.class);
-        model.dajSluzbe().observe(this, new Observer<List<SluzbaViewModel.Sluzba>>() {
-            @Override
-            public void onChanged(@Nullable List<SluzbaViewModel.Sluzba> sluzbe) {
-                for (SluzbaViewModel.Sluzba s : sluzbe) {
-                    if(s.id == id) {
-                        izabranaSluzba = s;
-                    }
-                }
+        for (SluzbaViewModel.Sluzba s: StaticDataProvider.sluzbe) {
+            if(s.id == id) {
+                izabranaSluzba = s;
             }
-        });
+        }
+        getSupportActionBar().setTitle(izabranaSluzba.naziv);
 
         /*
                 OVAKO SE VRACA ODGOVOR
@@ -89,13 +86,15 @@ public class SluzbaDetailActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+
+
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
         final VrstaViewAdapter recyclerViewAdapter = new VrstaViewAdapter(new ArrayList<VrstaViewModel.Vrsta>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(recyclerViewAdapter);
-
+/*
         VrstaViewModel model = ViewModelProviders.of(this).get(VrstaViewModel.class);
 
         model.dajVrste(trenutni_id).observe(this, new Observer<List<VrstaViewModel.Vrsta>>() {
@@ -103,23 +102,25 @@ public class SluzbaDetailActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<VrstaViewModel.Vrsta> vrste) {
                 recyclerViewAdapter.addItems(vrste);
             }
-        });
+        });*/
+
+        List<VrstaViewModel.Vrsta> lista = new ArrayList<VrstaViewModel.Vrsta>();
+        for (VrstaViewModel.Vrsta v : StaticDataProvider.vrste) {
+            if(v.id_sluzbe == trenutni_id)
+                lista.add(v);
+        }
+        recyclerViewAdapter.addItems(lista);
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            NavUtils.navigateUpTo(this, new Intent(this, SluzbaListActivity.class));
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent resultIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, resultIntent);
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

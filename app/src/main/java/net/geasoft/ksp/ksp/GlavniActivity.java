@@ -151,7 +151,9 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         } else if (id == R.id.nav_moji_problemi) {
             fragmentClass = MojiProblemiFragment.class;
         } else if (id == R.id.nav_opcije) {
-            fragmentClass = OpcijeFragment.class;
+            /*Intent intent = new Intent(this, PodesavanjaActivity.class);
+            startActivity(intent);*/
+            return true;
         } else if (id == R.id.nav_korisnik) {
             fragmentClass = KorisnikFragment.class;
         }

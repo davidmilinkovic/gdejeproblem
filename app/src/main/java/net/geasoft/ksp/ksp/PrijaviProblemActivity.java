@@ -78,8 +78,6 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prijavi_problem);
 
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         Toolbar tulbar = (Toolbar) findViewById(R.id.toolbar_prijava);
         setSupportActionBar(tulbar);
 
@@ -241,9 +239,6 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             return;
         }
         problem.id_vrste = Integer.parseInt(izabranId);
-        izabranId = null;
-        TextView txt = (TextView) findViewById(R.id.textView2);
-        txt.setText("Izaberite vrstu problema");
 
         if(curLocation == null) {
             greska("Greška", "Niste izabrali lokaciju problema.");
@@ -268,16 +263,25 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
             img.setVisibility(View.GONE);
             Picasso.with(this).load(R.drawable.ic_menu_camera).into(img);
+
+
+
         }
         else problem.slika = "";
 
-        problem.id_korisnika = 69;
+        problem.id_korisnika = uid;
 
         problem.opis = ((EditText)findViewById(R.id.editText)).getText().toString();
         problem.opstina = "Bogac";
 
-        ((EditText) findViewById(R.id.editText)).setText("");
+
         ProblemModel.Dodaj(problem, this, token, uid);
+
+        // reset svega
+        TextView txt = (TextView) findViewById(R.id.textView2);
+        txt.setText("Izaberite vrstu problema");
+        izabranId = null;
+        ((EditText) findViewById(R.id.editText)).setText("");
     }
 
     private class AsinhroniFTPUpload extends AsyncTask<Void, Void, Boolean> {
@@ -468,7 +472,6 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     txt.setVisibility(View.VISIBLE);
                     izabranId = data.getStringExtra("id_vrste");
                 }
-                else Toast.makeText(this, "Nije uspesan", Toast.LENGTH_LONG).show();
                 break;
 
         }
