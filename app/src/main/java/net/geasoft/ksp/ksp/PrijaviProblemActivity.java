@@ -42,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -109,6 +110,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                         vv.postInvalidate();
                     }
                     frejm.setVisibility(View.GONE);
+                    ((TextView)findViewById(R.id.txtViewLok)).setText("Izaberite lokaciju problema");
                     pribaviLokaciju();
                 }
                 else {
@@ -122,15 +124,29 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 }
                 break;
             case R.id.button3:
-                // ovde ide na mapu
+                Intent intent = new Intent(this, MapsActivity.class);
+                startActivityForResult(intent, 420);
                 break;
-
             case R.id.fab:
                 izaberiSliku();
                 break;
             case R.id.button2:
-                Intent intent = new Intent(this, SluzbaListActivity.class);
-                startActivityForResult(intent, 666);
+                Intent inten = new Intent(this, SluzbaListActivity.class);
+                startActivityForResult(inten, 666);
+                break;
+            case R.id.footer_potvrda:
+                final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                mUser.getToken(false)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    String idToken = task.getResult().getToken();
+                                    dodaj(idToken, mUser.getUid());
+                                } else {
+                                    Toast.makeText(PrijaviProblemActivity.this, R.string.greska_token, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
                 break;
         }
     }
@@ -197,35 +213,6 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.meni_prijava, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final int id = item.getItemId();
-        if (id == R.id.prijava_okej) {
-
-            // pribavljanje tokena za dodavanje
-            final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-            mUser.getToken(false)
-                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                        public void onComplete(@NonNull Task<GetTokenResult> task) {
-                            if (task.isSuccessful()) {
-                                String idToken = task.getResult().getToken();
-                                dodaj(idToken, mUser.getUid());
-                            } else {
-                                Toast.makeText(PrijaviProblemActivity.this, R.string.greska_token, Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    });
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     private NotificationManager mNotifyManager;
     private Builder mBuilder;
@@ -282,6 +269,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         txt.setText("Izaberite vrstu problema");
         izabranId = null;
         ((EditText) findViewById(R.id.editText)).setText("");
+        ((TextView)findViewById(R.id.txtViewLok)).setText("Izaberite lokaciju problema");
     }
 
     private class AsinhroniFTPUpload extends AsyncTask<Void, Void, Boolean> {
@@ -471,6 +459,18 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     txt.setText("Izabrana vrsta: " + data.getStringExtra("naziv_vrste"));
                     txt.setVisibility(View.VISIBLE);
                     izabranId = data.getStringExtra("id_vrste");
+                }
+                break;
+            case 420:
+                if(resultCode == RESULT_OK) {
+                    double lat = data.getDoubleExtra("lat", 44);
+                    double lng = data.getDoubleExtra("lng", 44);
+                    String adresa = data.getStringExtra("adresa");
+                    curLocation = new Location("");
+                    curLocation.setLatitude(lat);
+                    curLocation.setLongitude(lng);
+                    ((TextView) findViewById(R.id.txtViewLok)).setText(adresa);
+                    String mesto = data.getStringExtra("mesto"); // koristiti kasnije
                 }
                 break;
 

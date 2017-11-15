@@ -24,6 +24,7 @@ android {
 
 dependencies {
     implementation 'com.android.support:support-vector-drawable:26.1.0'
+    implementation 'com.google.android.gms:play-services-maps:10.0.1'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -42,6 +43,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.+'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 
