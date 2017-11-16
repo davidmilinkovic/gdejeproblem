@@ -98,12 +98,12 @@ public class VrstaViewModel extends ViewModel {
     public static class Vrsta {
         public final int id;
         public final String naziv;
-        public final int id_sluzbe;
+        public final SluzbaViewModel.Sluzba sluzba;
 
-        public Vrsta(int id, String naziv, int id_sluzbe) {
+        public Vrsta(int id, String naziv, SluzbaViewModel.Sluzba s) {
             this.id = id;
             this.naziv = naziv;
-            this.id_sluzbe = id_sluzbe;
+            this.sluzba = s;
         }
 
         @Override

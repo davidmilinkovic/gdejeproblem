@@ -219,13 +219,21 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
     private void dodaj(String token, String uid)
     {
-        ProblemModel problem = new ProblemModel();
+        ProblemViewModel.Problem problem = new ProblemViewModel.Problem();
 
         if(izabranId == null) {
             greska("Greška", "Niste izabrali vrstu problema.");
             return;
         }
-        problem.id_vrste = Integer.parseInt(izabranId);
+        int id_vrste = Integer.parseInt(izabranId);
+        for(VrstaViewModel.Vrsta v : StaticDataProvider.vrste)
+        {
+            if(v.id == id_vrste) {
+                problem.vrsta = v;
+                break;
+            }
+        }
+
 
         if(curLocation == null) {
             greska("Greška", "Niste izabrali lokaciju problema.");
@@ -262,7 +270,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         problem.opstina = "Bogac";
 
 
-        ProblemModel.Dodaj(problem, this, token, uid);
+        ProblemViewModel.Problem.Dodaj(problem, this, token, uid);
 
         // reset svega
         TextView txt = (TextView) findViewById(R.id.textView2);

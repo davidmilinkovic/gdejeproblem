@@ -58,7 +58,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
         // to load content from a content provider.
         final int id = Integer.parseInt(getIntent().getStringExtra(ARG_ITEM_ID));
         trenutni_id = id;
-        SluzbaViewModel model = ViewModelProviders.of(this).get(SluzbaViewModel.class);
+
         for (SluzbaViewModel.Sluzba s: StaticDataProvider.sluzbe) {
             if(s.id == id) {
                 izabranaSluzba = s;
@@ -106,7 +106,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
 
         List<VrstaViewModel.Vrsta> lista = new ArrayList<VrstaViewModel.Vrsta>();
         for (VrstaViewModel.Vrsta v : StaticDataProvider.vrste) {
-            if(v.id_sluzbe == trenutni_id)
+            if(v.sluzba.id == trenutni_id)
                 lista.add(v);
         }
         recyclerViewAdapter.addItems(lista);
