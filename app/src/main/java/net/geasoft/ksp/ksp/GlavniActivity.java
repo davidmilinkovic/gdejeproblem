@@ -39,7 +39,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class GlavniActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-        MojiProblemiFragment.OnFragmentInteractionListener, OpcijeFragment.OnFragmentInteractionListener, KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
+         OpcijeFragment.OnFragmentInteractionListener, KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
 
 {
 
@@ -85,6 +85,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
 
         mAuth = FirebaseAuth.getInstance();
         promeniKorisnika();
+
     }
 
     @Override
@@ -149,9 +150,13 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
             }
 
         } else if (id == R.id.nav_moji_problemi) {
-            Intent intent = new Intent(this, MojiProblemiActivity.class);
-            startActivity(intent);
-            return  true;
+            if(prijavljen) {
+                fragmentClass = MojiProblemiFragment.class;
+            }
+            else {
+                greska("Greška", "Morate biti prijavljeni kako biste prijavili problem.");
+                fragmentClass = KorisnikFragment.class;
+            }
         } else if (id == R.id.nav_opcije) {
             /*Intent intent = new Intent(this, PodesavanjaActivity.class);
             startActivity(intent);*/

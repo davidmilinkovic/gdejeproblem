@@ -65,7 +65,7 @@ public class SluzbaListActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
-        final SimpleItemRecyclerViewAdapter recyclerViewAdapter = new SimpleItemRecyclerViewAdapter(new ArrayList<SluzbaViewModel.Sluzba>());
+        final SimpleItemRecyclerViewAdapter recyclerViewAdapter = new SimpleItemRecyclerViewAdapter(new ArrayList<Sluzba>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -121,9 +121,9 @@ public class SluzbaListActivity extends AppCompatActivity {
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private List<SluzbaViewModel.Sluzba> mValues;
+        private List<Sluzba> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<SluzbaViewModel.Sluzba> items) {
+        public SimpleItemRecyclerViewAdapter(List<Sluzba> items) {
             mValues = items;
         }
 
@@ -134,7 +134,7 @@ public class SluzbaListActivity extends AppCompatActivity {
             return new ViewHolder(view);
         }
 
-        public void addItems(List<SluzbaViewModel.Sluzba> sluzbe) {
+        public void addItems(List<Sluzba> sluzbe) {
             this.mValues = sluzbe;
             notifyDataSetChanged();
         }
@@ -169,7 +169,7 @@ public class SluzbaListActivity extends AppCompatActivity {
             public final View mView;
             public final TextView mContentView;
             public final ImageView mImgView;
-            public SluzbaViewModel.Sluzba mItem;
+            public Sluzba mItem;
 
             public ViewHolder(View view) {
                 super(view);

@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class SluzbaDetailActivity extends AppCompatActivity {
 
-    private SluzbaViewModel.Sluzba izabranaSluzba;
+    private Sluzba izabranaSluzba;
     public int trenutni_id;
 
     public static final String ARG_ITEM_ID = "item_id";
@@ -59,7 +59,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
         final int id = Integer.parseInt(getIntent().getStringExtra(ARG_ITEM_ID));
         trenutni_id = id;
 
-        for (SluzbaViewModel.Sluzba s: StaticDataProvider.sluzbe) {
+        for (Sluzba s: StaticDataProvider.sluzbe) {
             if(s.id == id) {
                 izabranaSluzba = s;
             }
@@ -90,7 +90,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
-        final VrstaViewAdapter recyclerViewAdapter = new VrstaViewAdapter(new ArrayList<VrstaViewModel.Vrsta>());
+        final VrstaViewAdapter recyclerViewAdapter = new VrstaViewAdapter(new ArrayList<Vrsta>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -104,8 +104,8 @@ public class SluzbaDetailActivity extends AppCompatActivity {
             }
         });*/
 
-        List<VrstaViewModel.Vrsta> lista = new ArrayList<VrstaViewModel.Vrsta>();
-        for (VrstaViewModel.Vrsta v : StaticDataProvider.vrste) {
+        List<Vrsta> lista = new ArrayList<Vrsta>();
+        for (Vrsta v : StaticDataProvider.vrste) {
             if(v.sluzba.id == trenutni_id)
                 lista.add(v);
         }
@@ -128,9 +128,9 @@ public class SluzbaDetailActivity extends AppCompatActivity {
     public class VrstaViewAdapter
             extends RecyclerView.Adapter<VrstaViewAdapter.VrstaViewHolder> {
 
-        private List<VrstaViewModel.Vrsta> mValues;
+        private List<Vrsta> mValues;
 
-        public VrstaViewAdapter(List<VrstaViewModel.Vrsta> items) {
+        public VrstaViewAdapter(List<Vrsta> items) {
             mValues = items;
         }
 
@@ -141,7 +141,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
             return new VrstaViewAdapter.VrstaViewHolder(view);
         }
 
-        public void addItems(List<VrstaViewModel.Vrsta> vrste) {
+        public void addItems(List<Vrsta> vrste) {
             this.mValues = vrste;
             notifyDataSetChanged();
         }
@@ -171,7 +171,7 @@ public class SluzbaDetailActivity extends AppCompatActivity {
         public class VrstaViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mContentView;
-            public VrstaViewModel.Vrsta mItem;
+            public Vrsta mItem;
 
             public VrstaViewHolder(View view) {
                 super(view);

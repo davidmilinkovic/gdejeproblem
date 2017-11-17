@@ -65,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             boolean ima = true;
 
             try {
-                addresses = geocoder.getFromLocation(tren.getPosition().latitude, tren.getPosition().longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                addresses = geocoder.getFromLocation(tren.getPosition().latitude, tren.getPosition().longitude, 1);
             } catch (Exception e) {
                 ima = false;
             }

@@ -226,7 +226,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             return;
         }
         int id_vrste = Integer.parseInt(izabranId);
-        for(VrstaViewModel.Vrsta v : StaticDataProvider.vrste)
+        for(Vrsta v : StaticDataProvider.vrste)
         {
             if(v.id == id_vrste) {
                 problem.vrsta = v;

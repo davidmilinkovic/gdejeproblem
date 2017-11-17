@@ -33,8 +33,8 @@ public class ProblemViewModel extends ViewModel {
      */
     private MutableLiveData<List<ProblemViewModel.Problem>> problemi;
 
-    public LiveData<List<ProblemViewModel.Problem>> dajProbleme(final String uid) {
-        if (problemi == null) {
+    public LiveData<List<ProblemViewModel.Problem>> dajProbleme(final String uid, boolean ucitaj) {
+        if(problemi == null || ucitaj) {
             problemi = new MutableLiveData<List<ProblemViewModel.Problem>>();
             ucitajProbleme(uid);
         }
@@ -65,7 +65,7 @@ public class ProblemViewModel extends ViewModel {
                         ProblemViewModel.Problem p = new ProblemViewModel.Problem();
                         p.id = obj.getInt("id");
                         int id_vrste = obj.getInt("id_vrste");
-                        for (VrstaViewModel.Vrsta v : StaticDataProvider.vrste) {
+                        for (Vrsta v : StaticDataProvider.vrste) {
                             if (v.id == id_vrste) {
                                 p.vrsta = v;
                                 break;
@@ -93,13 +93,14 @@ public class ProblemViewModel extends ViewModel {
     public static class Problem {
 
         public int id;
-        public VrstaViewModel.Vrsta vrsta;
+        public Vrsta vrsta;
         public String id_korisnika;
         public String opis;
         public String slika;
         public String opstina;
         public String latitude;
         public String longitude;
+        public List<StatusViewModel.Status> statusi;
 
 
         public static void Dodaj(final Problem pr, final Context kontekst, final String token, final String uid) {

@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_margin="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="2dp">
+
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,16 +51,25 @@
         android:paddingTop="8dp"
         android:weightSum="1">
 
-        <TextView
-            android:id="@+id/list_problem_opis"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingBottom="4dp"
-            android:paddingLeft="6dp"
-            android:paddingRight="16dp"
-            android:text="Ovde dodje opis asdhasodihasoihasoidhsaoidhasoihdoasihd" />
+            android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/list_problem_opis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:minLines="1"
+                android:paddingBottom="4dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="16dp"
+                android:text="Ovde dodje opis asdhasodihasoihasoidhsaoidhasoihdoasihd" />
+
+        </LinearLayout>
         <ImageView
             android:id="@+id/list_slika_problem"
             android:layout_width="100dp"
@@ -70,7 +91,41 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:tint="?attr/colorAccent"
-            app:srcCompat="@drawable/ic_add_location_black_24dp" />
+            app:srcCompat="@drawable/ic_status"         />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="4dp"
+            android:paddingLeft="16dp"
+            android:text="Status: " />
+
+        <TextView
+            android:id="@+id/list_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="4dp"
+            android:paddingLeft="6dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:tint="?attr/colorAccent"
+            app:srcCompat="@drawable/ic_lokacija"
+             />
 
         <TextView
             android:id="@+id/list_lokacija"
@@ -89,3 +144,4 @@
         android:background="#bdbdbd" />
 
 </LinearLayout>
+</android.support.v7.widget.CardView>
