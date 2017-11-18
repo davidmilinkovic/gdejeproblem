@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,7 +32,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.Executor;
 
@@ -252,7 +252,7 @@ public class KorisnikFragment extends Fragment implements
         if (user != null) {
             ((TextView)getView().findViewById(R.id.korisnik_txt1)).setText(user.getDisplayName());
             ((TextView)getView().findViewById(R.id.korisnik_txt2)).setText(user.getEmail());
-            Picasso.with(getActivity()).load(user.getPhotoUrl()).into((ImageView)getView().findViewById(R.id.korisnik_slika));
+            Glide.with(getActivity()).load(user.getPhotoUrl()).into((ImageView)getView().findViewById(R.id.korisnik_slika));
 
             getView().findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             getView().findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);

@@ -26,13 +26,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -108,7 +108,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         if (currentUser != null) {
             txtNavNaslov.setText(currentUser.getDisplayName());
             txtNavPodNaslov.setText(currentUser.getEmail());
-            Picasso.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
+            Glide.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
             prijavljen = true;
         } else {
             txtNavNaslov.setText(R.string.niste_prijavljeni);

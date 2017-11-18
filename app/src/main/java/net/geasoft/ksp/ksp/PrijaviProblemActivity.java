@@ -42,13 +42,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.squareup.picasso.Picasso;
 
 import  android.Manifest;
 
@@ -257,7 +258,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             imaSlike = false;
             ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
             img.setVisibility(View.GONE);
-            Picasso.with(this).load(R.drawable.ic_menu_camera).into(img);
+            Glide.with(this).load(R.drawable.ic_menu_camera).into(img);
 
 
 
@@ -376,7 +377,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     imaSlike = false;
                     ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                     img.setVisibility(View.GONE);
-                    Picasso.with(PrijaviProblemActivity.this).load(R.drawable.ic_menu_camera).into(img);
+                    Glide.with(PrijaviProblemActivity.this).load(R.drawable.ic_menu_camera).into(img);
                 }
             }
         });
@@ -447,17 +448,18 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     imaSlike = true;
                     ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
                     img.setVisibility(View.VISIBLE);
-                    Picasso.with(this).load(slikaFajl).resize(1500, 1500).centerInside().into(img);
+                    Glide.with(this).load(slikaFajl).apply(RequestOptions.fitCenterTransform()).into(img);
                 }
                 break;
             case SELECT_FILE:
                 if(resultCode == RESULT_OK){
                     imaSlike = true;
                     Uri selectedImage = data.getData();
+                    dbg(selectedImage.getPath());
                     slikaFajl = new File(getRealPathFromURI(selectedImage));
                     ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
                     img.setVisibility(View.VISIBLE);
-                    Picasso.with(this).load(selectedImage).resize(1500, 1500).centerInside().into(img);
+                    Glide.with(this).load(selectedImage).apply(RequestOptions.fitCenterTransform()).into(img);
                 }
                 break;
             case 666:

@@ -24,8 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -166,9 +167,9 @@ public class MojiProblemiFragment extends Fragment {
             ucitano = true;
 
             holder.imgIkonica.setImageResource(getResources().getIdentifier(holder.mItem.vrsta.sluzba.ikonica, "drawable", getActivity().getPackageName()));
-            if(holder.mItem.slika.length() > 0) Picasso.with(getActivity()).load(Uri.parse(holder.mItem.slika)).resize(600, 600).centerCrop().into(holder.imgSlika);
+            if(holder.mItem.slika.length() > 0) Glide.with(getActivity()).load(Uri.parse(holder.mItem.slika)).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
             else {
-                Picasso.with(getActivity()).load(R.drawable.nemaslike).resize(600, 600).centerCrop().into(holder.imgSlika);
+                Glide.with(getActivity()).load(R.drawable.nemaslike).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
             }
 
 
