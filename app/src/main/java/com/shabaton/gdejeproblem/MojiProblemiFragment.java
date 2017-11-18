@@ -190,9 +190,8 @@ public class MojiProblemiFragment extends Fragment {
                         .into(holder.imgSlika);
             }
             else {
+                holder.progressBar.setVisibility(View.GONE);
                 Glide.with(getActivity()).load(R.drawable.nemaslike).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
-                Glide.with(getActivity()).load(R.drawable.sl_bus).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
-                Glide.with(getActivity()).load(R.drawable.sl_grad).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
             }
 
 

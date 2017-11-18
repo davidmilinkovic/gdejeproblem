@@ -244,14 +244,11 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
             AsinhroniFTPUpload task = new AsinhroniFTPUpload(slikaFajl, this);
             task.execute();
-            problem.slika = "https://www.geasoft.net/" + slikaFajl.getPath().substring(slikaFajl.getPath().lastIndexOf('/')+1);
+            problem.slika = "https://www.geasoft.net/kspclient/slike/" + slikaFajl.getPath().substring(slikaFajl.getPath().lastIndexOf('/')+1);
             imaSlike = false;
             ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
             img.setVisibility(View.GONE);
             Glide.with(this).load(R.drawable.ic_menu_camera).into(img);
-
-
-
         }
         else problem.slika = "";
 
@@ -268,6 +265,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         ((EditText) findViewById(R.id.editText)).setText("");
         ((TextView)findViewById(R.id.txtViewLok)).setText("Izaberite lokaciju problema");
     }
+
 
     private class AsinhroniFTPUpload extends AsyncTask<Void, Void, Boolean> {
 
@@ -300,7 +298,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     con.enterLocalPassiveMode(); // important!
                     con.setFileType(FTP.BINARY_FILE_TYPE);
                     FileInputStream in = new FileInputStream(fajl);
-                    boolean result = con.storeFile("/public_html/" + fajl.getPath().substring(fajl.getPath().lastIndexOf('/')+1), in);
+                    boolean result = con.storeFile("/public_html/kspclient/slike/" + fajl.getPath().substring(fajl.getPath().lastIndexOf('/')+1), in);
                     in.close();
                     con.logout();
                     con.disconnect();
