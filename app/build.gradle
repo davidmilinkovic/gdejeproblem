@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "net.geasoft.ksp.ksp"
+        applicationId "com.shabaton.gdejeproblem"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
@@ -43,5 +43,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     implementation files('libs/glide-full-4.3.1.jar')
 }
+
 
 apply plugin: 'com.google.gms.google-services'
