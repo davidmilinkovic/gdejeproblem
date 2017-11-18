@@ -249,7 +249,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             mBuilder = new NotificationCompat.Builder(this);
             mBuilder.setContentTitle("Gde je problem?")
                     .setContentText("Postavljanje slike na server je u toku...")
-                    .setSmallIcon(R.mipmap.ic_launcher);
+                    .setSmallIcon(R.mipmap.ic_launcher_foreground);
 
 
             AsinhroniFTPUpload task = new AsinhroniFTPUpload(slikaFajl, this);
@@ -307,7 +307,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 con = new FTPClient();
                 con.connect("195.252.110.140");
 
-                if (con.login("geasoftn", "705903272ld"))
+                if (con.login("geasoftn", getResources().getString(R.string.sifraFtp)));
                 {
                     con.enterLocalPassiveMode(); // important!
                     con.setFileType(FTP.BINARY_FILE_TYPE);
@@ -343,7 +343,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
             //Build the notification using Notification.Builder
             Notification.Builder builder = new Notification.Builder(ctx)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
                     .setAutoCancel(true)
                     .setContentTitle(contentTitle)
                     .setContentText(contentText);
