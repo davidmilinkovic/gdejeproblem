@@ -3,12 +3,14 @@ package com.shabaton.gdejeproblem;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -47,6 +50,8 @@ public class MojiProblemiFragment extends Fragment {
     {
         super.onCreate(savedInstance);
         email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+
+
     }
 
     @Override
@@ -69,6 +74,16 @@ public class MojiProblemiFragment extends Fragment {
             }
         });
 
+        FloatingActionButton button = (FloatingActionButton) view.findViewById(R.id.fabDodaj);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent iii = new Intent(getActivity(), PrijaviProblemActivity.class);
+                getActivity().startActivity(iii);
+            }
+        });
 
         setupRecyclerView();
         return view;
@@ -90,9 +105,9 @@ public class MojiProblemiFragment extends Fragment {
 
         lista.setAdapter(recyclerViewAdapter);
 
-        ProblemViewModel model = ViewModelProviders.of((AppCompatActivity)getActivity()).get(ProblemViewModel.class);
+        ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
 
-        model.dajProbleme(!ucitano).observe((AppCompatActivity)getActivity(), new Observer<List<ProblemViewModel.Problem>>() {
+        model.dajProbleme(!ucitano).observe((AppCompatActivity) getActivity(), new Observer<List<ProblemViewModel.Problem>>() {
             @Override
             public void onChanged(@Nullable List<ProblemViewModel.Problem> problemi) {
                 recyclerViewAdapter.addItems(problemi);
@@ -100,7 +115,6 @@ public class MojiProblemiFragment extends Fragment {
         });
 
     }
-
 
 
     public class ProblemiRecyclerAdapter
@@ -170,24 +184,29 @@ public class MojiProblemiFragment extends Fragment {
 
             holder.imgIkonica.setImageResource(getResources().getIdentifier(holder.mItem.vrsta.sluzba.ikonica, "drawable", getActivity().getPackageName()));
             if(holder.mItem.slika.length() > 0) {
-                Glide.with(getActivity())
-                        .load(Uri.parse(holder.mItem.slika))
-                        .apply(RequestOptions.fitCenterTransform())
-                        .listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                holder.progressBar.setVisibility(View.GONE);
-                                Glide.with(getActivity()).load(R.drawable.nemaslike).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
-                                return false;
-                            }
+                try {
+                    Glide.with(getActivity())
+                            .load(Uri.parse(holder.mItem.slika))
+                            .apply(RequestOptions.fitCenterTransform())
+                            .listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    holder.progressBar.setVisibility(View.GONE);
+                                    Glide.with(getActivity()).load(R.drawable.nemaslike).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
+                                    return false;
+                                }
 
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                holder.progressBar.setVisibility(View.GONE);
-                                return false;
-                            }
-                        })
-                        .into(holder.imgSlika);
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    holder.progressBar.setVisibility(View.GONE);
+                                    return false;
+                                }
+                            })
+                            .into(holder.imgSlika);
+                } catch (Exception e) {
+                    holder.progressBar.setVisibility(View.GONE);
+                    Glide.with(getActivity()).load(R.drawable.nemaslike).apply(RequestOptions.fitCenterTransform()).into(holder.imgSlika);
+                }
             }
             else {
                 holder.progressBar.setVisibility(View.GONE);

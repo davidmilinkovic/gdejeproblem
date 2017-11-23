@@ -30,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.shabaton.gdejeproblem.SplashActivity"
+            android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,17 +39,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.shabaton.gdejeproblem.GlavniActivity"
+            android:name=".GlavniActivity"
             android:label="@string/app_name"
             android:theme="@style/AppThemeBezBara" />
         <activity
-            android:name="com.shabaton.gdejeproblem.PrijaviProblemActivity"
-            android:parentActivityName="com.shabaton.gdejeproblem.GlavniActivity"
+            android:name=".PrijaviProblemActivity"
+            android:parentActivityName=".GlavniActivity"
             android:theme="@style/AppThemeBezBara"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <provider
-            android:name="com.shabaton.gdejeproblem.GenericFileProvider"
+            android:name=".GenericFileProvider"
             android:authorities="${applicationId}.net.geasoft.ksp.ksp.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -59,7 +59,7 @@
         </provider>
 
         <activity
-            android:name="com.shabaton.gdejeproblem.SluzbaListActivity"
+            android:name=".SluzbaListActivity"
             android:label="@string/title_sluzba_list"
             android:theme="@style/AppThemeBezBara">
             <meta-data
@@ -67,9 +67,9 @@
                 android:value="com.shabaton.gdejeproblem.PrijaviProblemActivity" />
         </activity>
         <activity
-            android:name="com.shabaton.gdejeproblem.SluzbaDetailActivity"
+            android:name=".SluzbaDetailActivity"
             android:label="@string/title_sluzba_detail"
-            android:parentActivityName="com.shabaton.gdejeproblem.SluzbaListActivity"
+            android:parentActivityName=".SluzbaListActivity"
             android:theme="@style/AppThemeBezBara">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -81,15 +81,13 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.shabaton.gdejeproblem.MapsActivity"
+            android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.shabaton.gdejeproblem.PrijaviProblemActivity" />
         </activity>
-
-
     </application>
 
 </manifest>
