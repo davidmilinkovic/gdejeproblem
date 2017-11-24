@@ -75,9 +75,10 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         mAuth = FirebaseAuth.getInstance();
         promeniKorisnika();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment()).commit();
-
+        if(mAuth.getCurrentUser() != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment()).commit();
+        }
     }
 
     @Override

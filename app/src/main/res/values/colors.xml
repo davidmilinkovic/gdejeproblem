@@ -2,4 +2,5 @@
 <resources>
     <color name="secondaryColor">#b71c1c</color>
     <color name="secondaryTextColor">#ffffff</color>
+    <color name="siva">#757575</color>
 </resources>

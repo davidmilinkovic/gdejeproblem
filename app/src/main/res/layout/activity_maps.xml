@@ -14,20 +14,20 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondaryColor"
         android:layout_gravity="bottom"
+        android:background="@color/siva"
         android:elevation="10dp">
+
         <Button
+            android:id="@+id/mapa_potvrda"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:id="@+id/mapa_potvrda"
-            android:textColor="@color/secondaryTextColor"
-            android:onClick="onClick"
-            android:text="Izaberi lokaciju"
             android:layout_gravity="right"
             android:enabled="false"
-            style="?android:attr/borderlessButtonStyle"
-            />
+            android:onClick="onClick"
+            android:text="Izaberi lokaciju"
+            android:textColor="@color/secondaryTextColor" />
     </FrameLayout>
 
 

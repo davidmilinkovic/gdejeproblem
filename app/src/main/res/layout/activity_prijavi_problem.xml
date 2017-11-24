@@ -61,19 +61,19 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/secondaryColor"
         android:layout_gravity="bottom"
+        android:background="@color/siva"
         android:elevation="10dp">
+
         <Button
+            android:id="@+id/footer_potvrda"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
-            android:id="@+id/footer_potvrda"
-            android:textColor="@color/secondaryTextColor"
+            android:layout_gravity="right"
             android:onClick="onClick"
             android:text="Prijavi"
-            android:layout_gravity="right"
-            style="?android:attr/borderlessButtonStyle"
-            />
+            android:textColor="@color/secondaryTextColor" />
     </FrameLayout>
 
 
