@@ -79,7 +79,7 @@
             <ImageView
                 android:id="@+id/list_slika_problem"
                 android:layout_width="100dp"
-                app:srcCompat="@drawable/logo_gdp"
+                
                 android:layout_height="100dp" />
 
             <ProgressBar
