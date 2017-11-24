@@ -239,7 +239,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             mBuilder = new NotificationCompat.Builder(this);
             mBuilder.setContentTitle("Gde je problem?")
                     .setContentText("Postavljanje slike na server je u toku...")
-                    .setSmallIcon(R.mipmap.ic_launcher_foreground);
+                    .setSmallIcon(R.mipmap.ic_launcher);
 
 
             AsinhroniFTPUpload task = new AsinhroniFTPUpload(slikaFajl, this);
@@ -329,7 +329,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
             //Build the notification using Notification.Builder
             Notification.Builder builder = new Notification.Builder(ctx)
-                    .setSmallIcon(R.mipmap.ic_launcher_foreground)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setAutoCancel(true)
                     .setContentTitle(contentTitle)
                     .setContentText(contentText);

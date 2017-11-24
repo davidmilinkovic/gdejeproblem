@@ -6,7 +6,7 @@
 
     <item
         android:gravity="center"
-        android:drawable="@drawable/logo_gdp"
+        android:drawable="@drawable/a1"
         android:height="144dp"
         android:width="144dp"
         >
