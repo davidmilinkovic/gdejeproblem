@@ -5,6 +5,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener {
 
     private GoogleMap mMap;
     private Marker tren;
@@ -33,14 +36,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Toolbar tulbar = (Toolbar) findViewById(R.id.toolbar_maps);
+        setSupportActionBar(tulbar);
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle("Lokacija");
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        mMap.setOnMapClickListener(this);
-        LatLng srb = new LatLng(44.752993, 19.697438);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(srb));
+        LatLng marker = new LatLng(getIntent().getDoubleExtra("latitude", 44.752993), getIntent().getDoubleExtra("longitude", 19.697438));
+        if(!getIntent().getBooleanExtra("potvrda", true))
+        {
+            findViewById(R.id.frame_potvrda).setVisibility(View.GONE);
+            tren = mMap.addMarker(new MarkerOptions().position(marker).title("Izabrana lokacija"));
+        }
+        else mMap.setOnMapClickListener(this);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(16));
     }
 

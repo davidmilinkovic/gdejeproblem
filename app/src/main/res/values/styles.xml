@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <!-- Base application theme. -->
     <style name="AppThemeBezBara" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#757575</item>
-        <item name="colorPrimaryDark">#494949</item>
-        <item name="colorAccent">#0d47a1</item>
+        <item name="colorPrimary">#9e9e9e</item>
+        <item name="colorPrimaryDark">#707070</item>
+        <item name="colorAccent">#3d5afe</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
@@ -13,9 +13,9 @@
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#757575</item>
-        <item name="colorPrimaryDark">#494949</item>
-        <item name="colorAccent">#0d47a1</item>
+        <item name="colorPrimary">#9e9e9e</item>
+        <item name="colorPrimaryDark">#707070</item>
+        <item name="colorAccent">#3d5afe</item>
     </style>
 
 

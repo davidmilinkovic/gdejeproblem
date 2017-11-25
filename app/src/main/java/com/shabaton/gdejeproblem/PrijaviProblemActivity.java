@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -76,15 +78,22 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        img = (ImageView)findViewById(R.id.imageView);
+        img = (ImageView) findViewById(R.id.imageView);
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-
 
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            ((FrameLayout) findViewById(R.id.frejm)).setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    izaberiSliku();
+                    return false;
+                }
+            });
+        }
     }
-
 
 
     @Override
@@ -116,6 +125,12 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.button3:
                 Intent intent = new Intent(this, MapsActivity.class);
+                if(curLocation != null)
+                {
+                    intent.putExtra("latitude", curLocation.getLongitude());
+                    intent.putExtra("longitude", curLocation.getLongitude());
+                }
+                intent.putExtra("potvrda", true);
                 startActivityForResult(intent, 420);
                 break;
             case R.id.fab:
@@ -163,6 +178,10 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             case 70: // WRITE_EXTERNAL_STORAGE za kameru
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     kameraIntent();
+                return;
+            case 71: // WRITE_EXTERNAL_STORAGE za galeriju
+                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    galerijaIntent();
                 return;
 
         }
@@ -354,20 +373,29 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             @Override
             public void onClick(DialogInterface dialog, int item) {
                 if (item == 0) {
-                        kameraIntent();
+                    kameraIntent();
                 } else if (item == 1) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent,SELECT_FILE);
+                    galerijaIntent();
                 }
                 else if(item == 2) {
                     imaSlike = false;
                     ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                     img.setVisibility(View.GONE);
-                    Glide.with(PrijaviProblemActivity.this).load(R.drawable.ic_menu_camera).into(img);
+
                 }
             }
         });
         builder.show();
+    }
+
+    private void galerijaIntent()
+    {
+        if (ContextCompat.checkSelfPermission(PrijaviProblemActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(PrijaviProblemActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 71);
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent,SELECT_FILE);
     }
 
     private void kameraIntent() // provera ovlascenja, a zatim lansiranje intenta za kameru

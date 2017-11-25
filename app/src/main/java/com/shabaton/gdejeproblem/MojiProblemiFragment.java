@@ -217,12 +217,17 @@ public class MojiProblemiFragment extends Fragment {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-/*
+
                     Activity context = (Activity) v.getContext();
-                    Intent intent = new Intent(context, SluzbaDetailActivity.class);
-                    intent.putExtra(SluzbaDetailActivity.ARG_ITEM_ID, Integer.toString(holder.mItem.id));
-                    intent.putExtra("naslov", holder.mItem.naziv);
-                    context.startActivityForResult(intent, 69);*/
+                    Intent intent = new Intent(context, PregledProblemaActivity.class);
+                    intent.putExtra("vrsta", holder.mItem.vrsta.naziv);
+                    intent.putExtra("lokacija", holder.txtLokacija.getText());
+                    intent.putExtra("opis", holder.mItem.opis);
+                    intent.putExtra("slika", holder.mItem.slika);
+                    intent.putExtra("latitude", holder.mItem.latitude);
+                    intent.putExtra("longitude", holder.mItem.longitude);
+
+                    context.startActivity(intent);
 
                 }
             });

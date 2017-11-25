@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:isScrollContainer="true"
+    android:isScrollContainer="false"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_prijavi_problem">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="25dp"
         android:layout_weight="0.4"
         android:orientation="vertical">
@@ -43,31 +43,32 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView2pregled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Izaberite vrstu problema" />
             </LinearLayout>
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/lokacija_frame_pregled"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:visibility="visible">
+
             <ImageButton
-                android:id="@+id/button2"
+                android:id="@+id/button3pregled"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginLeft="70dp"
+                android:layout_marginLeft="72dp"
                 android:layout_marginRight="16dp"
                 android:onClick="onClick"
                 android:scaleType="fitEnd"
-                android:textColor="@android:color/white"
+                android:visibility="visible"
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/lokacija_frame"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:visibility="visible">
 
             <ImageView
                 android:layout_width="50dp"
@@ -93,39 +94,14 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/txtViewLok"
+                    android:id="@+id/txtViewLok_pregled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Izaberite lokaciju problema" />
 
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/button3"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginLeft="72dp"
-                android:layout_marginRight="16dp"
-                android:onClick="onClick"
-                android:scaleType="fitEnd"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
-
         </FrameLayout>
-
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="6dp"
-            android:checked="false"
-            android:onClick="onClick"
-            android:paddingLeft="24dp"
-            android:text="Problem je na trenutnoj lokaciji" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -144,18 +120,14 @@
                     android:tint="?attr/colorAccent"
                     app:srcCompat="@drawable/ic_edit_black_24dp" />
 
-                <EditText
-                    android:id="@+id/editText"
+                <TextView
+                    android:id="@+id/tekstOpisPregled"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="72dp"
                     android:layout_marginRight="16dp"
-                    android:contentDescription="@string/txt_opis_problema"
-                    android:gravity="top"
-                    android:hint="@string/txt_opis_problema"
-                    android:inputType="textMultiLine"
-                    android:selectAllOnFocus="false"
-                    android:singleLine="false"
+                    android:gravity="center_vertical"
+                    android:text="Nema opisa"
                     android:visibility="visible" />
 
             </FrameLayout>

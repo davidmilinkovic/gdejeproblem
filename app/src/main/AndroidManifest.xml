@@ -83,10 +83,16 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppThemeBezBara">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.shabaton.gdejeproblem.PrijaviProblemActivity" />
+        </activity>
+        <activity android:name=".PregledProblemaActivity"
+            android:theme="@style/AppThemeBezBara">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.shabaton.gdejeproblem.GlavniActivity" />
         </activity>
     </application>
 

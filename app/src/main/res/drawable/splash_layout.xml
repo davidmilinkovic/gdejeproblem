@@ -3,14 +3,11 @@
 
     <item
         android:drawable="@color/cardview_light_background"/>
-
     <item
         android:gravity="center"
-        android:drawable="@drawable/a1"
+        android:drawable="@mipmap/ic_launcher"
         android:height="144dp"
         android:width="144dp"
         >
-
-
     </item>
 </layer-list>
