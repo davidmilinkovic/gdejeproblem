@@ -5,29 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/AppThemeBezBara"
->
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_prijava"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            android:background="?attr/colorPrimary"
-            android:elevation="5dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
+    android:theme="@style/AppThemeBezBara">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:id="@+id/linear_glavni"
@@ -41,8 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1.25"
-                android:longClickable="true"
-                android:onClick="onClick">
+                android:longClickable="true">
 
                 <TextView
                     android:id="@+id/textView3"
@@ -57,8 +39,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="8dp"
-                    android:visibility="gone"
-                    />
+                    android:elevation="10dp"
+                    android:visibility="gone" />
             </FrameLayout>
 
             <include
@@ -68,38 +50,25 @@
                 android:layout_weight="0.75" />
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/futerFrejm"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_below="@+id/linear_glavni"
-            android:layout_gravity="bottom"
-            android:background="@color/siva">
-
-            <Button
-                android:id="@+id/footer_potvrda"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="right"
-                android:onClick="onClick"
-                android:text="Prijavi"
-                android:textColor="@color/secondaryTextColor" />
-        </FrameLayout>
-
     </RelativeLayout>
 
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:visibility="gone"
-        app:layout_anchor="@id/frejm"
-        app:layout_anchorGravity="center"
-        app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_prijava"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:background="?attr/colorPrimary"
+            android:elevation="13dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 

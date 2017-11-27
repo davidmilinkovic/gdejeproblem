@@ -5,28 +5,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
 >
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_bar_height"
-        android:fitsSystemWindows="true"
+        android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_prijava"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_alignParentTop="true"
+            android:background="?attr/colorPrimary"
+            android:elevation="13dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/txt_niste_dodali_fotografiju" />
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:id="@+id/frejmSlika"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="?android:attr/floatingToolbarDividerColor"
+            android:elevation="2dp">
+
 
             <ImageView
                 android:id="@+id/imageView"
@@ -34,48 +43,35 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_prijava"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_alignParentTop="true"
-                android:elevation="13dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/txt_niste_dodali_fotografiju" />
+        </FrameLayout>
 
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/prijavi_problem_content" />
+
+        <include
+            layout="@layout/prijavi_problem_content"
+            android:layout_width="match_parent"
+            android:layout_below="@id/frejmSlika"
+            android:layout_height="match_parent"
+             />
+    </RelativeLayout>
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_margin="@dimen/fab_margin"
         android:onClick="onClick"
-        app:layout_anchor="@id/app_bar"
+        app:elevation="12dp"
+        app:layout_anchor="@id/frejmSlika"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/siva"
-        android:elevation="10dp">
-
-        <Button
-            android:id="@+id/footer_potvrda"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_gravity="right"
-            android:onClick="onClick"
-            android:text="Prijavi"
-            android:textColor="@color/secondaryTextColor" />
-    </FrameLayout>
-
 
 </android.support.design.widget.CoordinatorLayout>
 

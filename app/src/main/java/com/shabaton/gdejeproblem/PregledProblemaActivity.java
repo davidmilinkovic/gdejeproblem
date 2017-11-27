@@ -34,7 +34,7 @@ public class PregledProblemaActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(getIntent().getStringExtra("vrsta"));
+        ab.setTitle("");
 
         ((TextView)findViewById(R.id.textView2pregled)).setText(getIntent().getStringExtra("vrsta"));
         ((TextView)findViewById(R.id.txtViewLok_pregled)).setText(getIntent().getStringExtra("lokacija"));

@@ -29,6 +29,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -63,9 +65,9 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     private LocationManager lm;
     private Location curLocation;
     private boolean imaSlike = false;
-    private File slikaFajl;
-    private ImageView img;
+    private String slikaStr = "";
     private String izabranId;
+    private boolean trenutnaLokacija = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +80,8 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
-        img = (ImageView) findViewById(R.id.imageView);
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             ((FrameLayout) findViewById(R.id.frejm)).setOnLongClickListener(new View.OnLongClickListener() {
@@ -93,6 +92,72 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 }
             });
         }
+
+        if(savedInstanceState != null)
+        {
+            ((TextView)findViewById(R.id.textView2)).setText(savedInstanceState.getString("vrsta"));
+            ((TextView)findViewById(R.id.txtViewLok)).setText(savedInstanceState.getString("lokacija"));
+            String lat = savedInstanceState.getString("lat");
+            String lng = savedInstanceState.getString("lng");
+
+            trenutnaLokacija = savedInstanceState.getBoolean("trenutnaLokacija");
+
+            if(trenutnaLokacija)
+            {
+                FrameLayout frejm = (FrameLayout) findViewById(R.id.lokacija_frame);
+                for (int i = 0; i < frejm.getChildCount(); i++) {
+                    View vv = frejm.getChildAt(i);
+                    vv.setVisibility(View.GONE);
+                    vv.postInvalidate();
+                }
+                frejm.setVisibility(View.GONE);
+            }
+
+
+            if(lat != "")
+            {
+                curLocation = new Location("");
+                curLocation.setLatitude(Double.parseDouble(lat));
+                curLocation.setLongitude(Double.parseDouble(lng));
+            }
+
+            if(savedInstanceState.getBoolean("imaSlike"))
+            {
+                imaSlike = true;
+                slikaStr = savedInstanceState.getString("slika");
+                ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
+                findViewById(R.id.imageView).setVisibility(View.VISIBLE);
+                Glide.with(this).load(slikaStr).apply(RequestOptions.fitCenterTransform()).into((ImageView) findViewById(R.id.imageView));
+
+            }
+            else {
+                ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
+                findViewById(R.id.imageView).setVisibility(View.GONE);
+            }
+
+        }
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("vrsta", String.valueOf(((TextView)findViewById(R.id.textView2)).getText()));
+        outState.putString("lokacija", String.valueOf(((TextView)findViewById(R.id.txtViewLok)).getText()));
+        String lat = "", lng = "";
+        if(curLocation != null) {
+            lat = Double.toString(curLocation.getLatitude());
+            lng = Double.toString(curLocation.getLongitude());
+        }
+        outState.putString("lat", lat);
+        outState.putString("lng", lng);
+        if(imaSlike) {
+            outState.putBoolean("imaSlike", true);
+            outState.putString("slika", slikaStr);
+        }
+        else outState.putBoolean("imaSlike", false);
+        outState.putBoolean("trenutnaLokacija", trenutnaLokacija);
+
     }
 
 
@@ -104,6 +169,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 CheckBox boks = (CheckBox) findViewById(R.id.checkBox);
                 FrameLayout frejm = (FrameLayout) findViewById(R.id.lokacija_frame);
                 if (boks.isChecked()) {
+                    trenutnaLokacija = true;
                     for (int i = 0; i < frejm.getChildCount(); i++) {
                         View vv = frejm.getChildAt(i);
                         vv.setVisibility(View.GONE);
@@ -114,6 +180,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     pribaviLokaciju();
                 }
                 else {
+                    trenutnaLokacija = false;
                     for (int i = 0; i < frejm.getChildCount(); i++) {
                         View vv = frejm.getChildAt(i);
                         vv.setVisibility(View.VISIBLE);
@@ -140,22 +207,9 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 Intent inten = new Intent(this, SluzbaListActivity.class);
                 startActivityForResult(inten, 666);
                 break;
-            case R.id.footer_potvrda:
-                final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-                mUser.getToken(false)
-                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                            public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                if (task.isSuccessful()) {
-                                    String idToken = task.getResult().getToken();
-                                    dodaj(idToken);
-                                } else {
-                                    Toast.makeText(PrijaviProblemActivity.this, R.string.greska_token, Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        });
-                break;
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -261,13 +315,12 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     .setSmallIcon(R.mipmap.ic_launcher);
 
 
-            AsinhroniFTPUpload task = new AsinhroniFTPUpload(slikaFajl, this);
+            AsinhroniFTPUpload task = new AsinhroniFTPUpload(new File(slikaStr), this);
             task.execute();
-            problem.slika = "https://www.geasoft.net/kspclient/slike/" + slikaFajl.getPath().substring(slikaFajl.getPath().lastIndexOf('/')+1);
+            problem.slika = "https://www.geasoft.net/kspclient/slike/" + slikaStr.substring(slikaStr.lastIndexOf('/')+1);
             imaSlike = false;
             ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
-            img.setVisibility(View.GONE);
-            Glide.with(this).load(R.drawable.ic_menu_camera).into(img);
+            findViewById(R.id.imageView).setVisibility(View.GONE);
         }
         else problem.slika = "";
 
@@ -380,7 +433,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 else if(item == 2) {
                     imaSlike = false;
                     ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
-                    img.setVisibility(View.GONE);
+                    findViewById(R.id.imageView).setVisibility(View.GONE);
 
                 }
             }
@@ -426,7 +479,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             {
             }
 
-            slikaFajl = fajl;
+            slikaStr = fajl.getAbsolutePath();
             Uri outputUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".net.geasoft.ksp.ksp.provider", fajl);
 
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -438,6 +491,32 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         catch (Exception e) {
                 Toast.makeText(PrijaviProblemActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_prijava, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_prijava_otkacaj:
+                final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+                mUser.getToken(false)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    String idToken = task.getResult().getToken();
+                                    dodaj(idToken);
+                                } else {
+                                    Toast.makeText(PrijaviProblemActivity.this, R.string.greska_token, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                return true;
+        }
+        return true;
     }
 
     private void greska(String naslov, String tekst)
@@ -461,19 +540,18 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 if(resultCode == RESULT_OK){
                     imaSlike = true;
                     ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
-                    img.setVisibility(View.VISIBLE);
-                    Glide.with(this).load(slikaFajl).apply(RequestOptions.fitCenterTransform()).into(img);
+                    findViewById(R.id.imageView).setVisibility(View.VISIBLE);
+                    Glide.with(this).load(slikaStr).apply(RequestOptions.fitCenterTransform()).into((ImageView) findViewById(R.id.imageView));
                 }
                 break;
             case SELECT_FILE:
                 if(resultCode == RESULT_OK){
                     imaSlike = true;
                     Uri selectedImage = data.getData();
-                    dbg(selectedImage.getPath());
-                    slikaFajl = new File(getRealPathFromURI(selectedImage));
+                    slikaStr = getRealPathFromURI(selectedImage);
                     ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
-                    img.setVisibility(View.VISIBLE);
-                    Glide.with(this).load(selectedImage).apply(RequestOptions.fitCenterTransform()).into(img);
+                    findViewById(R.id.imageView).setVisibility(View.VISIBLE);
+                    Glide.with(this).load(slikaStr).apply(RequestOptions.fitCenterTransform()).into((ImageView) findViewById(R.id.imageView));
                 }
                 break;
             case 666:

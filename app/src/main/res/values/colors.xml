@@ -2,5 +2,6 @@
 <resources>
     <color name="secondaryColor">#b71c1c</color>
     <color name="secondaryTextColor">#ffffff</color>
-    <color name="siva">#757575</color>
+    <color name="siva">#9e9e9e</color>
+    <color name="tamna_siva">#707070</color>
 </resources>
