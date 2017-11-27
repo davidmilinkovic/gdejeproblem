@@ -33,7 +33,7 @@
             android:id="@+id/frejmSlika"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="?android:attr/floatingToolbarDividerColor"
+            android:background="@color/svetlo_siva"
             android:elevation="2dp">
 
 

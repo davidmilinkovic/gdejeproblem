@@ -66,7 +66,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     private Location curLocation;
     private boolean imaSlike = false;
     private String slikaStr = "";
-    private String izabranId;
+    private String izabranId = "";
     private boolean trenutnaLokacija = false;
 
     @Override
@@ -134,8 +134,14 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                 findViewById(R.id.imageView).setVisibility(View.GONE);
             }
-
+            izabranId = savedInstanceState.getString("izabranId");
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 
 
@@ -157,6 +163,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         }
         else outState.putBoolean("imaSlike", false);
         outState.putBoolean("trenutnaLokacija", trenutnaLokacija);
+        outState.putString("izabranId", izabranId);
 
     }
 
