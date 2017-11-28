@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list
 
-    <item
-        android:drawable="@color/siva"/>
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item >
-        <bitmap
-            android:gravity="center"
-            android:src="@drawable/spash"/>
+    <item android:drawable="@color/svetlo_siva"/>
+
+    <item android:width="200dp" android:height="217dp" android:gravity="center" android:drawable="@drawable/splash">
     </item>
 
 </layer-list>

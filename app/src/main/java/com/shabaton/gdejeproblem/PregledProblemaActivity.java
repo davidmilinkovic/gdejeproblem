@@ -1,5 +1,6 @@
 package com.shabaton.gdejeproblem;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -38,7 +39,16 @@ public class PregledProblemaActivity extends AppCompatActivity {
 
         ((TextView)findViewById(R.id.textView2pregled)).setText(getIntent().getStringExtra("vrsta"));
         ((TextView)findViewById(R.id.txtViewLok_pregled)).setText(getIntent().getStringExtra("lokacija"));
-        ((TextView)findViewById(R.id.tekstOpisPregled)).setText(getIntent().getStringExtra("opis"));
+        ((TextView)findViewById(R.id.textViewStatusPregled)).setText(getIntent().getStringExtra("status"));
+
+        String opis = getIntent().getStringExtra("opis").replace("<br>", "\n");
+
+        if(opis.length() > 0)
+        {
+            ((TextView)findViewById(R.id.tekstOpisPregled)).setText(opis);
+            ((TextView)findViewById(R.id.tekstOpisPregled)).setTextColor(getResources().getColor(android.R.color.black));
+        }
+        else ((TextView)findViewById(R.id.tekstOpisPregled)).setText("Nema opisa");
 
         String slika = getIntent().getStringExtra("slika");
         if(slika.length() > 0) {

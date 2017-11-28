@@ -79,6 +79,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+        ab.setTitle("Prijavljivanje problema");
 
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -201,7 +202,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 Intent intent = new Intent(this, MapsActivity.class);
                 if(curLocation != null)
                 {
-                    intent.putExtra("latitude", curLocation.getLongitude());
+                    intent.putExtra("latitude", curLocation.getLatitude());
                     intent.putExtra("longitude", curLocation.getLongitude());
                 }
                 intent.putExtra("potvrda", true);
@@ -292,7 +293,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     {
         ProblemViewModel.Problem problem = new ProblemViewModel.Problem();
 
-        if(izabranId == null) {
+        if(izabranId == "") {
             greska("Greška", "Niste izabrali vrstu problema.");
             return;
         }
@@ -343,6 +344,8 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         izabranId = null;
         ((EditText) findViewById(R.id.editText)).setText("");
         ((TextView)findViewById(R.id.txtViewLok)).setText("Izaberite lokaciju problema");
+
+        finish();
     }
 
 
@@ -508,6 +511,9 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.menu_prijava_otkacaj:
                 final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
                 mUser.getToken(false)

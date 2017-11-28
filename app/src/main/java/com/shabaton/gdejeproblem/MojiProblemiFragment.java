@@ -224,11 +224,11 @@ public class MojiProblemiFragment extends Fragment {
                     intent.putExtra("lokacija", holder.txtLokacija.getText());
                     intent.putExtra("opis", holder.mItem.opis);
                     intent.putExtra("slika", holder.mItem.slika);
+                    intent.putExtra("status", holder.txtStatus.getText());
                     intent.putExtra("latitude", holder.mItem.latitude);
                     intent.putExtra("longitude", holder.mItem.longitude);
 
                     context.startActivity(intent);
-
                 }
             });
         }

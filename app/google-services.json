@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "998383730262-47rkt3205g1vncvqgh9a3ekrfpic30el.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shabaton.gdejeproblem",
+            "certificate_hash": "d1efdf4843bed96a4776c0928697c115d4a8c1c2"
+          }
+        },
+        {
           "client_id": "998383730262-05efiaive9slbeghk6itdec5iqfkuecq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

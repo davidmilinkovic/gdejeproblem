@@ -46,7 +46,43 @@
                     android:id="@+id/textView2pregled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Izaberite vrstu problema" />
+                    android:text="Vrsta problema" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:tint="?attr/colorAccent"
+                app:srcCompat="@drawable/ic_info" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="72dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="4dp"
+                    android:text="Status"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textViewStatusPregled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status problema" />
             </LinearLayout>
 
         </FrameLayout>
@@ -97,7 +133,7 @@
                     android:id="@+id/txtViewLok_pregled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Izaberite lokaciju problema" />
+                    android:text="Lokacija problema" />
 
             </LinearLayout>
 
