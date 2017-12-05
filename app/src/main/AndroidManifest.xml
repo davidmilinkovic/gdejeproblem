@@ -43,7 +43,6 @@
             android:name=".GlavniActivity"
             android:label="@string/app_name"
             android:theme="@style/AppThemeBezBara" />
-
         <activity
             android:name=".PrijaviProblemActivity"
             android:parentActivityName=".GlavniActivity"
@@ -90,12 +89,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.shabaton.gdejeproblem.PrijaviProblemActivity" />
         </activity>
-        <activity android:name=".PregledProblemaActivity"
+        <activity
+            android:name=".PregledProblemaActivity"
             android:theme="@style/AppThemeBezBara">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.shabaton.gdejeproblem.GlavniActivity" />
         </activity>
+
+        <service
+            android:name=".UploadSlikeService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

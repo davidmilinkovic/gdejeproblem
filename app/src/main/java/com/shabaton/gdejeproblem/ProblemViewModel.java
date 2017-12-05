@@ -5,6 +5,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -109,8 +110,10 @@ public class ProblemViewModel extends ViewModel {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            // response
-                            Toast.makeText(kontekst, "Uspešno dodat problem!", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(kontekst, UploadSlikeService.class);
+                            intent.putExtra("putanja", pr.slika);
+                            intent.putExtra("id_problema", response);
+                            kontekst.startService(intent);
                         }
                     },
                     new Response.ErrorListener() {
@@ -127,7 +130,6 @@ public class ProblemViewModel extends ViewModel {
                     params.put("email", FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     params.put("id_vrste", Integer.toString(pr.vrsta.id));
                     params.put("opis", pr.opis);
-                    params.put("slika", pr.slika);
                     params.put("opstina", pr.opstina);
                     params.put("latitude", pr.latitude);
                     params.put("longitude", pr.longitude);

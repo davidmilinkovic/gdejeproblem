@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/main_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent">
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/svetlo_siva">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -16,21 +16,21 @@
             android:id="@+id/moji_problemi_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="8dp"
             android:clipToPadding="false"
+            android:paddingTop="8dp"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/problemi_list_content" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabDodaj"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:id="@+id/fabDodaj"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_add_black_24dp"
         app:layout_anchor="@id/swipeRefreshLayout"
-        app:layout_anchorGravity="bottom|right|end" />
+        app:layout_anchorGravity="bottom|right|end"
+        app:srcCompat="@drawable/ic_add_black_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

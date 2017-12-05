@@ -1,5 +1,6 @@
 package com.shabaton.gdejeproblem;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -9,6 +10,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.location.LocationManager;
@@ -28,6 +31,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,11 +55,16 @@ import  android.Manifest;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.support.v4.app.NotificationCompat.Builder;
@@ -73,6 +82,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prijavi_problem);
+
 
         Toolbar tulbar = (Toolbar) findViewById(R.id.toolbar_prijava);
         setSupportActionBar(tulbar);
@@ -100,6 +110,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             ((TextView)findViewById(R.id.txtViewLok)).setText(savedInstanceState.getString("lokacija"));
             String lat = savedInstanceState.getString("lat");
             String lng = savedInstanceState.getString("lng");
+
 
             trenutnaLokacija = savedInstanceState.getBoolean("trenutnaLokacija");
 
@@ -316,6 +327,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
 
         if(imaSlike) {
+            /*
             mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mBuilder = new NotificationCompat.Builder(this);
             mBuilder.setContentTitle("Gde je problem?")
@@ -325,7 +337,10 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
             AsinhroniFTPUpload task = new AsinhroniFTPUpload(new File(slikaStr), this);
             task.execute();
-            problem.slika = "https://www.geasoft.net/kspclient/slike/" + slikaStr.substring(slikaStr.lastIndexOf('/')+1);
+            */
+            /*Intent intent = new Intent(this, UploadSlikeService.class);
+            intent.putExtra("putanja", slikaStr);
+            startService(intent);*/
             imaSlike = false;
             ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
             findViewById(R.id.imageView).setVisibility(View.GONE);
@@ -334,6 +349,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
         problem.opis = ((EditText)findViewById(R.id.editText)).getText().toString().replace("\n", "<br>");
         problem.opstina = "Aaa";
+        problem.slika = slikaStr;
 
 
         ProblemViewModel.Problem.Dodaj(problem, this, token);
@@ -344,9 +360,13 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         izabranId = null;
         ((EditText) findViewById(R.id.editText)).setText("");
         ((TextView)findViewById(R.id.txtViewLok)).setText("Izaberite lokaciju problema");
-
-        finish();
     }
+
+
+
+
+
+
 
 
     private class AsinhroniFTPUpload extends AsyncTask<Void, Void, Boolean> {
@@ -374,6 +394,10 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             {
                 con = new FTPClient();
                 con.connect("195.252.110.140");
+
+                String url = "http://yourserver";
+                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
+                        "yourfile");
 
                 if (con.login("geasoftn", getResources().getString(R.string.sifraFtp)));
                 {
@@ -403,23 +427,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         private int NOTIFICATION_ID = 1;
         private NotificationManager nm;
 
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-        private void createNotification(String contentTitle, String contentText, Context context) {
 
-            Log.d("createNotification", "title is [" + contentTitle +"]");
-
-            nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-            //Build the notification using Notification.Builder
-            Notification.Builder builder = new Notification.Builder(ctx)
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setAutoCancel(true)
-                    .setContentTitle(contentTitle)
-                    .setContentText(contentText);
-
-
-            //Show the notification
-            nm.notify(NOTIFICATION_ID, builder.build());
-        }
     }
 
 

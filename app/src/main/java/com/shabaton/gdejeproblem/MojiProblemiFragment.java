@@ -186,7 +186,7 @@ public class MojiProblemiFragment extends Fragment {
             if(holder.mItem.slika.length() > 0) {
                 try {
                     Glide.with(getActivity())
-                            .load(Uri.parse(holder.mItem.slika))
+                            .load(Uri.parse(holder.mItem.slika.replace(".jpg", "_t.jpg")))
                             .apply(RequestOptions.fitCenterTransform())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
