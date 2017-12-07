@@ -1,11 +1,15 @@
 package com.shabaton.gdejeproblem;
 
 
+import android.app.Activity;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
+import android.support.v4.util.Pair;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,27 +32,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ProblemViewModel extends ViewModel {
 
     /**
      * An array of sample (dummy) items.
      */
-    private MutableLiveData<List<ProblemViewModel.Problem>> problemi;
+    public MutableLiveData<List<ProblemViewModel.Problem>> problemi = null;
+    public MutableLiveData<Boolean> prazna = new MutableLiveData<Boolean>();
 
-    public LiveData<List<ProblemViewModel.Problem>> dajProbleme(boolean ucitaj) {
-        if(problemi == null || ucitaj) {
-            problemi = new MutableLiveData<List<ProblemViewModel.Problem>>();
-            ucitajProbleme();
+    public Pair<MutableLiveData, MutableLiveData> dajProbleme(String token) {
+        if(problemi == null) {
+            prazna.postValue(false);
+            problemi = new MutableLiveData<>();
+            ucitajProbleme(token);
         }
-        return problemi;
+        return new Pair<MutableLiveData, MutableLiveData>(problemi, prazna);
     }
 
-    private void ucitajProbleme() {
+    public void ucitajProbleme(String token) {
         Thread thread = new Thread() {
             public void run() {
                 try {
                     final List<Problem> lista = new ArrayList<>();
-                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -60,6 +68,7 @@ public class ProblemViewModel extends ViewModel {
                         data = isw.read();
                         content += current;
                     }
+                    Log.i("EHEHEHHEHEHEHEHEH", content);
                     JSONObject glavni = new JSONObject(content);
                     JSONArray niz = glavni.getJSONArray("redovi");
                     for (int i = 0; i < niz.length(); i++) {
@@ -80,10 +89,11 @@ public class ProblemViewModel extends ViewModel {
                         p.longitude = obj.getString("longitude");
                         lista.add(p);
                     }
-
+                    if(niz.length() == 0) prazna.postValue(true);
                     problemi.postValue(lista);
 
                 } catch (Exception e) {
+                    prazna.postValue(true);
                     e.printStackTrace();
                 }
             }
@@ -103,23 +113,29 @@ public class ProblemViewModel extends ViewModel {
         public List<StatusViewModel.Status> statusi;
 
 
-        public static void Dodaj(final Problem pr, final Context kontekst, final String token) {
+        public static void Dodaj(final Problem pr, final Activity kontekst, final String token) {
             RequestQueue queue = Volley.newRequestQueue(kontekst);
             String url = "https://kspclient.geasoft.net/problem_api.php";
             StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Intent intent = new Intent(kontekst, UploadSlikeService.class);
-                            intent.putExtra("putanja", pr.slika);
-                            intent.putExtra("id_problema", response);
-                            kontekst.startService(intent);
+                            if(pr.slika != "") {
+                                Intent intent = new Intent(kontekst, UploadSlikeService.class);
+                                intent.putExtra("putanja", pr.slika);
+                                intent.putExtra("id_problema", response);
+                                kontekst.startService(intent);
+                            }
+                            Intent povratak = new Intent();
+                            povratak.putExtra("poruka", "Problem uspesno dodat!");
+                            kontekst.setResult(RESULT_OK, povratak);
+                            kontekst.finish();
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(kontekst, "Greška u ProblemModel.Dodaj() metodu", Toast.LENGTH_LONG).show();
+                            Toast.makeText(kontekst, "Greška u ProblemModel.Dodaj() metodu: " + error.getMessage(), Toast.LENGTH_LONG).show();
 
                         }
                     }
@@ -134,6 +150,7 @@ public class ProblemViewModel extends ViewModel {
                     params.put("latitude", pr.latitude);
                     params.put("longitude", pr.longitude);
                     params.put("token", token);
+                    params.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
                     return params;
                 }
             };

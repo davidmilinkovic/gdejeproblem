@@ -2,9 +2,12 @@ package com.shabaton.gdejeproblem;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
@@ -43,7 +47,6 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glavni);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -76,7 +79,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
 
         if(mAuth.getCurrentUser() != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment(), "MojiProblemi").commit();
         }
     }
 
@@ -87,6 +90,36 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode)
+        {
+            case 333:
+                if(resultCode == RESULT_OK) {
+
+                    Handler handler1 = new Handler();
+                    handler1.postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Snackbar.make(findViewById(R.id.fabDodaj), data.getStringExtra("poruka"), Snackbar.LENGTH_LONG).show();
+                        }
+                    }, 1000);
+                    Handler handler2 = new Handler();
+                    handler2.postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            MojiProblemiFragment mpf = (MojiProblemiFragment)getSupportFragmentManager().findFragmentByTag("MojiProblemi");
+                            mpf.osveziProbleme();
+                        }
+                    }, 1500);
+
+                }
         }
     }
 
@@ -129,11 +162,14 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         Fragment fragment = null;
+        String tag = "";
         Class fragmentClass = null;
         if (id == R.id.nav_prijava) {
             if(prijavljen) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
                 Intent intent = new Intent(this, PrijaviProblemActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 333);
                 return true;
             }
             else {
@@ -144,6 +180,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         } else if (id == R.id.nav_moji_problemi) {
             if(prijavljen) {
                 fragmentClass = MojiProblemiFragment.class;
+                tag = "MojiProblemi";
             }
             else {
                 greska("Greška", "Morate biti prijavljeni kako biste videli listu Vaših problema.");
@@ -152,6 +189,8 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         } else if (id == R.id.nav_opcije) {
             /*Intent intent = new Intent(this, PodesavanjaActivity.class);
             startActivity(intent);*/
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
             return true;
         } else if (id == R.id.nav_korisnik) {
             fragmentClass = KorisnikFragment.class;
@@ -159,15 +198,16 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
 
         try {
             fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment, tag).commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return true;
     }
 

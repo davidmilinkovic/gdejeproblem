@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/svetlo_siva">
+    android:layout_height="match_parent">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
@@ -18,6 +17,7 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingTop="8dp"
+            android:visibility="visible"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/problemi_list_content" />
 
@@ -32,5 +32,31 @@
         app:layout_anchor="@id/swipeRefreshLayout"
         app:layout_anchorGravity="bottom|right|end"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
+    <LinearLayout
+        android:id="@+id/layoutNemaProblema"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center"
+            android:layout_marginBottom="8dp"
+            android:tint="@color/tamna_siva"
+            app:srcCompat="@drawable/ic_cloud_off_black_24dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Za sada niste podneli ni jedan problem" />
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

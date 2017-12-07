@@ -17,10 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 public class PregledProblemaActivity extends AppCompatActivity {
@@ -55,7 +51,7 @@ public class PregledProblemaActivity extends AppCompatActivity {
             ImageView img = findViewById(R.id.imageView_pregled);
             ((TextView)findViewById(R.id.textView3pregled)).setVisibility(View.GONE);
             img.setVisibility(View.VISIBLE);
-            Glide.with(this).load(Uri.parse(slika)).apply(RequestOptions.fitCenterTransform()).into(img);
+            Glide.with(this).load(Uri.parse(slika)).fitCenter().into(img);
         }
 
         ((ImageButton)findViewById(R.id.button3pregled)).setOnClickListener(new View.OnClickListener() {

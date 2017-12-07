@@ -1,5 +1,8 @@
 package com.shabaton.gdejeproblem;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,6 +15,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.location.Location;
 import android.location.LocationManager;
@@ -22,6 +26,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -44,7 +49,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -139,7 +143,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 slikaStr = savedInstanceState.getString("slika");
                 ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
                 findViewById(R.id.imageView).setVisibility(View.VISIBLE);
-                Glide.with(this).load(slikaStr).apply(RequestOptions.fitCenterTransform()).into((ImageView) findViewById(R.id.imageView));
+                Glide.with(this).load(slikaStr).fitCenter().into((ImageView) findViewById(R.id.imageView));
 
             }
             else {
@@ -324,7 +328,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         }
         problem.latitude = Double.toString(curLocation.getLatitude());
         problem.longitude = Double.toString(curLocation.getLongitude());
-
+        problem.slika = "";
 
         if(imaSlike) {
             /*
@@ -342,6 +346,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
             intent.putExtra("putanja", slikaStr);
             startService(intent);*/
             imaSlike = false;
+            problem.slika = slikaStr;
             ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
             findViewById(R.id.imageView).setVisibility(View.GONE);
         }
@@ -349,8 +354,6 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
         problem.opis = ((EditText)findViewById(R.id.editText)).getText().toString().replace("\n", "<br>");
         problem.opstina = "Aaa";
-        problem.slika = slikaStr;
-
 
         ProblemViewModel.Problem.Dodaj(problem, this, token);
 
@@ -540,18 +543,11 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         return true;
     }
 
+
     private void greska(String naslov, String tekst)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(naslov)
-                .setMessage(tekst)
-                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setIcon(R.drawable.ic_warning_black_24dp)
-                .show();
+        Snackbar.make(findViewById(R.id.koordinator_prijava), tekst, Snackbar.LENGTH_LONG).show();
+
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -562,7 +558,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     imaSlike = true;
                     ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
                     findViewById(R.id.imageView).setVisibility(View.VISIBLE);
-                    Glide.with(this).load(slikaStr).apply(RequestOptions.fitCenterTransform()).into((ImageView) findViewById(R.id.imageView));
+                    Glide.with(this).load(slikaStr).fitCenter().into((ImageView) findViewById(R.id.imageView));
                 }
                 break;
             case SELECT_FILE:
@@ -572,7 +568,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                     slikaStr = getRealPathFromURI(selectedImage);
                     ((TextView)findViewById(R.id.textView3)).setVisibility(View.GONE);
                     findViewById(R.id.imageView).setVisibility(View.VISIBLE);
-                    Glide.with(this).load(slikaStr).apply(RequestOptions.fitCenterTransform()).into((ImageView) findViewById(R.id.imageView));
+                    Glide.with(this).load(slikaStr).fitCenter().into((ImageView) findViewById(R.id.imageView));
                 }
                 break;
             case 666:

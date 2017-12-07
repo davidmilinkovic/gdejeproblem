@@ -33,15 +33,15 @@ public class StatusViewModel extends ViewModel {
      */
     private MutableLiveData<List<Status>> statusi;
 
-    public LiveData<List<Status>> dajStatuse(boolean ucitaj) {
-        if(statusi == null || ucitaj) {
+    public LiveData<List<Status>> dajStatuse() {
+        if(statusi == null) {
             statusi = new MutableLiveData<List<Status>>();
             ucitajStatuse();
         }
         return statusi;
     }
 
-    private void ucitajStatuse() {
+    public void ucitajStatuse() {
         Thread thread = new Thread() {
             public void run() {
                 try {

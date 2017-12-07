@@ -15,10 +15,12 @@
         android:orientation="vertical">
 
         <FrameLayout
+            android:id="@+id/vrsta_frame"
             android:layout_width="match_parent"
             android:layout_height="72dp">
 
             <ImageView
+                android:id="@+id/icon_vrsta"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center_vertical"

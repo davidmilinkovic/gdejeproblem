@@ -18,12 +18,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An activity representing a single Sluzba detail screen. This
- * activity is only used narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link SluzbaListActivity}.
- */
 public class SluzbaDetailActivity extends AppCompatActivity {
 
     private Sluzba izabranaSluzba;

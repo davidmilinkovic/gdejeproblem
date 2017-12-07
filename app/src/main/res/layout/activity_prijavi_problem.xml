@@ -3,9 +3,9 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/koordinator_prijava"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
->
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -52,13 +52,11 @@
         </FrameLayout>
 
 
-
         <include
             layout="@layout/prijavi_problem_content"
             android:layout_width="match_parent"
-            android:layout_below="@id/frejmSlika"
             android:layout_height="match_parent"
-             />
+            android:layout_below="@id/frejmSlika" />
     </RelativeLayout>
 
 
