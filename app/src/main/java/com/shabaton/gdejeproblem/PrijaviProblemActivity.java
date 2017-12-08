@@ -17,6 +17,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -40,6 +42,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -70,8 +73,12 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import android.support.v4.app.NotificationCompat.Builder;
+
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class PrijaviProblemActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -81,12 +88,13 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     private String slikaStr = "";
     private String izabranId = "";
     private boolean trenutnaLokacija = false;
+    private String adresa = "";
+    private String mesto = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prijavi_problem);
-
 
         Toolbar tulbar = (Toolbar) findViewById(R.id.toolbar_prijava);
         setSupportActionBar(tulbar);
@@ -265,7 +273,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     
-    private  void pribaviLokaciju()
+    private void pribaviLokaciju()
     {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
@@ -290,14 +298,37 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         }
         try {
             curLocation = lm.getLastKnownLocation("network");
+            dzioKouduj();
         } catch (Exception ex){
             try {
                 curLocation = lm.getLastKnownLocation("gps");
+                dzioKouduj();
             } catch (Exception e) {
                 dbg("Nemoguće pribaviti trenutnu lokaciju.");
             }
         }
 
+    }
+
+    private void dzioKouduj() {
+        Geocoder geocoder;
+        List<Address> addresses = new ArrayList<Address>();
+        geocoder = new Geocoder(this, Locale.getDefault());
+        boolean ima = true;
+
+        try {
+            addresses = geocoder.getFromLocation(curLocation.getLatitude(), curLocation.getLongitude(), 1);
+        } catch (Exception e) {
+            ima = false;
+        }
+
+        adresa = curLocation.getLatitude() + ", " + curLocation.getLongitude();
+        mesto = "";
+        if(ima)
+        {
+            adresa = addresses.get(0).getAddressLine(0);
+            mesto = addresses.get(0).getLocality();
+        }
     }
 
 
@@ -309,9 +340,15 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         ProblemViewModel.Problem problem = new ProblemViewModel.Problem();
 
         if(izabranId == "") {
-            greska("Greška", "Niste izabrali vrstu problema.");
+            greska( "Niste izabrali vrstu problema.");
             return;
         }
+        if(curLocation == null) {
+            greska("Niste izabrali lokaciju problema.");
+            return;
+        }
+
+
         int id_vrste = Integer.parseInt(izabranId);
         for(Vrsta v : StaticDataProvider.vrste)
         {
@@ -320,119 +357,22 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 break;
             }
         }
-
-
-        if(curLocation == null) {
-            greska("Greška", "Niste izabrali lokaciju problema.");
-            return;
-        }
         problem.latitude = Double.toString(curLocation.getLatitude());
         problem.longitude = Double.toString(curLocation.getLongitude());
         problem.slika = "";
-
         if(imaSlike) {
-            /*
-            mNotifyManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mBuilder = new NotificationCompat.Builder(this);
-            mBuilder.setContentTitle("Gde je problem?")
-                    .setContentText("Postavljanje slike na server je u toku...")
-                    .setSmallIcon(R.mipmap.ic_launcher);
-
-
-            AsinhroniFTPUpload task = new AsinhroniFTPUpload(new File(slikaStr), this);
-            task.execute();
-            */
-            /*Intent intent = new Intent(this, UploadSlikeService.class);
-            intent.putExtra("putanja", slikaStr);
-            startService(intent);*/
-            imaSlike = false;
             problem.slika = slikaStr;
             ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
             findViewById(R.id.imageView).setVisibility(View.GONE);
         }
         else problem.slika = "";
-
         problem.opis = ((EditText)findViewById(R.id.editText)).getText().toString().replace("\n", "<br>");
-        problem.opstina = "Aaa";
+        problem.adresa = adresa;
+        problem.mesto = mesto;
 
+        ProgressDialog.show(this, "", "Dodavanje u toku...", true);
         ProblemViewModel.Problem.Dodaj(problem, this, token);
-
-        // reset svega
-        TextView txt = (TextView) findViewById(R.id.textView2);
-        txt.setText("Izaberite vrstu problema");
-        izabranId = null;
-        ((EditText) findViewById(R.id.editText)).setText("");
-        ((TextView)findViewById(R.id.txtViewLok)).setText("Izaberite lokaciju problema");
     }
-
-
-
-
-
-
-
-
-    private class AsinhroniFTPUpload extends AsyncTask<Void, Void, Boolean> {
-
-        private ProgressDialog p;
-        private Context ctx;
-        private File fajl;
-
-        public AsinhroniFTPUpload(File fajl, Context ctx)
-        {
-            this.fajl = fajl;
-            this.ctx=ctx;
-            this.p=new ProgressDialog(ctx);
-        }
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mNotifyManager.notify(1, mBuilder.build());
-        }
-
-
-        protected Boolean doInBackground(Void... voids) {
-            FTPClient con = null;
-            try
-            {
-                con = new FTPClient();
-                con.connect("195.252.110.140");
-
-                String url = "http://yourserver";
-                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                        "yourfile");
-
-                if (con.login("geasoftn", getResources().getString(R.string.sifraFtp)));
-                {
-                    con.enterLocalPassiveMode(); // important!
-                    con.setFileType(FTP.BINARY_FILE_TYPE);
-                    FileInputStream in = new FileInputStream(fajl);
-                    boolean result = con.storeFile("/public_html/kspclient/slike/" + fajl.getPath().substring(fajl.getPath().lastIndexOf('/')+1), in);
-                    in.close();
-                    con.logout();
-                    con.disconnect();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.v("FTP", "Greska: "+e.getMessage());
-                return false;
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            mBuilder.setContentText("Prijavljivanje problema završeno");
-            mNotifyManager.notify(1, mBuilder.build());
-        }
-
-        private int NOTIFICATION_ID = 1;
-        private NotificationManager nm;
-
-
-    }
-
 
 
     private static final int REQUEST_CAMERA = 1;
@@ -517,6 +457,29 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_prijava, menu);
+
+        /*
+
+                        PRIKAZIVANJE HELP-A
+
+        new MaterialTapTargetPrompt.Builder(this)
+                .setTarget(findViewById(R.id.fab))
+                .setPrimaryText("Dodavanje fotografije")
+                .setSecondaryText("Možete dodati fotografiju problema")
+                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
+                {
+                    @Override
+                    public void onHidePrompt(MotionEvent event, boolean tappedTarget)
+                    {
+                    }
+
+                    @Override
+                    public void onHidePromptComplete()
+                    {
+                    }
+                })
+                .show();
+                 */
         return true;
     }
 
@@ -543,8 +506,18 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         return true;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
 
-    private void greska(String naslov, String tekst)
+        if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
+            Toast.makeText(this, "keyboard visible", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
+            Toast.makeText(this, "keyboard hidden", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void greska(String tekst)
     {
         Snackbar.make(findViewById(R.id.koordinator_prijava), tekst, Snackbar.LENGTH_LONG).show();
 
@@ -584,12 +557,12 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 if(resultCode == RESULT_OK) {
                     double lat = data.getDoubleExtra("lat", 44);
                     double lng = data.getDoubleExtra("lng", 44);
-                    String adresa = data.getStringExtra("adresa");
+                    adresa = data.getStringExtra("adresa");
+                    mesto = data.getStringExtra("mesto");
                     curLocation = new Location("");
                     curLocation.setLatitude(lat);
                     curLocation.setLongitude(lng);
                     ((TextView) findViewById(R.id.txtViewLok)).setText(adresa);
-                    String mesto = data.getStringExtra("mesto"); // koristiti kasnije
                 }
                 break;
 
@@ -616,5 +589,67 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
         return cursor.getString(column_index);
     }
+
+        /*
+    private class AsinhroniFTPUpload extends AsyncTask<Void, Void, Boolean> {
+
+        private ProgressDialog p;
+        private Context ctx;
+        private File fajl;
+
+        public AsinhroniFTPUpload(File fajl, Context ctx)
+        {
+            this.fajl = fajl;
+            this.ctx=ctx;
+            this.p=new ProgressDialog(ctx);
+        }
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mNotifyManager.notify(1, mBuilder.build());
+        }
+
+
+        protected Boolean doInBackground(Void... voids) {
+            FTPClient con = null;
+            try
+            {
+                con = new FTPClient();
+                con.connect("195.252.110.140");
+
+                String url = "http://yourserver";
+                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
+                        "yourfile");
+
+                if (con.login("geasoftn", getResources().getString(R.string.sifraFtp)));
+                {
+                    con.enterLocalPassiveMode(); // important!
+                    con.setFileType(FTP.BINARY_FILE_TYPE);
+                    FileInputStream in = new FileInputStream(fajl);
+                    boolean result = con.storeFile("/public_html/kspclient/slike/" + fajl.getPath().substring(fajl.getPath().lastIndexOf('/')+1), in);
+                    in.close();
+                    con.logout();
+                    con.disconnect();
+                }
+            }
+            catch (Exception e)
+            {
+                Log.v("FTP", "Greska: "+e.getMessage());
+                return false;
+            }
+            return true;
+        }
+
+        protected void onPostExecute(Boolean result) {
+            super.onPostExecute(result);
+            mBuilder.setContentText("Prijavljivanje problema završeno");
+            mNotifyManager.notify(1, mBuilder.build());
+        }
+
+        private int NOTIFICATION_ID = 1;
+        private NotificationManager nm;
+
+
+    } */
 }
 

@@ -5,68 +5,75 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/koordinator_prijava"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="13dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_prijava"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
             android:background="?attr/colorPrimary"
             android:elevation="13dp"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
-            android:id="@+id/frejmSlika"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/svetlo_siva"
-            android:elevation="2dp">
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/frejmSlika"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/svetlo_siva"
+                android:elevation="2dp">
 
 
-            <ImageView
-                android:id="@+id/imageView"
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/txt_niste_dodali_fotografiju" />
+            </FrameLayout>
+
+
+            <include
+                layout="@layout/prijavi_problem_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/txt_niste_dodali_fotografiju" />
-        </FrameLayout>
-
-
-        <include
-            layout="@layout/prijavi_problem_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/frejmSlika" />
-    </RelativeLayout>
+                android:layout_below="@id/frejmSlika" />
+        </RelativeLayout>
+    </ScrollView>
 
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:onClick="onClick"
-        app:elevation="12dp"
+        app:elevation="0dp"
         app:layout_anchor="@id/frejmSlika"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_photo_camera_black_24dp" />

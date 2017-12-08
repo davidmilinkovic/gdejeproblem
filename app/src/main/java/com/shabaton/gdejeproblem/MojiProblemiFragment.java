@@ -99,7 +99,7 @@ public class MojiProblemiFragment extends Fragment {
             }
         });
 
-        setupRecyclerView();
+        if(savedInstanceState == null) setupRecyclerView();
 
         return view;
     }
@@ -221,22 +221,8 @@ public class MojiProblemiFragment extends Fragment {
             holder.txtVrsta.setText(holder.mItem.vrsta.naziv);
             holder.txtOpis.setText(holder.mItem.opis.replace("<br>", "\n"));
 
-            Geocoder geocoder;
-            List<Address> addresses = new ArrayList<Address>();
-            geocoder = new Geocoder(getActivity(), Locale.getDefault());
-            boolean ima = true;
 
-            double latitude = Double.parseDouble(holder.mItem.latitude);
-            double longitude = Double.parseDouble(holder.mItem.longitude);
-
-            try {
-                addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            } catch (Exception e) {
-                ima = false;
-            }
-
-            String adresa = holder.mItem.opstina;
-            if(ima) adresa = addresses.get(0).getAddressLine(0);
+            String adresa = holder.mItem.adresa;
 
             holder.txtLokacija.setText(adresa);
 
@@ -294,8 +280,7 @@ public class MojiProblemiFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    Activity context = (Activity) v.getContext();
-                    Intent intent = new Intent(context, PregledProblemaActivity.class);
+                    Intent intent = new Intent(getActivity(), PregledProblemaActivity.class);
                     intent.putExtra("vrsta", holder.mItem.vrsta.naziv);
                     intent.putExtra("lokacija", holder.txtLokacija.getText());
                     intent.putExtra("opis", holder.mItem.opis);
@@ -303,15 +288,13 @@ public class MojiProblemiFragment extends Fragment {
                     intent.putExtra("status", holder.txtStatus.getText());
                     intent.putExtra("latitude", holder.mItem.latitude);
                     intent.putExtra("longitude", holder.mItem.longitude);
-
-                    context.startActivity(intent);
+                    getActivity().startActivity(intent);
                 }
             });
             setAnimation(holder.itemView, position);
         }
 
         private int lastPosition = -1;
-        private int offset = 0;
 
         private void setAnimation(View viewToAnimate, int position)
         {

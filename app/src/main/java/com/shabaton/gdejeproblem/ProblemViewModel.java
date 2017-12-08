@@ -84,7 +84,7 @@ public class ProblemViewModel extends ViewModel {
                         }
                         p.opis = obj.getString("opis");
                         p.slika = obj.getString("slika");
-                        p.opstina = obj.getString("opstina");
+                        p.adresa = obj.getString("adresa");
                         p.latitude = obj.getString("latitude");
                         p.longitude = obj.getString("longitude");
                         lista.add(p);
@@ -107,7 +107,8 @@ public class ProblemViewModel extends ViewModel {
         public Vrsta vrsta;
         public String opis;
         public String slika;
-        public String opstina;
+        public String mesto;
+        public String adresa;
         public String latitude;
         public String longitude;
         public List<StatusViewModel.Status> statusi;
@@ -146,7 +147,8 @@ public class ProblemViewModel extends ViewModel {
                     params.put("email", FirebaseAuth.getInstance().getCurrentUser().getEmail());
                     params.put("id_vrste", Integer.toString(pr.vrsta.id));
                     params.put("opis", pr.opis);
-                    params.put("opstina", pr.opstina);
+                    params.put("mesto", pr.mesto);
+                    params.put("adresa", pr.adresa);
                     params.put("latitude", pr.latitude);
                     params.put("longitude", pr.longitude);
                     params.put("token", token);

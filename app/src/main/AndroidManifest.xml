@@ -47,7 +47,7 @@
             android:name=".PrijaviProblemActivity"
             android:parentActivityName=".GlavniActivity"
             android:theme="@style/AppThemeBezBara"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <provider
             android:name=".GenericFileProvider"
