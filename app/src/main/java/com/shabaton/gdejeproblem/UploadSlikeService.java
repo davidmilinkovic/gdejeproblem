@@ -9,10 +9,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.location.Geocoder;
-import android.media.ExifInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.media.ExifInterface;
 import android.support.v4.app.NotificationCompat;
 import android.util.Base64;
 import android.util.Log;
@@ -202,8 +202,9 @@ public class UploadSlikeService extends Service {
                     List<AbstractMap.SimpleEntry> params = new ArrayList<AbstractMap.SimpleEntry>();
                     params.add(new AbstractMap.SimpleEntry("kodirana_slika", data));
                     params.add(new AbstractMap.SimpleEntry("kodirana_slika_t", dataT));
-                    params.add(new AbstractMap.SimpleEntry("naziv", naziv));
+                    params.add(new AbstractMap.SimpleEntry("naziv", id_problema + "_" + naziv));
                     params.add(new AbstractMap.SimpleEntry("id_problema", id_problema));
+                    Log.i("AUH", id_problema);
 
                     OutputStream os = connection.getOutputStream();
                     BufferedWriter writer = new BufferedWriter(

@@ -45,8 +45,11 @@ dependencies {
     compile 'android.arch.lifecycle:extensions:1.0.0'
     compile 'com.android.support:recyclerview-v7:26.+'
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:exifinterface:26.1.0'
     implementation files('libs/glide-3.6.0.jar')
 }
+
+
 
 
 

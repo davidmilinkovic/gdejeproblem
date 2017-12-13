@@ -13,7 +13,7 @@
         <item
             android:id="@+id/nav_opcije"
             android:icon="@drawable/ic_menu_manage"
-            android:title="@string/button_opcije" />
+            android:title="Podešavanja" />
         <item
             android:id="@+id/nav_korisnik"
             android:icon="@drawable/ic_account_circle_black_24dp"

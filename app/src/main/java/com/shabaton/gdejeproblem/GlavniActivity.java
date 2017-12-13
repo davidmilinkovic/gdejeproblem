@@ -2,15 +2,20 @@ package com.shabaton.gdejeproblem;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -31,6 +36,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.Locale;
+
 public class GlavniActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
          OpcijeFragment.OnFragmentInteractionListener, KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
 
@@ -46,6 +53,8 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_glavni);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,11 +86,12 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         mAuth = FirebaseAuth.getInstance();
         promeniKorisnika();
 
-        if(mAuth.getCurrentUser() != null) {
+        if(mAuth.getCurrentUser() != null && savedInstanceState != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment(), "MojiProblemi").commit();
         }
     }
+
 
     @Override
     public void onBackPressed() {
@@ -120,6 +130,11 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
                     }, 1500);
 
                 }
+                break;
+            case 111:
+                startActivity(getIntent());
+                finish();
+                break;
         }
     }
 
@@ -157,7 +172,6 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
                 .show();
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -170,7 +184,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
                 drawer.closeDrawer(GravityCompat.START);
                 Intent intent = new Intent(this, PrijaviProblemActivity.class);
                 startActivityForResult(intent, 333);
-                return true;
+                return false;
             }
             else {
                 greska("Greška", "Morate biti prijavljeni kako biste prijavili problem.");
@@ -187,11 +201,11 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
                 fragmentClass = KorisnikFragment.class;
             }
         } else if (id == R.id.nav_opcije) {
-            /*Intent intent = new Intent(this, PodesavanjaActivity.class);
-            startActivity(intent);*/
+            Intent intent = new Intent(this, PodesavanjaActivity.class);
+            startActivityForResult(intent, 111);
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
-            return true;
+            return false;
         } else if (id == R.id.nav_korisnik) {
             fragmentClass = KorisnikFragment.class;
         }
@@ -210,6 +224,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         }
         return true;
     }
+
 
 
     @Override
