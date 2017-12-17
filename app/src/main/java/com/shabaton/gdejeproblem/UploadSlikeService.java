@@ -175,7 +175,7 @@ public class UploadSlikeService extends Service {
                     List<AbstractMap.SimpleEntry> params = new ArrayList<AbstractMap.SimpleEntry>();
                     params.add(new AbstractMap.SimpleEntry("kodirana_slika", data));
                     params.add(new AbstractMap.SimpleEntry("kodirana_slika_t", dataT));
-                    params.add(new AbstractMap.SimpleEntry("naziv", id_problema));
+                    params.add(new AbstractMap.SimpleEntry("naziv", id_problema+".jpg"));
                     params.add(new AbstractMap.SimpleEntry("id_problema", id_problema));
                     Log.i("AUH", id_problema);
 
