@@ -102,7 +102,7 @@
         <activity
             android:name=".PodesavanjaActivity"
             android:configChanges="locale|orientation"
-            android:label="@string/naslov_settings"
+            android:label="@string/meni_podesavanja"
             android:parentActivityName=".GlavniActivity" />
 
         <service

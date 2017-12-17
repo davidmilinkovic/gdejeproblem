@@ -62,7 +62,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
 
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(R.string.lokacija);
+        ab.setTitle(R.string.pregled_content_lokacija);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         if(!editMode)
         {
             findViewById(R.id.frame_pretraga).setVisibility(View.GONE);
-            tren = mMap.addMarker(new MarkerOptions().position(marker).title(getString(R.string.maps_izabrana_lokacija)));
+            tren = mMap.addMarker(new MarkerOptions().position(marker).title(getString(R.string.onMapReady_izabrana_lokacija)));
         }
         else mMap.setOnMapClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
@@ -108,7 +108,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
             case R.id.menu_prijava_otkacaj:
                 if(tren == null)
                 {
-                    greska(getString(R.string.popup_greska), getString(R.string.maps_niste_izabrali_lokaciju));
+                    greska(getString(R.string.popup_greska), getString(R.string.greska_nema_lokacije));
                     return true;
                 }
                 Intent intent = new Intent();
@@ -131,7 +131,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     public void onMapClick(LatLng latLng) {
         ((EditText)findViewById(R.id.editText2)).setText("");
         if(tren != null) tren.remove();
-        tren = mMap.addMarker(new MarkerOptions().position(latLng).title(getString(R.string.maps_izabrana_lokacija)));
+        tren = mMap.addMarker(new MarkerOptions().position(latLng).title(getString(R.string.onMapReady_izabrana_lokacija)));
 
         ab.setTitle(LokacijaTekst().first);
 
@@ -192,7 +192,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         protected void onPostExecute(List<Address> addresses) {
 
             if(addresses==null || addresses.size()==0){
-                Toast.makeText(getBaseContext(), R.string.maps_nije_pronadjena, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), R.string.onPostExecute_toast_nema_lokacije, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -206,7 +206,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
-            markerOptions.title(getString(R.string.maps_trenutna_lokacija));
+            markerOptions.title(getString(R.string.prijavi_problem_content_trenutna_lokacija));
 
             tren = mMap.addMarker(markerOptions);
             ab.setTitle(LokacijaTekst().first);

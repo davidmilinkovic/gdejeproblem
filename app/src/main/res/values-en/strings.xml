@@ -4,14 +4,14 @@
     <string name="button_prijava_problema">Report a problem</string>
     <string name="button_moji_problemi" translatable="false">My problems</string>
     <string name="button_opcije" translatable="false">Options</string>
-    <string name="niste_prijavljeni">You\'re not logged in</string>
+    <string name="niste_prijavljeni">You\'re not signed in</string>
     <string name="prijavi_se">Sign in</string>
     <string name="prijava_za_aplikaciju_ksp">Sign in for the app \"Gde je problem?\"</string>
     <string name="odjavi_se">Sign out</string>
     <string name="txt_opis_problema">Description</string>
     <string name="greska_token">Error getting a token</string>
-    <string name="da_biste_mogli">If you want to use \"Gde je problem?\", you must sign in using Your Google account</string>
-    <string name="title_sluzba_list">Ser</string>
+    <string name="da_biste_mogli">In order to use the app  \"Gde je problem?\", you must sign in using your Google account</string>
+    <string name="title_sluzba_list">Services</string>
     <string name="txt_niste_dodali_fotografiju">No photo</string>
     <string name="title_activity_maps">Map</string>
     <string name="greska_nema_lokacije">You haven\'t choosen the location for your problem</string>
@@ -36,7 +36,7 @@
     <string name="podesavanja_obavestenje_status_opis">Notifications on status change</string>
     <string name="popup_greska">Error</string>
     <string name="popup_greska_prijava_problema">You must sign in to report a problem</string>
-    <string name="popup_greska_pregled_problema">You must be signed in to see Your problems</string>
+    <string name="popup_greska_pregled_problema">You must sign in to see your problems</string>
     <string name="onMapReady_izabrana_lokacija">Choosen location</string>
     <string name="onOptionsItemSelected_greska_lokacija">You didn\'t choose the location</string>
     <string name="onPostExecute_toast_nema_lokacije">Location not found</string>
@@ -45,14 +45,11 @@
     <string name="prijavi_problem_charSequence1">Choose from gallery</string>
     <string name="prijavi_problem_charSequence2">Remove photo</string>
     <string name="prijavi_problem_kamera_naslov">Choose a photo</string>
-    <string name="prijavi_problem_izabrana_vrsta">Choosen type:</string>
+    <string name="prijavi_problem_izabrana_vrsta">"Choosen type: "</string>
     <string name="pref_tema">Theme</string>
-    <string name="pref_obavesti_me">Notify me for every change of my problems\' staus</string>
-    <string name="pref_obavestenja_pri_promeni">Notifications on status change</string>
-    <string name="pref_ucestalost">Checking frequency</string>
+    <string name="pref_ucestalost">Frequency of checking</string>
     <string name="pref_title_izgled">Appearance</string>
     <string name="pref_title_obavestenja">Notifications</string>
-    <string name="naslov_settings">Settings</string>
 
     <string-array name="array_teme">
         <item>Red</item>
@@ -70,8 +67,10 @@
         <item>1 day</item>
     </string-array>
     <string name="greska">Error</string>
-    <string name="upload_slike_u_toku">Upoladin the photo to the server...</string>
-    <string name="lokacija">Location</string>
-    <string name="maps_trenutna_lokacija">Current location</string>
-    <string name="maps_izabrana_lokacija">Chosen location</string>
+    <string name="upload_slike_u_toku">Upolading the photo to the server...</string>
+    <string name="postavljanje_fotografije_zavrseno">Uploading the photo complete</string>
+    <string name="service_promenjen_status">One of your problems\' status has been changed</string>
+    <string name="problem_uspesno_dodat">Problem succesfully added</string>
+    <string name="priajvljivanje_problema">Reporting a problem</string>
+    <string name="prijavi_problem_activity_369">Upload in progress...</string>
 </resources>

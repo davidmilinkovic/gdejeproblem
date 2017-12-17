@@ -366,7 +366,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
         problem.adresa = adresa;
         problem.mesto = mesto;
 
-        ProgressDialog.show(this, "", "Dodavanje u toku...", true);
+        ProgressDialog.show(this, "", getString(R.string.prijavi_problem_activity_369), true);
         ProblemViewModel.Problem.Dodaj(problem, this, token);
     }
 

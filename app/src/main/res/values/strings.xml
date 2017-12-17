@@ -7,7 +7,7 @@
     <string name="niste_prijavljeni">Niste prijavljeni</string>
     <string name="prijavi_se">Prijavi se</string>
     <string name="prijava_za_aplikaciju_ksp">Prijava za aplikaciju</string>
-    <string name="da_biste_mogli">Da biste mogli da koristite aplikaciju \'Gde je problem?\', morate se prijaviti pomoću Vašeg Google naloga</string>
+    <string name="da_biste_mogli">Da biste mogli da koristite aplikaciju \"Gde je problem?\", morate se prijaviti pomoću Vašeg Google naloga</string>
     <string name="odjavi_se">Odjavi se</string>
     <string name="txt_opis_problema">Opis problema</string>
     <string name="greska_token">Greška pri pribavljanju tokena</string>
@@ -16,13 +16,13 @@
 
     <string name="title_activity_maps">Mapa</string>
     <string name="setting_jezik">Jezik</string>
-    <string name="greska_nema_lokacije">Niste izabrali lokaciju problema.</string>
+    <string name="greska_nema_lokacije">Niste izabrali lokaciju problema</string>
     <string name="meni_podesavanja">Podešavanja</string>
     <string name="meni_korisnik">Korisnik</string>
     <string name="hint_mape_pretraga">Pretraga</string>
     <string name="moji_problemi_niste_podneli_problem">Za sada niste podneli ni jedan problem</string>
     <string name="moji_problemi_vrsta_problema">Vrsta problema</string>
-    <string name="moji_problemi_status" translatable="false">Status:</string>
+    <string name="moji_problemi_status" translatable="false">"Status: "</string>
     <string name="moji_problemi_lokacija">Lokacija</string>
     <string name="pregled_problema_nema_slike">Nema slike</string>
     <string name="prijavi_problem_content_vrsta_problema">Vrsta problema</string>
@@ -34,42 +34,35 @@
     <string name="navigation_drawer_open" translatable="false" />
     <string name="navigation_drawer_c" translatable="false" />
     <string name="pregled_content_vrsta_problema">Vrsta problema</string>
-    <string name="pregled_content_status" translatable="false">Status</string>
+    <string name="pregled_content_status" translatable="false">"Status: "</string>
     <string name="pregled_content_lokacija">Lokacija</string>
     <string name="pregled_content_nema_opisa">Nema opisa</string>
     <string name="sluzba_list_content_vrsta">Vrsta problema</string>
     <string name="podesavanja_obavestenje_status">Obavesti me o svakoj promeni statusa mojih problema</string>
     <string name="podesavanja_obavestenje_status_opis">Obaveštenja pri promeni statusa</string>
     <string name="popup_greska">Greška</string>
-    <string name="popup_greska_prijava_problema">Morate biti prijavljeni kako biste prijavili problem.</string>
-    <string name="popup_greska_pregled_problema">Morate biti prijavljeni kako biste videli listu Vaših problema.</string>
+    <string name="popup_greska_prijava_problema">Morate biti prijavljeni kako biste prijavili problem</string>
+    <string name="popup_greska_pregled_problema">Morate biti prijavljeni kako biste videli listu Vaših problema</string>
     <string name="onMapReady_izabrana_lokacija">Izabrana lokacija</string>
     <string name="onOptionsItemSelected_greska_lokacija">Niste izabrali lokaciju</string>
     <string name="onPostExecute_toast_nema_lokacije">Nije pronađena lokacija</string>
-    <string name="prijavi_problem_greska_vrsta">Niste izabrali vrstu problema.</string>
+    <string name="prijavi_problem_greska_vrsta">Niste izabrali vrstu problema</string>
     <string name="prijavi_problem_charSequence0">Kamera</string>
     <string name="prijavi_problem_charSequence1">Izaberi iz galerije</string>
     <string name="prijavi_problem_charSequence2">Ukloni fotografiju</string>
     <string name="prijavi_problem_kamera_naslov">Izaberi fotografiju</string>
-    <string name="prijavi_problem_izabrana_vrsta">Izabrana vrsta:</string>
+    <string name="prijavi_problem_izabrana_vrsta">Izabrana vrsta: </string>
     <string name="pref_title_obavestenja">Obaveštenja</string>
-    <string name="pref_obavesti_me">Obavesti me o svakoj promeni statusa mojih problema</string>
-    <string name="pref_obavestenja_pri_promeni">Obaveštenja pri promeni statusa</string>
     <string name="pref_ucestalost">Učestalost provere</string>
     <string name="pref_title_izgled">Izgled</string>
     <string name="upload_slike_u_toku">Postavljanje fotografije na server je u toku...</string>
     <string name="postavljanje_fotografije_zavrseno">Postavljanje fotografije završeno</string>
-    <string name="maps_trenutna_lokacija">Trenutna lokacija</string>
-    <string name="maps_nije_pronadjena">Nije pronađena lokacija</string>
-    <string name="maps_izabrana_lokacija">Izabrana lokacija</string>
-    <string name="maps_niste_izabrali_lokaciju">Niste izabrali lokaciju.</string>
-    <string name="lokacija">Lokacija</string>
-    <string name="service_promenjen_status">Jednom od vaših problema je promenjen status.</string>
+    <string name="service_promenjen_status">Jednom od vaših problema je promenjen status</string>
     <string name="greska">Greška</string>
-    <string name="problem_uspesno_dodat">Problem uspesno dodat!</string>
+    <string name="problem_uspesno_dodat">Problem uspesno dodat</string>
     <string name="priajvljivanje_problema">Prijavljivanje problema</string>
     <string name="pref_tema">Tema</string>
-    <string name="naslov_settings">Podešavanja</string>
+    <string name="prijavi_problem_activity_369">Dodavanje u toku...</string>
 
     <string-array name="array_jezici">
         <item>Srpski</item>
