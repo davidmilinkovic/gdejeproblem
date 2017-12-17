@@ -73,7 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:onClick="onClick"
-        app:elevation="0dp"
+        app:elevation="12dp"
         app:layout_anchor="@id/frejmSlika"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_photo_camera_black_24dp" />

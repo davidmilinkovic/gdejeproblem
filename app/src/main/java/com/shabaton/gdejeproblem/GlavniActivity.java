@@ -94,6 +94,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
+
         stopService(new Intent(this, ProveraStatusaService.class));
         if(obavestenja) {
             Intent intent = new Intent(this, ProveraStatusaService.class);

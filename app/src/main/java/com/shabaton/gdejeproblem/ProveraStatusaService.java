@@ -166,7 +166,7 @@ public class ProveraStatusaService extends Service {
                     try {
                         Thread.sleep(DILEJ);
                     } catch (InterruptedException e) {
-
+                        e.printStackTrace();
                     }
 
                     final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
