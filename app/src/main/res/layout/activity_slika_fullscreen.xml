@@ -8,22 +8,6 @@
     android:background="@android:color/black"
     tools:context="com.shabaton.gdejeproblem.SlikaFullscreen">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_fullscreen"
-        android:layout_width="match_parent"
-        app:elevation="0dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/fulscreen_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_alignParentTop="true"
-            app:elevation="0dp" />
-
-    </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -43,4 +27,22 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
     </FrameLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_fullscreen"
+        android:layout_width="match_parent"
+        app:elevation="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/fulscreen_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="true"
+            app:elevation="0dp" />
+
+    </android.support.design.widget.AppBarLayout>
+
 </RelativeLayout>
