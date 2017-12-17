@@ -4,8 +4,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -210,6 +212,12 @@ public class KorisnikFragment extends Fragment implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+                            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                            Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
+                            if(obavestenja) {
+                                Intent intent = new Intent(getActivity(), ProveraStatusaService.class);
+                                getActivity().startService(intent);
+                            }
                             ((GlavniActivity) getActivity()).promeniKorisnika();
                             ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
                             model.problemi = null;

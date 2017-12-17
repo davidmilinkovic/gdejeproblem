@@ -147,7 +147,8 @@ public class ProveraStatusaService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 
-
+        if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            stopSelf();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         int obavestenja = Integer.parseInt(sharedPref.getString("notif_freq", "300000"));
         Log.i("Heh", Integer.toString(obavestenja));

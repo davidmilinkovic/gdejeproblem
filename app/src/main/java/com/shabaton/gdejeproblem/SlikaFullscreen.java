@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
-public class SlikaFullscreen extends AppCompatActivity {
+public class SlikaFullscreen extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

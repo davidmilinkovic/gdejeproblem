@@ -60,7 +60,7 @@ public class PregledProblemaActivity extends BaseActivity {
             ((TextView)findViewById(R.id.tekstOpisPregled)).setText(opis);
             ((TextView)findViewById(R.id.tekstOpisPregled)).setTextColor(getResources().getColor(android.R.color.black));
         }
-        else ((TextView)findViewById(R.id.tekstOpisPregled)).setText("Nema opisa");
+        else ((TextView)findViewById(R.id.tekstOpisPregled)).setText(R.string.pregled_content_nema_opisa);
 
         ProgressBar progressBar = findViewById(R.id.progressBar2);
         String slika = getIntent().getStringExtra("slika");

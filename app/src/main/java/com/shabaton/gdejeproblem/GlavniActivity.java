@@ -96,7 +96,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
 
         stopService(new Intent(this, ProveraStatusaService.class));
-        if(obavestenja) {
+        if(obavestenja && mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(this, ProveraStatusaService.class);
             startService(intent);
         }
