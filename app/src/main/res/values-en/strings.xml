@@ -11,7 +11,7 @@
     <string name="txt_opis_problema">Description</string>
     <string name="greska_token">Error getting a token</string>
     <string name="da_biste_mogli">If you want to use \"Gde je problem?\", you must sign in using Your Google account</string>
-    <string name="title_sluzba_list">"Services "</string>
+    <string name="title_sluzba_list">Ser</string>
     <string name="txt_niste_dodali_fotografiju">No photo</string>
     <string name="title_activity_maps">Map</string>
     <string name="greska_nema_lokacije">You haven\'t choosen the location for your problem</string>
@@ -70,6 +70,6 @@
         <item>1 day</item>
     </string-array>
     <string name="greska">Error</string>
-    <string name="greska">Error</string>
-    <string name="greska">Error</string>
+    <string name="upload_slike_u_toku">Upoladin the photo to the server...</string>
+    <string name="lokacija">Location</string>
 </resources>
