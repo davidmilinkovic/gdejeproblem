@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
-                    android:text="Vrsta problema"
+                    android:text="@string/prijavi_problem_content_vrsta_problema"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
@@ -46,7 +46,9 @@
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Izaberite vrstu problema" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/prijavi_problem_content_izaberi_vrstu" />
             </LinearLayout>
 
             <ImageButton
@@ -55,12 +57,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginLeft="65dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:onClick="onClick"
                 android:scaleType="fitEnd"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/white" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="16dp"
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
         </FrameLayout>
 
         <FrameLayout
@@ -88,7 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
-                    android:text="Lokacija"
+                    android:text="@string/prijavi_problem_content_lokacija"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
@@ -96,7 +105,9 @@
                     android:id="@+id/txtViewLok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Izaberite lokaciju problema" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/prijavi_problem_content_izaberi_lokaciju" />
 
             </LinearLayout>
 
@@ -106,11 +117,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|center_vertical"
-                android:layout_marginLeft="65dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:onClick="onClick"
                 android:scaleType="fitEnd"
                 android:visibility="visible"
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="16dp"
                 app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
         </FrameLayout>
@@ -125,7 +143,7 @@
             android:checked="false"
             android:onClick="onClick"
             android:paddingLeft="24dp"
-            android:text="Problem je na trenutnoj lokaciji" />
+            android:text="@string/prijavi_problem_content_trenutna_lokacija" />
 
         <LinearLayout
             android:layout_width="match_parent"

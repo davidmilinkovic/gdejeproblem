@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="?android:attr/selectableItemBackground"
     android:layout_height="48dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -21,7 +22,7 @@
         android:layout_gravity="center_vertical"
         android:paddingBottom="4dp"
         android:paddingLeft="72dp"
-        android:text="Vrsta problema"
+        android:text="@string/sluzba_list_content_vrsta"
         android:textColor="@android:color/black"
         android:textSize="16sp" />
 

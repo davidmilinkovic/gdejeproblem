@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, View.OnClickListener {
 
     private GoogleMap mMap;
     private Marker tren;
@@ -62,7 +62,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Lokacija");
+        ab.setTitle(R.string.lokacija);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(!editMode)
         {
             findViewById(R.id.frame_pretraga).setVisibility(View.GONE);
-            tren = mMap.addMarker(new MarkerOptions().position(marker).title("Izabrana lokacija"));
+            tren = mMap.addMarker(new MarkerOptions().position(marker).title(getString(R.string.maps_izabrana_lokacija)));
         }
         else mMap.setOnMapClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
@@ -108,7 +108,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.menu_prijava_otkacaj:
                 if(tren == null)
                 {
-                    greska("Greška", "Niste izabrali lokaciju!");
+                    greska(getString(R.string.popup_greska), getString(R.string.maps_niste_izabrali_lokaciju));
                     return true;
                 }
                 Intent intent = new Intent();
@@ -130,9 +130,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapClick(LatLng latLng) {
         ((EditText)findViewById(R.id.editText2)).setText("");
-        ((Button)findViewById(R.id.mapa_potvrda)).setEnabled(true);
         if(tren != null) tren.remove();
-        tren = mMap.addMarker(new MarkerOptions().position(latLng).title("Izabrana lokacija"));
+        tren = mMap.addMarker(new MarkerOptions().position(latLng).title(getString(R.string.maps_izabrana_lokacija)));
 
         ab.setTitle(LokacijaTekst().first);
 
@@ -163,20 +162,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onClick(View view) {
-        if(view.getId() == R.id.mapa_potvrda){
-            Intent intent = new Intent();
-
-            Pair<String, String> p = LokacijaTekst();
-
-            intent.putExtra("lat", tren.getPosition().latitude);
-            intent.putExtra("lng", tren.getPosition().longitude);
-            intent.putExtra("adresa", p.first);
-            intent.putExtra("mesto", p.second);
-
-            setResult(RESULT_OK, intent);
-            finish();
-        }
-        else if(view.getId() == R.id.imageButton3)
+        if(view.getId() == R.id.imageButton3)
         {
             String lokacija = ((EditText)findViewById(R.id.editText2)).getText().toString();
             if(lokacija !=  null && !lokacija.equals("")){
@@ -206,7 +192,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         protected void onPostExecute(List<Address> addresses) {
 
             if(addresses==null || addresses.size()==0){
-                Toast.makeText(getBaseContext(), "Nije pronađena lokacija", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), R.string.maps_nije_pronadjena, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -220,7 +206,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
-            markerOptions.title("Trenutna lokacija");
+            markerOptions.title(getString(R.string.maps_trenutna_lokacija));
 
             tren = mMap.addMarker(markerOptions);
             ab.setTitle(LokacijaTekst().first);

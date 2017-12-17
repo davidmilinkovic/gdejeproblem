@@ -18,7 +18,7 @@ import com.bumptech.glide.request.target.Target;
 
 import java.util.Locale;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

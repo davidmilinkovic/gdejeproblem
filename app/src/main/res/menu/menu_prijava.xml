@@ -6,6 +6,6 @@
         android:icon="@drawable/ic_beli_otkacaj"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:title="Setting" />
+        />
 
 </menu>

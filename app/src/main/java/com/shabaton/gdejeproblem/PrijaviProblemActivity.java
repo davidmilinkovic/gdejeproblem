@@ -80,7 +80,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
-public class PrijaviProblemActivity extends AppCompatActivity implements View.OnClickListener {
+public class PrijaviProblemActivity extends BaseActivity implements View.OnClickListener {
 
     private LocationManager lm;
     private Location curLocation;
@@ -101,7 +101,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle("Prijavljivanje problema");
+        ab.setTitle(R.string.priajvljivanje_problema);
 
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -340,11 +340,11 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         ProblemViewModel.Problem problem = new ProblemViewModel.Problem();
 
         if(izabranId == "") {
-            greska( "Niste izabrali vrstu problema.");
+            greska( getString(R.string.prijavi_problem_greska_vrsta));
             return;
         }
         if(curLocation == null) {
-            greska("Niste izabrali lokaciju problema.");
+            greska(getString(R.string.onOptionsItemSelected_greska_lokacija));
             return;
         }
 
@@ -360,11 +360,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         problem.latitude = Double.toString(curLocation.getLatitude());
         problem.longitude = Double.toString(curLocation.getLongitude());
         problem.slika = "";
-        if(imaSlike) {
-            problem.slika = slikaStr;
-            ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
-            findViewById(R.id.imageView).setVisibility(View.GONE);
-        }
+        if(imaSlike) problem.slika = slikaStr;
         else problem.slika = "";
         problem.opis = ((EditText)findViewById(R.id.editText)).getText().toString().replace("\n", "<br>");
         problem.adresa = adresa;
@@ -380,9 +376,9 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
 
     private void izaberiSliku() {
 
-        final CharSequence[] items = {"Kamera", "Izaberi iz galerije", "Ukloni fotografiju" };
+        final CharSequence[] items = {getString(R.string.prijavi_problem_charSequence0), getString(R.string.prijavi_problem_charSequence1), getString(R.string.prijavi_problem_charSequence2) };
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-        builder.setTitle("Izaberi fotografiju");
+        builder.setTitle(getString(R.string.prijavi_problem_kamera_naslov));
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -506,17 +502,6 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         return true;
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO) {
-            Toast.makeText(this, "keyboard visible", Toast.LENGTH_SHORT).show();
-        } else if (newConfig.hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_YES) {
-            Toast.makeText(this, "keyboard hidden", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void greska(String tekst)
     {
         Snackbar.make(findViewById(R.id.koordinator_prijava), tekst, Snackbar.LENGTH_LONG).show();
@@ -548,7 +533,7 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
                 if(resultCode == RESULT_OK) {
                     int idVrste = Integer.parseInt(data.getStringExtra("id_vrste"));
                     TextView txt = (TextView) findViewById(R.id.textView2);
-                    txt.setText("Izabrana vrsta: " + data.getStringExtra("naziv_vrste"));
+                    txt.setText(getString(R.string.prijavi_problem_izabrana_vrsta) + data.getStringExtra("naziv_vrste"));
                     txt.setVisibility(View.VISIBLE);
                     izabranId = data.getStringExtra("id_vrste");
                 }
@@ -590,66 +575,5 @@ public class PrijaviProblemActivity extends AppCompatActivity implements View.On
         return cursor.getString(column_index);
     }
 
-        /*
-    private class AsinhroniFTPUpload extends AsyncTask<Void, Void, Boolean> {
-
-        private ProgressDialog p;
-        private Context ctx;
-        private File fajl;
-
-        public AsinhroniFTPUpload(File fajl, Context ctx)
-        {
-            this.fajl = fajl;
-            this.ctx=ctx;
-            this.p=new ProgressDialog(ctx);
-        }
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mNotifyManager.notify(1, mBuilder.build());
-        }
-
-
-        protected Boolean doInBackground(Void... voids) {
-            FTPClient con = null;
-            try
-            {
-                con = new FTPClient();
-                con.connect("195.252.110.140");
-
-                String url = "http://yourserver";
-                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath(),
-                        "yourfile");
-
-                if (con.login("geasoftn", getResources().getString(R.string.sifraFtp)));
-                {
-                    con.enterLocalPassiveMode(); // important!
-                    con.setFileType(FTP.BINARY_FILE_TYPE);
-                    FileInputStream in = new FileInputStream(fajl);
-                    boolean result = con.storeFile("/public_html/kspclient/slike/" + fajl.getPath().substring(fajl.getPath().lastIndexOf('/')+1), in);
-                    in.close();
-                    con.logout();
-                    con.disconnect();
-                }
-            }
-            catch (Exception e)
-            {
-                Log.v("FTP", "Greska: "+e.getMessage());
-                return false;
-            }
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-            super.onPostExecute(result);
-            mBuilder.setContentText("Prijavljivanje problema završeno");
-            mNotifyManager.notify(1, mBuilder.build());
-        }
-
-        private int NOTIFICATION_ID = 1;
-        private NotificationManager nm;
-
-
-    } */
 }
 

@@ -14,6 +14,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/moji_problemi_list"
             android:layout_width="match_parent"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingTop="8dp"
@@ -55,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Za sada niste podneli ni jedan problem" />
+            android:text="@string/moji_problemi_niste_podneli_problem" />
 
     </LinearLayout>
 

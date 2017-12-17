@@ -9,6 +9,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.util.Pair;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSmoothScroller;
+import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -42,13 +46,13 @@ public class ProblemViewModel extends ViewModel {
     public MutableLiveData<List<ProblemViewModel.Problem>> problemi = null;
     public MutableLiveData<Boolean> prazna = new MutableLiveData<Boolean>();
 
-    public Pair<MutableLiveData, MutableLiveData> dajProbleme(String token) {
+    public Pair<MutableLiveData<List<Problem>>, MutableLiveData<Boolean>> dajProbleme(String token) {
         if(problemi == null) {
             prazna.postValue(false);
             problemi = new MutableLiveData<>();
             ucitajProbleme(token);
         }
-        return new Pair<MutableLiveData, MutableLiveData>(problemi, prazna);
+        return new Pair<MutableLiveData<List<Problem>>, MutableLiveData<Boolean>>(problemi, prazna);
     }
 
     public void ucitajProbleme(String token) {
@@ -56,7 +60,7 @@ public class ProblemViewModel extends ViewModel {
             public void run() {
                 try {
                     final List<Problem> lista = new ArrayList<>();
-                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?tip=svi&token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -68,25 +72,33 @@ public class ProblemViewModel extends ViewModel {
                         data = isw.read();
                         content += current;
                     }
-                    Log.i("EHEHEHHEHEHEHEHEH", content);
+                    Log.i("Pribavljeni problemi: ", content);
                     JSONObject glavni = new JSONObject(content);
                     JSONArray niz = glavni.getJSONArray("redovi");
                     for (int i = 0; i < niz.length(); i++) {
-                        JSONObject obj = niz.getJSONObject(i);
+                        JSONObject prob = niz.getJSONObject(i);
                         ProblemViewModel.Problem p = new ProblemViewModel.Problem();
-                        p.id = obj.getInt("id");
-                        int id_vrste = obj.getInt("id_vrste");
+                        p.id = prob.getInt("id");
+                        int id_vrste = prob.getInt("id_vrste");
                         for (Vrsta v : StaticDataProvider.vrste) {
                             if (v.id == id_vrste) {
                                 p.vrsta = v;
                                 break;
                             }
                         }
-                        p.opis = obj.getString("opis");
-                        p.slika = obj.getString("slika");
-                        p.adresa = obj.getString("adresa");
-                        p.latitude = obj.getString("latitude");
-                        p.longitude = obj.getString("longitude");
+                        p.opis = prob.getString("opis");
+                        p.slika = prob.getString("slika");
+                        p.adresa = prob.getString("adresa");
+                        p.latitude = prob.getString("latitude");
+                        p.longitude = prob.getString("longitude");
+                        p.statusi = new ArrayList<>();
+                        JSONArray statusi = prob.getJSONArray("statusi");
+                        for (int j = 0; j < statusi.length(); j++) {
+                            JSONObject sta = statusi.getJSONObject(j);
+                            Status s = StaticDataProvider.status(sta.getInt("id"));
+                            String datum = sta.getString("datum");
+                            p.statusi.add(new Pair<>(s, datum));
+                        }
                         lista.add(p);
                     }
                     if(niz.length() == 0) prazna.postValue(true);
@@ -99,6 +111,8 @@ public class ProblemViewModel extends ViewModel {
             }
         };
         thread.start();
+
+
     }
 
     public static class Problem {
@@ -111,7 +125,7 @@ public class ProblemViewModel extends ViewModel {
         public String adresa;
         public String latitude;
         public String longitude;
-        public List<StatusViewModel.Status> statusi;
+        public List<Pair<Status, String>> statusi; // Status, datum
 
 
         public static void Dodaj(final Problem pr, final Activity kontekst, final String token) {
@@ -128,7 +142,7 @@ public class ProblemViewModel extends ViewModel {
                                 kontekst.startService(intent);
                             }
                             Intent povratak = new Intent();
-                            povratak.putExtra("poruka", "Problem uspesno dodat!");
+                            povratak.putExtra("poruka", kontekst.getString(R.string.problem_uspesno_dodat));
                             kontekst.setResult(RESULT_OK, povratak);
                             kontekst.finish();
                         }
@@ -136,7 +150,7 @@ public class ProblemViewModel extends ViewModel {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(kontekst, "Greška u ProblemModel.Dodaj() metodu: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(kontekst, kontekst.getString(R.string.greska) + error.getMessage(), Toast.LENGTH_LONG).show();
 
                         }
                     }

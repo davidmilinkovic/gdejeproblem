@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.location.Geocoder;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -69,23 +71,22 @@ public class UploadSlikeService extends Service {
     {
         mNotifyManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
-        mBuilder.setContentTitle("Gde je problem?")
-                .setContentText("Postavljanje fotografije na server je u toku...")
+        mBuilder.setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.upload_slike_u_toku))
                 .setSmallIcon(R.mipmap.ic_launcher);
         mNotifyManager.notify(1, mBuilder.build());
 
         String putanja = intent.getStringExtra("putanja");
         String id_problema = intent.getStringExtra("id_problema");
-        String naziv = putanja.substring(putanja.lastIndexOf('/')+1);
         Pair<String, String> kod = null;
         try {
             kod = Enkodiraj(putanja);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        makeRequest(naziv, kod.first, kod.second, id_problema);
+        makeRequest(kod.first, kod.second, id_problema);
 
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     private static int exifToDegrees(int exifOrientation) {
@@ -156,36 +157,8 @@ public class UploadSlikeService extends Service {
 
 
 
-    private void makeRequest(String naziv, String data, String dataT, String id_problema) {
+    private void makeRequest(String data, String dataT, String id_problema) {
 
-    /*
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        StringRequest request = new StringRequest(Request.Method.POST, "https://kspclient.geasoft.net/upload_slike.php",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        mBuilder.setContentText("Postavljanje fotografije završeno");
-                        mNotifyManager.notify(1, mBuilder.build());
-                        Log.i("OK", response);
-                        UploadSlikeService.this.stopSelf();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("ERROR", error.getMessage());
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String,String> map = new HashMap<>();
-                map.put("kodirana_slika", data);
-                map.put("kodirana_slika_t", dataT);
-                map.put("naziv", naziv);
-                map.put("id_problema", id_problema);
-                return map;
-            }
-        };
-        requestQueue.add(request);*/
 
         Thread thread = new Thread() {
             public void run() {
@@ -202,7 +175,7 @@ public class UploadSlikeService extends Service {
                     List<AbstractMap.SimpleEntry> params = new ArrayList<AbstractMap.SimpleEntry>();
                     params.add(new AbstractMap.SimpleEntry("kodirana_slika", data));
                     params.add(new AbstractMap.SimpleEntry("kodirana_slika_t", dataT));
-                    params.add(new AbstractMap.SimpleEntry("naziv", id_problema + "_" + naziv));
+                    params.add(new AbstractMap.SimpleEntry("naziv", id_problema));
                     params.add(new AbstractMap.SimpleEntry("id_problema", id_problema));
                     Log.i("AUH", id_problema);
 
@@ -227,7 +200,8 @@ public class UploadSlikeService extends Service {
                     }
                     if(content.contains("OK"))
                     {
-                        mBuilder.setContentText("Postavljanje fotografije završeno");
+                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        mBuilder.setContentText(getString(R.string.postavljanje_fotografije_zavrseno));
                         mNotifyManager.notify(1, mBuilder.build());
                         UploadSlikeService.this.stopSelf();
                     }

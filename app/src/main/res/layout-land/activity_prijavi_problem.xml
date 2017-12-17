@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/koordinator_prijava"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:theme="@style/AppThemeBezBara">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -32,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Zadržite da dodate fotograiju" />
+                    android:text="@string/prijavi_problem_slika_landscape" />
 
                 <ImageView
                     android:id="@+id/imageView"

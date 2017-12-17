@@ -19,8 +19,11 @@ import android.support.v7.app.ActionBar;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -62,22 +65,30 @@ public class PodesavanjaActivity extends AppCompatPreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setupActionBar();
+        setContentView(R.layout.podesavanja_toolbar);
+        setSupportActionBar((Toolbar) findViewById(R.id.pref_toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new GeneralPreferenceFragment())
+                .replace(R.id.pref_fragment_container, new GeneralPreferenceFragment())
                 .commit();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent = new Intent(this, GlavniActivity.class);
+                startActivity(intent);
+                return(true);
+        }
+
+        return(super.onOptionsItemSelected(item));
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-    private void setupActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     protected boolean isValidFragment(String fragmentName) {
@@ -94,6 +105,8 @@ public class PodesavanjaActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             bindPreferenceSummaryToValue(findPreference("list_jezik"));
+            bindPreferenceSummaryToValue(findPreference("notif_freq"));
+            bindPreferenceSummaryToValue(findPreference("list_tema"));
         }
 
         @Override
@@ -123,6 +136,21 @@ public class PodesavanjaActivity extends AppCompatPreferenceActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
             if(s.contains("list_jezik")) {
                 GdeJeProblem.updateLanguage(getActivity().getApplicationContext(), sharedPreferences.getString("list_jezik", ""));
+                getActivity().startActivity(getActivity().getIntent());
+                getActivity().finish();
+            }
+            else if(s.contains("tema")) {
+                switch (sharedPreferences.getString("list_tema", "1")) {
+                    case "1":
+                        getActivity().setTheme(R.style.AppTheme_Crvena);
+                        break;
+                    case "2":
+                        getActivity().setTheme(R.style.AppTheme_Plava);
+                        break;
+                    case "3":
+                        getActivity().setTheme(R.style.AppTheme_Siva);
+                        break;
+                }
                 getActivity().startActivity(getActivity().getIntent());
                 getActivity().finish();
             }

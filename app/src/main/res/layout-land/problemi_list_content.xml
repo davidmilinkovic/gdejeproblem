@@ -14,6 +14,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -42,7 +43,7 @@
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="26dp"
                     android:paddingRight="16dp"
-                    android:text="Vrsta problema"
+                    android:text="@string/moji_problemi_vrsta_problema"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -134,14 +135,8 @@
                     android:maxLines="1"
                     android:paddingBottom="4dp"
                     android:paddingLeft="16dp"
-                    android:text="Lokacija" />
+                    android:text="@string/pregled_content_lokacija" />
             </LinearLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_alignParentBottom="true"
-                android:background="#bdbdbd" />
 
         </LinearLayout>
 

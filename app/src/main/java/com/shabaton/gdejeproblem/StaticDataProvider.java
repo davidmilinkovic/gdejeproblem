@@ -14,6 +14,7 @@ public class StaticDataProvider {
 
     public static List<Sluzba> sluzbe = new ArrayList<Sluzba>();
     public static List<Vrsta> vrste = new ArrayList<Vrsta>();
+    public static List<Status> statusi = new ArrayList<Status>();
 
     public static  Thread thread;
 
@@ -23,7 +24,7 @@ public class StaticDataProvider {
             public void run() {
                 try {
                     java.net.URL uu;
-                    uu =new URL("https://www.kspclient.geasoft.net/sluzba_api.php");
+                    uu =new URL("https://www.kspclient.geasoft.net/definicija.php");
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -36,34 +37,30 @@ public class StaticDataProvider {
                         content += current;
                     }
                     JSONObject glavni = new JSONObject(content);
-                    JSONArray niz = glavni.getJSONArray("redovi");
-                    for(int i = 0; i < niz.length();i++)
+
+                    JSONArray jsonSluzbe = glavni.getJSONArray("sluzbe");
+                    JSONArray jsonVrste = glavni.getJSONArray("vrste");
+                    JSONArray jsonStatusi = glavni.getJSONArray("statusi");
+
+                    for(int i = 0; i < jsonSluzbe.length();i++)
                     {
-                        JSONObject obj = niz.getJSONObject(i);
+                        JSONObject obj = jsonSluzbe.getJSONObject(i);
                         Sluzba s = new Sluzba(obj.getInt("id"), obj.getString("naziv"), obj.getString("ikonica"));
                         sluzbe.add(s);
                     }
 
-                    uu =new URL("https://www.kspclient.geasoft.net/vrsta_api.php");
-                    connection = (HttpURLConnection) uu.openConnection();
-                    connection.setRequestMethod("GET");
-                    rd = connection.getInputStream();
-                    isw = new InputStreamReader(rd);
-                    content = "";
-                    data = isw.read();
-                    while (data != -1) {
-                        char current = (char) data;
-                        data = isw.read();
-                        content += current;
-                    }
-                    glavni = new JSONObject(content);
-                    niz = glavni.getJSONArray("redovi");
-                    for(int i = 0; i < niz.length();i++)
+                    for(int i = 0; i < jsonStatusi.length();i++)
                     {
-                        JSONObject obj = niz.getJSONObject(i);
+                        JSONObject obj = jsonStatusi.getJSONObject(i);
+                        Status s = new Status(obj.getInt("id"), obj.getString("naziv"), obj.getString("boja"));
+                        statusi.add(s);
+                    }
+
+                    for(int i = 0; i < jsonVrste.length();i++)
+                    {
+                        JSONObject obj = jsonVrste.getJSONObject(i);
 
                         int idSluzbe = obj.getInt("id_sluzbe");
-
 
                         for(Sluzba s : sluzbe)
                         {
@@ -73,10 +70,7 @@ public class StaticDataProvider {
                                 break;
                             }
                         }
-
                     }
-
-
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -84,5 +78,31 @@ public class StaticDataProvider {
             }
         };
     }
+
+    public static Sluzba sluzba(int id)
+    {
+        for(Sluzba s : sluzbe)
+            if(s.id == id)
+                return s;
+        return null;
+    }
+
+    public static Vrsta vrsta(int id)
+    {
+        for(Vrsta v : vrste)
+            if(v.id == id)
+                return v;
+        return null;
+    }
+
+    public static Status status(int id)
+    {
+        for(Status s : statusi)
+            if(s.id == id)
+                return s;
+        return null;
+    }
+
+
 
 }

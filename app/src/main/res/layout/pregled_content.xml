@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="0.4"
         android:orientation="vertical">
 
@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
-                    android:text="Vrsta problema"
+                    android:text="@string/pregled_content_vrsta_problema"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
@@ -46,7 +46,9 @@
                     android:id="@+id/textView2pregled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vrsta problema" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/pregled_content_vrsta_problema" />
             </LinearLayout>
 
         </FrameLayout>
@@ -74,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
-                    android:text="Status"
+                    android:text="@string/pregled_content_status"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
@@ -82,29 +84,19 @@
                     android:id="@+id/textViewStatusPregled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Status problema" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/pregled_content_status"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/lokacija_frame_pregled"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:visibility="visible">
 
-            <ImageButton
-                android:id="@+id/button3pregled"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginLeft="72dp"
-                android:layout_marginRight="16dp"
-                android:onClick="onClick"
-                android:scaleType="fitEnd"
-                android:visibility="visible"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
             <ImageView
                 android:layout_width="50dp"
@@ -125,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="4dp"
-                    android:text="Lokacija"
+                    android:text="@string/pregled_content_lokacija"
                     android:textColor="@android:color/black"
                     android:textSize="16sp" />
 
@@ -133,9 +125,32 @@
                     android:id="@+id/txtViewLok_pregled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lokacija problema" />
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/pregled_content_lokacija" />
 
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="16dp"
+                android:baselineAlignBottom="false"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/button3pregled"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="16dp"
+                android:onClick="onClick"
+                android:scaleType="fitEnd"
+                android:visibility="visible" />
+
 
         </FrameLayout>
 
@@ -147,6 +162,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
 
                 <ImageView
                     android:layout_width="50dp"
@@ -163,7 +179,7 @@
                     android:layout_marginLeft="72dp"
                     android:layout_marginRight="16dp"
                     android:gravity="center_vertical"
-                    android:text="Nema opisa"
+                    android:text="@string/pregled_content_nema_opisa"
                     android:visibility="visible" />
 
             </FrameLayout>

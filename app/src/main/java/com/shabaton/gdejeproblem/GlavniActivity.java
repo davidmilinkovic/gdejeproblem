@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.view.ContextThemeWrapper;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,8 +39,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Locale;
 
-public class GlavniActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
-         OpcijeFragment.OnFragmentInteractionListener, KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
+public class GlavniActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
+         KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
 
 {
 
@@ -53,15 +54,15 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_glavni);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_c);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -86,9 +87,17 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
         mAuth = FirebaseAuth.getInstance();
         promeniKorisnika();
 
-        if(mAuth.getCurrentUser() != null && savedInstanceState != null) {
+        if(mAuth.getCurrentUser() != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment(), "MojiProblemi").commit();
+        }
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
+        stopService(new Intent(this, ProveraStatusaService.class));
+        if(obavestenja) {
+            Intent intent = new Intent(this, ProveraStatusaService.class);
+            startService(intent);
         }
     }
 
@@ -187,7 +196,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
                 return false;
             }
             else {
-                greska("Greška", "Morate biti prijavljeni kako biste prijavili problem.");
+                greska(getString(R.string.popup_greska), getString(R.string.popup_greska_prijava_problema));
                 fragmentClass = KorisnikFragment.class;
             }
 
@@ -197,7 +206,7 @@ public class GlavniActivity extends AppCompatActivity implements NavigationView.
                 tag = "MojiProblemi";
             }
             else {
-                greska("Greška", "Morate biti prijavljeni kako biste videli listu Vaših problema.");
+                greska(getString(R.string.popup_greska), getString(R.string.popup_greska_pregled_problema));
                 fragmentClass = KorisnikFragment.class;
             }
         } else if (id == R.id.nav_opcije) {

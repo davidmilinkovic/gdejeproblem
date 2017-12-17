@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SluzbaDetailActivity extends AppCompatActivity {
+public class SluzbaDetailActivity extends BaseActivity {
 
     private Sluzba izabranaSluzba;
     public int trenutni_id;

@@ -1,20 +1,15 @@
 package com.shabaton.gdejeproblem;
 
 import android.app.Activity;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -46,13 +40,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Locale;
-
-import javax.sql.DataSource;
 
 public class MojiProblemiFragment extends Fragment {
 
@@ -73,7 +61,7 @@ public class MojiProblemiFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.activity_moji_problemi, container, false);
+        final View view = inflater.inflate(R.layout.fragment_moji_problemi, container, false);
 
         nemaProblema = (LinearLayout)view.findViewById(R.id.layoutNemaProblema);
 
@@ -128,10 +116,9 @@ public class MojiProblemiFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 String idToken = task.getResult().getToken();
 
-                                Pair<MutableLiveData, MutableLiveData> pp = model.dajProbleme(idToken);
+                                Pair<MutableLiveData<List<ProblemViewModel.Problem>>, MutableLiveData<Boolean>> pp = model.dajProbleme(idToken);
 
-
-                                pp.second.observe((AppCompatActivity) getActivity(), new Observer<Boolean>() {
+                                 pp.second.observe((AppCompatActivity) getActivity(), new Observer<Boolean>() {
                                     @Override
                                     public void onChanged(@Nullable Boolean prazna) {
                                         if(prazna)
@@ -176,7 +163,7 @@ public class MojiProblemiFragment extends Fragment {
         final ProblemiRecyclerAdapter recyclerViewAdapter = (ProblemiRecyclerAdapter)lista.getAdapter();
 
         ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
-        StatusViewModel modelS = ViewModelProviders.of((AppCompatActivity) getActivity()).get(StatusViewModel.class);
+        // StatusViewModel modelS = ViewModelProviders.of((AppCompatActivity) getActivity()).get(StatusViewModel.class);
 
         final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         mUser.getToken(false)
@@ -185,7 +172,6 @@ public class MojiProblemiFragment extends Fragment {
                         if (task.isSuccessful()) {
                             String idToken = task.getResult().getToken();
                             model.ucitajProbleme(idToken);
-                            modelS.ucitajStatuse();
 
                         } else {
                             Toast.makeText(getActivity(), R.string.greska_token, Toast.LENGTH_LONG).show();
@@ -221,26 +207,16 @@ public class MojiProblemiFragment extends Fragment {
             holder.txtVrsta.setText(holder.mItem.vrsta.naziv);
             holder.txtOpis.setText(holder.mItem.opis.replace("<br>", "\n"));
 
-
             String adresa = holder.mItem.adresa;
+            final String[] boja = {"#000000"};
 
             holder.txtLokacija.setText(adresa);
 
-            StatusViewModel model = ViewModelProviders.of((AppCompatActivity)getActivity()).get(StatusViewModel.class);
-
-            model.dajStatuse().observe((AppCompatActivity)getActivity(), new Observer<List<StatusViewModel.Status>>() {
-                @Override
-                public void onChanged(@Nullable List<StatusViewModel.Status> statusi) {
-                    for(StatusViewModel.Status s : statusi)
-                    {
-                        if(s.id_problema == holder.mItem.id) {
-                            holder.txtStatus.setText(s.naziv);
-                            holder.txtStatus.setTextColor(Color.parseColor(s.boja));
-                            return;
-                        }
-                    }
-                }
-            });
+            Pair<Status, String> p = holder.mItem.statusi.get(0);
+            Status s = p.first; // poslednji status, najnoviji
+            holder.txtStatus.setText(s.naziv);
+            holder.txtStatus.setTextColor(Color.parseColor(s.boja));
+            boja[0] = s.boja;
 
             holder.imgIkonica.setImageResource(getResources().getIdentifier(holder.mItem.vrsta.sluzba.ikonica, "drawable", getActivity().getPackageName()));
             if(holder.mItem.slika.length() > 0) {
@@ -263,7 +239,6 @@ public class MojiProblemiFragment extends Fragment {
                                     return false;
                                 }
                             })
-                            .error(R.drawable.nemaslike)
                             .into(holder.imgSlika);
                 } catch (Exception e) {
                     holder.progressBar.setVisibility(View.GONE);
@@ -286,6 +261,7 @@ public class MojiProblemiFragment extends Fragment {
                     intent.putExtra("opis", holder.mItem.opis);
                     intent.putExtra("slika", holder.mItem.slika);
                     intent.putExtra("status", holder.txtStatus.getText());
+                    intent.putExtra("statusBoja", boja[0]);
                     intent.putExtra("latitude", holder.mItem.latitude);
                     intent.putExtra("longitude", holder.mItem.longitude);
                     getActivity().startActivity(intent);

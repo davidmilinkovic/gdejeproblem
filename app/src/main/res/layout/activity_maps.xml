@@ -44,7 +44,7 @@
                     android:background="@android:color/transparent"
                     android:elevation="20dp"
                     android:ems="10"
-                    android:hint="Pretraga"
+                    android:hint="@string/hint_mape_pretraga"
                     android:inputType="textPersonName"
                     android:selectAllOnFocus="true" />
 
@@ -93,26 +93,6 @@
         android:layout_height="match_parent"
         tools:context="com.shabaton.gdejeproblem.MapsActivity" />
 
-        <FrameLayout
-            android:id="@+id/frame_potvrda"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/siva"
-            android:elevation="10dp"
-            android:visibility="gone">
-
-            <Button
-                android:id="@+id/mapa_potvrda"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="right"
-                android:enabled="false"
-                android:onClick="onClick"
-                android:text="Izaberi lokaciju"
-                android:textColor="@color/secondaryTextColor" />
-        </FrameLayout>
 
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

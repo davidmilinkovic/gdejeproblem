@@ -2,16 +2,32 @@
 
     <!-- Base application theme. -->
     <!-- Base application theme. -->
-    <style name="AppThemeBezBara" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#d32f2f</item>
+        <item name="colorPrimaryDark">#9a0007</item>
+        <item name="colorAccent">#3d5afe</item>
+    </style>
+
+    <style name="AppTheme.Crvena" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorPrimary">#d32f2f</item>
+        <item name="colorPrimaryDark">#9a0007</item>
+        <item name="colorAccent">#3d5afe</item>
+    </style>
+    <style name="AppTheme.Plava" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorPrimary">#3949ab</item>
+        <item name="colorPrimaryDark">#00227b</item>
+        <item name="colorAccent">#ff6d00</item>
+    </style>
+    <style name="AppTheme.Siva" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorPrimary">#9e9e9e</item>
+        <item name="colorPrimaryDark">#707070</item>
+        <item name="colorAccent">#dd2c00</item>
+    </style>
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">#b71c1c</item>
         <item name="colorPrimaryDark">#7f0000</item>
         <item name="colorAccent">#3d5afe</item>
-    </style>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#b71c1c</item>
-        <item name="colorPrimaryDark">#7f0000</item>
-        <item name="colorAccent">#3d5afe</item>
-    </style>
+    </style>-->
 
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
