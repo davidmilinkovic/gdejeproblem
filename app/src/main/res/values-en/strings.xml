@@ -50,7 +50,7 @@
     <string name="pref_obavesti_me">Notify me for every change of my problems\' staus</string>
     <string name="pref_obavestenja_pri_promeni">Notifications on status change</string>
     <string name="pref_ucestalost">Checking frequency</string>
-    <string name="pref_title_izgled">Apperance</string>
+    <string name="pref_title_izgled">Appearance</string>
     <string name="pref_title_obavestenja">Notifications</string>
     <string name="naslov_settings">Settings</string>
 
@@ -69,4 +69,7 @@
         <item>2 hours</item>
         <item>1 day</item>
     </string-array>
+    <string name="greska">Error</string>
+    <string name="greska">Error</string>
+    <string name="greska">Error</string>
 </resources>

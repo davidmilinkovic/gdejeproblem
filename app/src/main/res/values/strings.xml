@@ -65,7 +65,7 @@
     <string name="maps_niste_izabrali_lokaciju">Niste izabrali lokaciju.</string>
     <string name="lokacija">Lokacija</string>
     <string name="service_promenjen_status">Jednom od vaših problema je promenjen status.</string>
-    <string name="greska">Greška.</string>
+    <string name="greska">Greška</string>
     <string name="problem_uspesno_dodat">Problem uspesno dodat!</string>
     <string name="priajvljivanje_problema">Prijavljivanje problema</string>
     <string name="pref_tema">Tema</string>
