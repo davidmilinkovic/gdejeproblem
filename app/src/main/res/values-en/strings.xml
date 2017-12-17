@@ -73,4 +73,5 @@
     <string name="upload_slike_u_toku">Upoladin the photo to the server...</string>
     <string name="lokacija">Location</string>
     <string name="maps_trenutna_lokacija">Current location</string>
+    <string name="maps_izabrana_lokacija">Chosen location</string>
 </resources>
