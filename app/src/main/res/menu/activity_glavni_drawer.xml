@@ -18,6 +18,10 @@
             android:id="@+id/nav_korisnik"
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="@string/meni_korisnik" />
+        <item
+            android:id="@+id/nav_pomoc"
+            android:icon="@drawable/ic_help_black_24dp"
+            android:title="Pomoć" />
     </group>
 
 

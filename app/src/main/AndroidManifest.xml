@@ -91,8 +91,7 @@
         <activity
             android:name=".PregledProblemaActivity"
             android:parentActivityName=".GlavniActivity"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:theme="@style/AppTheme"></activity>
 
         <service
             android:name=".UploadSlikeService"
@@ -111,9 +110,11 @@
             android:exported="true" />
 
         <activity android:name=".BaseActivity" />
-        <activity android:name=".SlikaFullscreen">
-
-        </activity>
+        <activity android:name=".SlikaFullscreen"></activity>
+        <activity
+            android:name=".Tour"
+            android:label="@string/title_activity_tour"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

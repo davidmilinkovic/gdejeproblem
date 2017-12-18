@@ -1,5 +1,8 @@
 package com.shabaton.gdejeproblem;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 /**
  * Created by david on 16.12.2017.
  */
@@ -17,5 +20,17 @@ public class Alati {
 
         return lat;
 
+    }
+
+    public static String citajPref(Context ctx, String settingName, String defaultValue) {
+        SharedPreferences sharedPref = ctx.getSharedPreferences("pref", Context.MODE_PRIVATE);
+        return sharedPref.getString(settingName, defaultValue);
+    }
+
+    public static void promeniPref(Context ctx, String settingName, String settingValue) {
+        SharedPreferences sharedPref = ctx.getSharedPreferences("pref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(settingName, settingValue);
+        editor.apply();
     }
 }
