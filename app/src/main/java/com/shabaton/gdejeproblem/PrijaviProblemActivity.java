@@ -454,9 +454,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_prijava, menu);
 
-        /*
 
-                        PRIKAZIVANJE HELP-A
 
         new MaterialTapTargetPrompt.Builder(this)
                 .setTarget(findViewById(R.id.fab))
@@ -475,7 +473,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                     }
                 })
                 .show();
-                 */
+
         return true;
     }
 
