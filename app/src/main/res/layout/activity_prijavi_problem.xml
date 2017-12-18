@@ -5,25 +5,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/koordinator_prijava"
     android:layout_width="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
-        app:elevation="13dp">
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_prijava"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_alignParentTop="false"
             android:background="?attr/colorPrimary"
-            android:elevation="13dp"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            android:elevation="24dp" />
 
     </android.support.design.widget.AppBarLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -72,8 +71,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        app:elevation="0dp"
+        android:elevation="0dp"
         android:onClick="onClick"
-        app:elevation="12dp"
         app:layout_anchor="@id/frejmSlika"
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
