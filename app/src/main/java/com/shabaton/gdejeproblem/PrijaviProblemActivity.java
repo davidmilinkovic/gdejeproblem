@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -104,6 +105,13 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
         ab.setTitle(R.string.priajvljivanje_problema);
 
         lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        Boolean trebaGuide = Boolean.valueOf(Alati.citajPref(PrijaviProblemActivity.this, "prvi_put_prijava", "true"));
+
+        if (true) {
+            prikaziGuide(0);
+        }
+
 
 
         if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -453,15 +461,31 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_prijava, menu);
+        return true;
+    }
 
+    private String[] guideNaslovi = { "Vrsta problema", "Lokacija", "Fotografija" };
+    private String[] guideOpisi = {
+                                    "Vrste problema predstavljaju najčešće probleme",
+                                    "Izaberite lokaciju problema", "Možete dodati fotografiju problema" };
+    private String[] guideBoje = { "#c62828", "#2e7d32", "#283593"};
+    private int[] guideElem = {R.id.fab, R.id.img_strelica_vrsta, R.id.img_strelica_lokacija};
 
-
+    private void prikaziGuide(int rbr)
+    {
+        if(rbr == guideElem.length)
+        {
+            Alati.promeniPref(PrijaviProblemActivity.this, "prvi_put_prijava", "false");
+            return;
+        }
         new MaterialTapTargetPrompt.Builder(this)
-                .setTarget(findViewById(R.id.fab))
-                .setPrimaryText("Dodavanje fotografije")
-                .setSecondaryText("Možete dodati fotografiju problema")
+                .setTarget(findViewById(guideElem[rbr]))
+                .setPrimaryText(guideNaslovi[rbr])
+                .setBackgroundColour(Color.parseColor(guideBoje[rbr]))
+                .setSecondaryText(guideOpisi[rbr])
                 .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener()
                 {
+
                     @Override
                     public void onHidePrompt(MotionEvent event, boolean tappedTarget)
                     {
@@ -470,12 +494,19 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                     @Override
                     public void onHidePromptComplete()
                     {
+                        Handler handler1 = new Handler();
+                        handler1.postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                prikaziGuide(rbr+1);
+                            }
+                        }, 500);
                     }
                 })
                 .show();
-
-        return true;
     }
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

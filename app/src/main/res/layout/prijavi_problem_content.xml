@@ -64,6 +64,7 @@
                 android:textColor="@android:color/white" />
 
             <ImageView
+                android:id="@+id/img_strelica_vrsta"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right|center_vertical"
@@ -125,6 +126,7 @@
                 />
 
             <ImageView
+                android:id="@+id/img_strelica_lokacija"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="right|center_vertical"
