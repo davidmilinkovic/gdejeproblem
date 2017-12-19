@@ -108,7 +108,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
 
         Boolean trebaGuide = Boolean.valueOf(Alati.citajPref(PrijaviProblemActivity.this, "prvi_put_prijava", "true"));
 
-        if (true) {
+        if (trebaGuide) {
             prikaziGuide(0);
         }
 
@@ -469,7 +469,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                                     "Vrste problema predstavljaju najčešće probleme",
                                     "Izaberite lokaciju problema", "Možete dodati fotografiju problema" };
     private String[] guideBoje = { "#c62828", "#2e7d32", "#283593"};
-    private int[] guideElem = {R.id.fab, R.id.img_strelica_vrsta, R.id.img_strelica_lokacija};
+    private int[] guideElem = {R.id.img_strelica_vrsta, R.id.img_strelica_lokacija, R.id.fab};
 
     private void prikaziGuide(int rbr)
     {

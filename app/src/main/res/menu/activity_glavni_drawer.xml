@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Početak" />
+        <item
             android:id="@+id/nav_prijava"
             android:icon="@drawable/ic_add_circle_black_24dp"
             android:title="@string/button_prijava_problema" />

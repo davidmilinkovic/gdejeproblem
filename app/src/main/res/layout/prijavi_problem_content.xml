@@ -51,6 +51,14 @@
                     android:text="@string/prijavi_problem_content_izaberi_vrstu" />
             </LinearLayout>
 
+            <ImageView
+                android:id="@+id/img_strelica_vrsta"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="16dp"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
+
             <ImageButton
                 android:id="@+id/button2"
                 style="?android:attr/borderlessButtonStyle"
@@ -62,14 +70,6 @@
                 android:onClick="onClick"
                 android:scaleType="fitEnd"
                 android:textColor="@android:color/white" />
-
-            <ImageView
-                android:id="@+id/img_strelica_vrsta"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right|center_vertical"
-                android:layout_marginRight="16dp"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
         </FrameLayout>
 

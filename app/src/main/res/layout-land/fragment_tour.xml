@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
                 android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:text="Naslov tour"
                 android:textColor="@android:color/white"
                 android:textSize="24sp"
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:text="Probni opis"
                 android:textColor="#BBB9C7" />
 

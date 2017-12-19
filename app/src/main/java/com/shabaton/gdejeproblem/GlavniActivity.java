@@ -88,8 +88,14 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
         if(mAuth.getCurrentUser() != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment(), "MojiProblemi").commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, new PocetniFragment(), "PocetniFragment").commit();
         }
+        else
+        {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, new KorisnikFragment(), "KorisnikFragment").commit();
+        }
+
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
@@ -200,6 +206,17 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
             }
             else {
                 greska(getString(R.string.popup_greska), getString(R.string.popup_greska_prijava_problema));
+                fragmentClass = KorisnikFragment.class;
+            }
+        }
+        else if(id == R.id.nav_home)
+        {
+            if(prijavljen)
+            {
+                fragmentClass = PocetniFragment.class;
+            }
+            else {
+                greska(getString(R.string.popup_greska), getString(R.string.popup_greska_pregled_problema));
                 fragmentClass = KorisnikFragment.class;
             }
         }
