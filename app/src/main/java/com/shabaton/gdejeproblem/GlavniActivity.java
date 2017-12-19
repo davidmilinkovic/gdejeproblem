@@ -42,17 +42,18 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
     private TextView txtNavPodNaslov;
     private ImageView headerSlika;
     private boolean prijavljen;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glavni);
 
-        Boolean isUserFirstTime = Boolean.valueOf(Alati.citajPref(GlavniActivity.this, PREF_USER_FIRST_TIME, "true"));
+        Boolean prviPut = Boolean.valueOf(Alati.citajPref(GlavniActivity.this, PREF_USER_FIRST_TIME, "true"));
 
-        if (isUserFirstTime) {
+        if (prviPut) {
             Intent introIntent = new Intent(this, Tour.class);
-            introIntent.putExtra(PREF_USER_FIRST_TIME, isUserFirstTime);
+            introIntent.putExtra(PREF_USER_FIRST_TIME, prviPut);
             startActivity(introIntent);
         }
 
@@ -65,7 +66,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View nav_header = navigationView.getHeaderView(0);
@@ -89,18 +90,26 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         if(mAuth.getCurrentUser() != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, new PocetniFragment(), "PocetniFragment").commit();
+            navigationView.setCheckedItem(R.id.nav_home);
         }
         else
         {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, new KorisnikFragment(), "KorisnikFragment").commit();
+            navigationView.setCheckedItem(R.id.nav_korisnik);
         }
 
+
+        osveziServis();
+    }
+
+    private void osveziServis() {
+        stopService(new Intent(this, ProveraStatusaService.class));
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) return;
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
 
-        stopService(new Intent(this, ProveraStatusaService.class));
         if(obavestenja && mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(this, ProveraStatusaService.class);
             startService(intent);
@@ -125,6 +134,9 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         {
             case 333:
                 if(resultCode == RESULT_OK) {
+
+                    navigationView.setCheckedItem(R.id.nav_moji_problemi);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MojiProblemiFragment(), "MojiProblemi").commit();
 
                     Handler handler1 = new Handler();
                     handler1.postDelayed(new Runnable() {
@@ -160,11 +172,13 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
     public void promeniKorisnika() { // menja header navigacije na osnovu trenutnog korisnika
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        osveziServis();
         if (currentUser != null) {
             txtNavNaslov.setText(currentUser.getDisplayName());
             txtNavPodNaslov.setText(currentUser.getEmail());
             Glide.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
             prijavljen = true;
+
         } else {
             txtNavNaslov.setText(R.string.niste_prijavljeni);
             txtNavPodNaslov.setText("");
@@ -193,12 +207,11 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         Fragment fragment = null;
         String tag = "";
         Class fragmentClass = null;
-
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (id == R.id.nav_prijava)
         {
             if(prijavljen)
             {
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.closeDrawer(GravityCompat.START);
                 Intent intent = new Intent(this, PrijaviProblemActivity.class);
                 startActivityForResult(intent, 333);
@@ -207,6 +220,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
             else {
                 greska(getString(R.string.popup_greska), getString(R.string.popup_greska_prijava_problema));
                 fragmentClass = KorisnikFragment.class;
+                navigationView.setCheckedItem(R.id.nav_korisnik);
             }
         }
         else if(id == R.id.nav_home)
@@ -218,6 +232,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
             else {
                 greska(getString(R.string.popup_greska), getString(R.string.popup_greska_pregled_problema));
                 fragmentClass = KorisnikFragment.class;
+                navigationView.setCheckedItem(R.id.nav_korisnik);
             }
         }
         else if (id == R.id.nav_moji_problemi)
@@ -231,13 +246,13 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
             {
                 greska(getString(R.string.popup_greska), getString(R.string.popup_greska_pregled_problema));
                 fragmentClass = KorisnikFragment.class;
+                navigationView.setCheckedItem(R.id.nav_korisnik);
             }
         }
         else if (id == R.id.nav_opcije)
         {
             Intent intent = new Intent(this, PodesavanjaActivity.class);
             startActivityForResult(intent, 111);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
@@ -249,7 +264,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         {
             Intent intent = new Intent(this, Tour.class);
             startActivity(intent);
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
@@ -261,7 +275,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment, tag).commit();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         drawer.closeDrawer(GravityCompat.START);
         } catch (Exception e) {
             e.printStackTrace();

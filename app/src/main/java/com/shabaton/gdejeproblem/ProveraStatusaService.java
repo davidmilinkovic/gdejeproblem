@@ -145,8 +145,6 @@ public class ProveraStatusaService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
         if(FirebaseAuth.getInstance().getCurrentUser() == null)
             stopSelf();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -162,26 +160,34 @@ public class ProveraStatusaService extends Service {
 
         new Thread(new Runnable(){
             public void run() {
-                while(true)
-                {
+                while(true) {
                     try {
                         Thread.sleep(DILEJ);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
+
                     final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-                    mUser.getToken(false)
-                            .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                                public void onComplete(@NonNull Task<GetTokenResult> task) {
-                                    if (task.isSuccessful()) {
-                                        String idToken = task.getResult().getToken();
-                                        ucitajIProveri(idToken);
-                                    } else {
-                                        Toast.makeText(ProveraStatusaService.this, R.string.greska_token, Toast.LENGTH_LONG).show();
+                    if (mUser == null)
+                        break;
+                    try {
+                        mUser.getToken(false)
+                                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                        if (task.isSuccessful()) {
+                                            String idToken = task.getResult().getToken();
+                                            ucitajIProveri(idToken, mUser.getEmail(), mUser.getUid());
+                                        } else {
+                                            Toast.makeText(ProveraStatusaService.this, R.string.greska_token, Toast.LENGTH_LONG).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                    } catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+
 
 
                 }
@@ -206,12 +212,12 @@ public class ProveraStatusaService extends Service {
     }
 
 
-    public void ucitajIProveri(String token) {
+    public void ucitajIProveri(String token, String email, String uid) {
         Thread thread = new Thread() {
             public void run() {
                 try {
                     final List<ProblemViewModel.Problem> lista = new ArrayList<>();
-                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?tip=svi&token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?tip=svi&token="+token+"&email=" + email+"&uid="+uid);
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();

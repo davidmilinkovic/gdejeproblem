@@ -81,7 +81,7 @@ public class PocetniFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), PrijaviProblemActivity.class);
-                getActivity().startActivity(intent);
+                getActivity().startActivityForResult(intent, 333);
             }
         });
 
