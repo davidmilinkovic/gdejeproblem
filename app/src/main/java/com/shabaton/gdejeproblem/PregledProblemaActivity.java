@@ -109,6 +109,7 @@ public class PregledProblemaActivity extends BaseActivity {
                 Intent intent = new Intent(PregledProblemaActivity.this, MapsActivity.class);
                 intent.putExtra("latitude", p.latitude);
                 intent.putExtra("longitude", p.longitude);
+                intent.putExtra("adresa", p.adresa);
                 intent.putExtra("potvrda", false);
                 startActivity(intent);
             }

@@ -277,14 +277,7 @@ public class ProveraStatusaService extends Service {
 
                                 Intent resultIntent = new Intent(ProveraStatusaService.this, PregledProblemaActivity.class);
                                 resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                resultIntent.putExtra("vrsta", p.vrsta.naziv);
-                                resultIntent.putExtra("lokacija", p.adresa);
-                                resultIntent.putExtra("opis", p.opis);
-                                resultIntent.putExtra("slika", p.slika);
-                                resultIntent.putExtra("status", p.statusi.get(0).status.naziv);
-                                resultIntent.putExtra("statusBoja", p.statusi.get(0).status.boja);
-                                resultIntent.putExtra("latitude", p.latitude);
-                                resultIntent.putExtra("longitude",p.longitude);
+                                resultIntent.putExtra("problem", p);
 
                                 PendingIntent resultPendingIntent =
                                         PendingIntent.getActivity(

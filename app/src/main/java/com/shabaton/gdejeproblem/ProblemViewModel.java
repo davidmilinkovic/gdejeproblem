@@ -34,9 +34,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProblemViewModel extends ViewModel {
 
-    /**
-     * An array of sample (dummy) items.
-     */
     public MutableLiveData<List<ProblemViewModel.Problem>> problemi = null;
     public MutableLiveData<Boolean> prazna = new MutableLiveData<Boolean>();
 

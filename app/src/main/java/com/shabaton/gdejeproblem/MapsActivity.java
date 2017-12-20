@@ -73,7 +73,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         if(!editMode)
         {
             findViewById(R.id.frame_pretraga).setVisibility(View.GONE);
-            tren = mMap.addMarker(new MarkerOptions().position(marker).title(getString(R.string.onMapReady_izabrana_lokacija)));
+            tren = mMap.addMarker(new MarkerOptions().position(marker).title(getIntent().getStringExtra("adresa")));
+            tren.showInfoWindow();
         }
         else mMap.setOnMapClickListener(this);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));

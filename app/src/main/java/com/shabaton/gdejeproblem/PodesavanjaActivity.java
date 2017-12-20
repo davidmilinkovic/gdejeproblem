@@ -79,7 +79,8 @@ public class PodesavanjaActivity extends AppCompatPreferenceActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this, GlavniActivity.class);
                 startActivity(intent);
-                return(true);
+                finish();
+                return true;
         }
 
         return(super.onOptionsItemSelected(item));
