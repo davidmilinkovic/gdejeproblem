@@ -56,18 +56,8 @@ public class SluzbaListActivity extends BaseActivity {
 
         final SimpleItemRecyclerViewAdapter recyclerViewAdapter = new SimpleItemRecyclerViewAdapter(new ArrayList<Sluzba>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         recyclerView.setAdapter(recyclerViewAdapter);
-/*
-        SluzbaViewModel model = ViewModelProviders.of(this).get(SluzbaViewModel.class);
-        model.dajSluzbe().observe(SluzbaListActivity.this, new Observer<List<SluzbaViewModel.Sluzba>>() {
-            @Override
-            public void onChanged(@Nullable List<SluzbaViewModel.Sluzba> sluzbe) {
-                recyclerViewAdapter.addItems(sluzbe);
-            }
-        });*/
         recyclerViewAdapter.addItems(StaticDataProvider.sluzbe);
-
     }
 
 

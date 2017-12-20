@@ -15,7 +15,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.util.Pair;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -243,13 +242,13 @@ public class ProveraStatusaService extends Service {
                         p.adresa = prob.getString("adresa");
                         p.latitude = prob.getString("latitude");
                         p.longitude = prob.getString("longitude");
-                        p.statusi = new ArrayList<Pair<Status, String>>();
+                        p.statusi = new ArrayList<StatusEntry>();
                         JSONArray statusi = prob.getJSONArray("statusi");
                         for (int j = 0; j < statusi.length(); j++) {
                             JSONObject sta = statusi.getJSONObject(j);
                             Status s = status(sta.getInt("id"));
                             String datum = sta.getString("datum");
-                            p.statusi.add(new Pair<>(s, datum));
+                            p.statusi.add(new StatusEntry(s, datum, "Nema komentara"));
                         }
                         lista.add(p);
                     }
@@ -259,7 +258,7 @@ public class ProveraStatusaService extends Service {
                     for(ProblemViewModel.Problem p : lista)
                     {
                         Integer statusUMapi = mapa.get(p.id);
-                        Integer trenutniStatus = p.statusi.get(0).first.id;
+                        Integer trenutniStatus = p.statusi.get(0).status.id;
                         if(statusUMapi != null)
                         {
                             if(statusUMapi != trenutniStatus) {
@@ -282,8 +281,8 @@ public class ProveraStatusaService extends Service {
                                 resultIntent.putExtra("lokacija", p.adresa);
                                 resultIntent.putExtra("opis", p.opis);
                                 resultIntent.putExtra("slika", p.slika);
-                                resultIntent.putExtra("status", p.statusi.get(0).first.naziv);
-                                resultIntent.putExtra("statusBoja", p.statusi.get(0).first.boja);
+                                resultIntent.putExtra("status", p.statusi.get(0).status.naziv);
+                                resultIntent.putExtra("statusBoja", p.statusi.get(0).status.boja);
                                 resultIntent.putExtra("latitude", p.latitude);
                                 resultIntent.putExtra("longitude",p.longitude);
 
@@ -299,7 +298,7 @@ public class ProveraStatusaService extends Service {
                             }
                         }
                         else
-                            mapa.put(p.id, p.statusi.get(0).first.id);
+                            mapa.put(p.id, p.statusi.get(0).status.id);
                     }
 
 

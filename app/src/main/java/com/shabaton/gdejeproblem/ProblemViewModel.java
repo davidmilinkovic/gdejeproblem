@@ -2,17 +2,10 @@ package com.shabaton.gdejeproblem;
 
 
 import android.app.Activity;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.util.Pair;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSmoothScroller;
-import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,6 +22,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -97,7 +91,7 @@ public class ProblemViewModel extends ViewModel {
                             JSONObject sta = statusi.getJSONObject(j);
                             Status s = StaticDataProvider.status(sta.getInt("id"));
                             String datum = sta.getString("datum");
-                            p.statusi.add(new Pair<>(s, datum));
+                            p.statusi.add(new StatusEntry(s, datum, "Nema komentara"));
                         }
                         lista.add(p);
                     }
@@ -115,7 +109,7 @@ public class ProblemViewModel extends ViewModel {
 
     }
 
-    public static class Problem {
+    public static class Problem implements Serializable{
 
         public int id;
         public Vrsta vrsta;
@@ -125,7 +119,7 @@ public class ProblemViewModel extends ViewModel {
         public String adresa;
         public String latitude;
         public String longitude;
-        public List<Pair<Status, String>> statusi; // Status, datum
+        public List<StatusEntry> statusi; // Status, datum
 
 
         public static void Dodaj(final Problem pr, final Activity kontekst, final String token) {

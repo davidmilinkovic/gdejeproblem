@@ -30,31 +30,35 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import java.util.EventListener;
+
 public class PregledProblemaActivity extends BaseActivity {
 
     boolean isImageFitToScreen;
 
 
-
+    private ProblemViewModel.Problem p = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregled_problema);
 
+        p = (ProblemViewModel.Problem) getIntent().getSerializableExtra("problem");
+
         Toolbar tulbar = (Toolbar) findViewById(R.id.toolbar_pregled);
         setSupportActionBar(tulbar);
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
-        ab.setTitle(getIntent().getStringExtra("vrsta"));
+        ab.setTitle(p.vrsta.naziv);
 
-        ((TextView)findViewById(R.id.textView2pregled)).setText(getIntent().getStringExtra("vrsta"));
-        ((TextView)findViewById(R.id.txtViewLok_pregled)).setText(getIntent().getStringExtra("lokacija"));
-        ((TextView)findViewById(R.id.textViewStatusPregled)).setText(getIntent().getStringExtra("status"));
-        ((TextView)findViewById(R.id.textViewStatusPregled)).setTextColor(Color.parseColor(getIntent().getStringExtra("statusBoja")));
+        ((TextView)findViewById(R.id.textView2pregled)).setText(p.vrsta.naziv);
+        ((TextView)findViewById(R.id.txtViewLok_pregled)).setText(p.adresa);
+        ((TextView)findViewById(R.id.textViewStatusPregled)).setText(p.statusi.get(0).status.naziv);
+        ((TextView)findViewById(R.id.textViewStatusPregled)).setTextColor(Color.parseColor(p.statusi.get(0).status.boja));
 
-        String opis = getIntent().getStringExtra("opis").replace("<br>", "\n");
+        String opis = p.opis.replace("<br>", "\n");
 
         if(opis.length() > 0)
         {
@@ -64,7 +68,7 @@ public class PregledProblemaActivity extends BaseActivity {
         else ((TextView)findViewById(R.id.tekstOpisPregled)).setText(R.string.pregled_content_nema_opisa);
 
         ProgressBar progressBar = findViewById(R.id.progressBar2);
-        String slika = getIntent().getStringExtra("slika");
+        String slika = p.slika;
         if(slika.length() > 0) {
             ImageView img = findViewById(R.id.imageView_pregled);
             ((TextView)findViewById(R.id.textView3pregled)).setVisibility(View.GONE);
@@ -103,10 +107,20 @@ public class PregledProblemaActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PregledProblemaActivity.this, MapsActivity.class);
-                intent.putExtra("latitude", Double.parseDouble(getIntent().getStringExtra("latitude")));
-                intent.putExtra("longitude", Double.parseDouble(getIntent().getStringExtra("longitude")));
+                intent.putExtra("latitude", p.latitude);
+                intent.putExtra("longitude", p.longitude);
                 intent.putExtra("potvrda", false);
                 startActivity(intent);
+            }
+        });
+
+        ((Button)findViewById(R.id.buttonStatusiPregled)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SpisakStatusaFragment spisakStatusa = new SpisakStatusaFragment();
+                spisakStatusa.prob = p;
+                spisakStatusa.show(getSupportFragmentManager(), "SpisakStatusa");
+
             }
         });
     }
@@ -118,5 +132,12 @@ public class PregledProblemaActivity extends BaseActivity {
                 return true;
         }
         return true;
+    }
+
+    public  void dialogZatvoren(ProblemViewModel.Problem p)
+    {
+        this.p = p;
+        ((TextView)findViewById(R.id.textViewStatusPregled)).setText(p.statusi.get(0).status.naziv);
+        ((TextView)findViewById(R.id.textViewStatusPregled)).setTextColor(Color.parseColor(p.statusi.get(0).status.boja));
     }
 }

@@ -212,8 +212,8 @@ public class MojiProblemiFragment extends Fragment {
 
             holder.txtLokacija.setText(adresa);
 
-            Pair<Status, String> p = holder.mItem.statusi.get(0);
-            Status s = p.first; // poslednji status, najnoviji
+            StatusEntry p = holder.mItem.statusi.get(0);
+            Status s = p.status; // poslednji status, najnoviji
             holder.txtStatus.setText(s.naziv);
             holder.txtStatus.setTextColor(Color.parseColor(s.boja));
             boja[0] = s.boja;
@@ -256,15 +256,24 @@ public class MojiProblemiFragment extends Fragment {
                 public void onClick(View v) {
 
                     Intent intent = new Intent(getActivity(), PregledProblemaActivity.class);
-                    intent.putExtra("vrsta", holder.mItem.vrsta.naziv);
+
+                    // +++ pre Hrista
+
+                    /*intent.putExtra("vrsta", holder.mItem.vrsta.naziv);
                     intent.putExtra("lokacija", holder.txtLokacija.getText());
                     intent.putExtra("opis", holder.mItem.opis);
                     intent.putExtra("slika", holder.mItem.slika);
                     intent.putExtra("status", holder.txtStatus.getText());
                     intent.putExtra("statusBoja", boja[0]);
                     intent.putExtra("latitude", holder.mItem.latitude);
-                    intent.putExtra("longitude", holder.mItem.longitude);
+                    intent.putExtra("longitude", holder.mItem.longitude);*/
+
+                    /// posle Hrista +++
+
+                    intent.putExtra("problem", holder.mItem);
                     getActivity().startActivity(intent);
+
+                    // hvala Isusu na uproscavanju koda
                 }
             });
             setAnimation(holder.itemView, position);

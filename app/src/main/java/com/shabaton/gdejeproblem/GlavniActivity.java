@@ -51,6 +51,14 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
         Boolean prviPut = Boolean.valueOf(Alati.citajPref(GlavniActivity.this, PREF_USER_FIRST_TIME, "true"));
 
+
+        if(!StaticDataProvider.ucitano)
+        {
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         if (prviPut) {
             Intent introIntent = new Intent(this, Tour.class);
             introIntent.putExtra(PREF_USER_FIRST_TIME, prviPut);
@@ -68,6 +76,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         View nav_header = navigationView.getHeaderView(0);
         txtNavNaslov = nav_header.findViewById(R.id.header_naslov);

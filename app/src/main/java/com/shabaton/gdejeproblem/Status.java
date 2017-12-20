@@ -1,6 +1,9 @@
 package com.shabaton.gdejeproblem;
 
-public class Status {
+import java.io.Serializable;
+
+
+public class Status implements Serializable {
 
     public int id;
     public String naziv;

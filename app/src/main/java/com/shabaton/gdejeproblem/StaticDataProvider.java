@@ -12,6 +12,8 @@ import java.util.List;
 
 public class StaticDataProvider {
 
+    public static boolean ucitano = false;
+
     public static List<Sluzba> sluzbe = new ArrayList<Sluzba>();
     public static List<Vrsta> vrste = new ArrayList<Vrsta>();
     public static List<Status> statusi = new ArrayList<Status>();
@@ -75,6 +77,7 @@ public class StaticDataProvider {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                ucitano = true;
             }
         };
     }

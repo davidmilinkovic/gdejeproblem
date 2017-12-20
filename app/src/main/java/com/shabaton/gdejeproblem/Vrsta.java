@@ -1,5 +1,7 @@
 package com.shabaton.gdejeproblem;
 
+import java.io.Serializable;
+
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
@@ -7,7 +9,7 @@ package com.shabaton.gdejeproblem;
  * TODO: Replace all uses of this class before publishing your app.
  */
 
-public class Vrsta {
+public class Vrsta implements Serializable {
     public final int id;
     public final String naziv;
     public final Sluzba sluzba;

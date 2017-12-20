@@ -60,7 +60,9 @@ public class PocetniFragment extends Fragment {
                 ucitajPodatke(v);
             }
         });
-        ucitajPodatke(v);
+
+        if(savedInstanceState == null)
+            ucitajPodatke(v);
 
         return v;
     }
@@ -122,7 +124,7 @@ public class PocetniFragment extends Fragment {
 
                                         int resenih = 0;
                                         for(ProblemViewModel.Problem p : problemi)
-                                            if(p.statusi.get(0).first.id == idStatusResen)
+                                            if(p.statusi.get(0).status.id == idStatusResen)
                                                 resenih++;
 
                                         txtBrRes.setText(Integer.toString(resenih));
