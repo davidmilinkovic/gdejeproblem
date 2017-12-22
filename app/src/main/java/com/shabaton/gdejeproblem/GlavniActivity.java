@@ -232,6 +232,21 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                 navigationView.setCheckedItem(R.id.nav_korisnik);
             }
         }
+        else if(id == R.id.nav_moje_sluzbe)
+        {
+            if(prijavljen)
+            {
+                drawer.closeDrawer(GravityCompat.START);
+                Intent intent = new Intent(this, MojeSluzbeActivity.class);
+                startActivity(intent);
+                return false;
+            }
+            else {
+                greska(getString(R.string.popup_greska), getString(R.string.popup_greska_prijava_problema));
+                fragmentClass = KorisnikFragment.class;
+                navigationView.setCheckedItem(R.id.nav_korisnik);
+            }
+        }
         else if(id == R.id.nav_home)
         {
             if(prijavljen)

@@ -40,6 +40,6 @@
             android:clipToPadding="false"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/sluzba_list_content" />
-    </FrameLayout>
+        </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -40,38 +40,13 @@ public class StaticDataProvider {
                     }
                     JSONObject glavni = new JSONObject(content);
 
-                    JSONArray jsonSluzbe = glavni.getJSONArray("sluzbe");
-                    JSONArray jsonVrste = glavni.getJSONArray("vrste");
                     JSONArray jsonStatusi = glavni.getJSONArray("statusi");
-
-                    for(int i = 0; i < jsonSluzbe.length();i++)
-                    {
-                        JSONObject obj = jsonSluzbe.getJSONObject(i);
-                        Sluzba s = new Sluzba(obj.getInt("id"), obj.getString("naziv"), obj.getString("ikonica"));
-                        sluzbe.add(s);
-                    }
 
                     for(int i = 0; i < jsonStatusi.length();i++)
                     {
                         JSONObject obj = jsonStatusi.getJSONObject(i);
                         Status s = new Status(obj.getInt("id"), obj.getString("naziv"), obj.getString("boja"));
                         statusi.add(s);
-                    }
-
-                    for(int i = 0; i < jsonVrste.length();i++)
-                    {
-                        JSONObject obj = jsonVrste.getJSONObject(i);
-
-                        int idSluzbe = obj.getInt("id_sluzbe");
-
-                        for(Sluzba s : sluzbe)
-                        {
-                            if(s.id == idSluzbe) {
-                                Vrsta v = new Vrsta(obj.getInt("id"), obj.getString("naziv"), s);
-                                vrste.add(v);
-                                break;
-                            }
-                        }
                     }
 
                 } catch (Exception e) {

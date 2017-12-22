@@ -91,7 +91,7 @@
         <activity
             android:name=".PregledProblemaActivity"
             android:parentActivityName=".GlavniActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
         <service
             android:name=".UploadSlikeService"
@@ -110,11 +110,23 @@
             android:exported="true" />
 
         <activity android:name=".BaseActivity" />
-        <activity android:name=".SlikaFullscreen"></activity>
+        <activity android:name=".SlikaFullscreen" />
         <activity
             android:name=".Tour"
             android:label="@string/title_activity_tour"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MojeSluzbeActivity"
+            android:label="@string/title_activity_moje_sluzbe"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".KreirajSluzbuActivity"
+            android:label="Kreiraj službu" />
+        <activity
+            android:name=".PregledSluzbeActivity"
+            android:label="Pregled službe"
+            android:windowSoftInputMode="adjustResize|stateHidden"
+            />
     </application>
 
 </manifest>

@@ -17,6 +17,12 @@
     </group>
     <group android:id="@+id/g2" android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_moje_sluzbe"
+            android:icon="@drawable/ic_content_paste_black_24dp"
+            android:title="Moje službe" />
+    </group>
+    <group android:id="@+id/g3" android:checkableBehavior="single">
+        <item
             android:id="@+id/nav_opcije"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/meni_podesavanja" />

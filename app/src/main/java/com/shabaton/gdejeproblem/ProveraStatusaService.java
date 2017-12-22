@@ -81,7 +81,7 @@ public class ProveraStatusaService extends Service {
                     for(int i = 0; i < jsonSluzbe.length();i++)
                     {
                         JSONObject obj = jsonSluzbe.getJSONObject(i);
-                        Sluzba s = new Sluzba(obj.getInt("id"), obj.getString("naziv"), obj.getString("ikonica"));
+                        Sluzba s = new Sluzba(obj.getInt("id"), obj.getString("naziv"), obj.getString("ikonica"), obj.getString("datum"));
                         sluzbe.add(s);
                     }
 
