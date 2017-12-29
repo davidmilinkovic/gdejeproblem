@@ -87,7 +87,6 @@ public class PocetniFragment extends Fragment {
             }
         });
 
-        int sledecaTitula = 100;
         int idStatusResen = 1;
 
         ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
@@ -109,7 +108,8 @@ public class PocetniFragment extends Fragment {
                                         swajp.setRefreshing(false);
                                         txtBr.setText("0");
                                         txtBrRes.setText("0");
-                                        txtBrRes.setText(Integer.toString(sledecaTitula));
+                                        ((TextView) v.findViewById(R.id.txtTitula)).setText(StaticDataProvider.titule.get(0).naziv);
+                                        txtBrRes.setText(StaticDataProvider.titule.get(1).brProblema);
                                     }
                                 }
                             });
@@ -127,12 +127,28 @@ public class PocetniFragment extends Fragment {
                                             if(p.statusi.get(0).status.id == idStatusResen)
                                                 resenih++;
 
-                                        txtBrRes.setText(Integer.toString(resenih));
-                                        txtBrDoSledece.setText(Integer.toString(sledecaTitula - resenih));
+                                        Titula trenutnaTitula = StaticDataProvider.titule.get(0), sledecaTitula = null;
 
-                                        ObjectAnimator anim = ObjectAnimator.ofInt(prog, "progress", 0, resenih*100/sledecaTitula);
-                                        anim.setDuration(500);
-                                        anim.start();
+                                        for(int i = 0; i < StaticDataProvider.titule.size(); i++)
+                                            if(StaticDataProvider.titule.get(i).brProblema <= resenih)
+                                            {
+                                                trenutnaTitula = StaticDataProvider.titule.get(i);
+                                                if(i != StaticDataProvider.titule.size()-1) sledecaTitula = StaticDataProvider.titule.get(i+1);
+                                            }
+
+                                        ((TextView) v.findViewById(R.id.txtTitula)).setText(trenutnaTitula.naziv);
+                                        txtBrRes.setText(Integer.toString(resenih));
+
+                                        if(sledecaTitula != null) {
+                                            txtBrDoSledece.setText(Integer.toString(sledecaTitula.brProblema - resenih));
+                                            ObjectAnimator anim = ObjectAnimator.ofInt(prog, "progress", 0, resenih * 100 / sledecaTitula.brProblema);
+                                            anim.setDuration(500);
+                                            anim.start();
+                                        }
+                                        else
+                                        {
+                                            txtBrDoSledece.setText("Dostigli ste najvišu titulu!");
+                                        }
 
 
                                     } catch (Exception e) {

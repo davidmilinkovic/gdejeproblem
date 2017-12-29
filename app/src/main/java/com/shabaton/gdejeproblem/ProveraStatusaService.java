@@ -54,13 +54,13 @@ public class ProveraStatusaService extends Service {
 
     public  Thread thread;
 
-    public void inicijalizuj()
+    public void inicijalizuj(String token)
     {
         thread = new Thread() {
             public void run() {
                 try {
                     java.net.URL uu;
-                    uu =new URL("https://www.kspclient.geasoft.net/definicija.php");
+                    uu = new URL("https://www.kspclient.geasoft.net/definicija.php");
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -74,16 +74,7 @@ public class ProveraStatusaService extends Service {
                     }
                     JSONObject glavni = new JSONObject(content);
 
-                    JSONArray jsonSluzbe = glavni.getJSONArray("sluzbe");
-                    JSONArray jsonVrste = glavni.getJSONArray("vrste");
                     JSONArray jsonStatusi = glavni.getJSONArray("statusi");
-
-                    for(int i = 0; i < jsonSluzbe.length();i++)
-                    {
-                        JSONObject obj = jsonSluzbe.getJSONObject(i);
-                        Sluzba s = new Sluzba(obj.getInt("id"), obj.getString("naziv"), obj.getString("ikonica"), obj.getString("datum"));
-                        sluzbe.add(s);
-                    }
 
                     for(int i = 0; i < jsonStatusi.length();i++)
                     {
@@ -92,20 +83,37 @@ public class ProveraStatusaService extends Service {
                         statusi.add(s);
                     }
 
-                    for(int i = 0; i < jsonVrste.length();i++)
-                    {
-                        JSONObject obj = jsonVrste.getJSONObject(i);
+                    uu = new URL("https://www.kspclient.geasoft.net/sluzba_api.php?token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    connection = (HttpURLConnection) uu.openConnection();
+                    connection.setRequestMethod("GET");
+                    rd = connection.getInputStream();
+                    isw = new InputStreamReader(rd);
+                    content = "";
+                    data = isw.read();
+                    while (data != -1) {
+                        char current = (char) data;
+                        data = isw.read();
+                        content += current;
+                    }
+                    Log.i("Sluzbe JSON: ", content);
 
-                        int idSluzbe = obj.getInt("id_sluzbe");
+                    glavni = new JSONObject(content);
 
-                        for(Sluzba s : sluzbe)
-                        {
-                            if(s.id == idSluzbe) {
-                                Vrsta v = new Vrsta(obj.getInt("id"), obj.getString("naziv"), s);
-                                vrste.add(v);
-                                break;
-                            }
-                        }
+                    JSONArray nizSluzbe = glavni.getJSONArray("sluzbe");
+                    for (int i = 0; i < nizSluzbe.length(); i++) {
+                        JSONObject sluzb = nizSluzbe.getJSONObject(i);
+                        Sluzba s = new Sluzba(sluzb.getInt("id"), sluzb.getString("naziv"), sluzb.getString("ikonica"), sluzb.getString("datum"));
+                        s.tip = sluzb.getInt("tip");
+                        sluzbe.add(s);
+                    }
+
+                    JSONArray nizVrste = glavni.getJSONArray("vrste");
+                    for (int i = 0; i < nizVrste.length(); i++) {
+                        JSONObject vrsta = nizVrste.getJSONObject(i);
+                        int idS = vrsta.getInt("id_sluzbe");
+                        Sluzba ss = sluzba(idS);
+                        Vrsta v = new Vrsta(vrsta.getInt("id"), vrsta.getString("naziv"), ss);
+                        vrste.add(v);
                     }
 
                 } catch (Exception e) {
@@ -155,7 +163,26 @@ public class ProveraStatusaService extends Service {
         mNotifyManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
 
-        inicijalizuj();
+
+        final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (mUser != null) {
+            try {
+                mUser.getToken(false)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    String idToken = task.getResult().getToken();
+                                    inicijalizuj(idToken);
+                                } else {
+                                    Toast.makeText(ProveraStatusaService.this, R.string.greska_token, Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 
         new Thread(new Runnable(){
             public void run() {
@@ -168,7 +195,7 @@ public class ProveraStatusaService extends Service {
 
 
                     final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-                    if (mUser == null)
+                    if (mUser == null || !sharedPref.getBoolean("notif_status", false))
                         break;
                     try {
                         mUser.getToken(false)
