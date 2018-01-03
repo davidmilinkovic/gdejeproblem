@@ -17,7 +17,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -35,7 +42,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -212,6 +226,31 @@ public class KorisnikFragment extends Fragment implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+                            RequestQueue queue = Volley.newRequestQueue(getActivity());
+                            String url = "https://kspclient.geasoft.net/kreiraj_korisnika.php?email="+user.getEmail();
+                            StringRequest postRequest = new StringRequest(Request.Method.GET, url,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if(response.contains("da"))
+                                            {
+                                                HoumtaunFragment frag = new HoumtaunFragment();
+                                                frag.show(getActivity().getSupportFragmentManager(), "Houmtaunt");
+                                            }
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getActivity(), getActivity().getString(R.string.greska) + error.getMessage(), Toast.LENGTH_LONG).show();
+
+                                        }
+                                    }
+                            );
+                            queue.add(postRequest);
+
+
                             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                             Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
                             if(obavestenja) {

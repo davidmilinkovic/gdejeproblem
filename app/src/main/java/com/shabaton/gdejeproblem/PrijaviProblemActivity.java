@@ -520,7 +520,9 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 finish();
                 return true;
             case R.id.menu_prijava_otkacaj:
+                item.setEnabled(false);
                 final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
                 mUser.getToken(false)
                         .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                             public void onComplete(@NonNull Task<GetTokenResult> task) {
@@ -529,6 +531,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                                     dodaj(idToken);
                                 } else {
                                     Toast.makeText(PrijaviProblemActivity.this, R.string.greska_token, Toast.LENGTH_LONG).show();
+                                    item.setEnabled(true);
                                 }
                             }
                         });
@@ -540,7 +543,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
     private void greska(String tekst)
     {
         Snackbar.make(findViewById(R.id.koordinator_prijava), tekst, Snackbar.LENGTH_LONG).show();
-
+        ((MenuItem)findViewById(R.id.menu_prijava_otkacaj)).setEnabled(true);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

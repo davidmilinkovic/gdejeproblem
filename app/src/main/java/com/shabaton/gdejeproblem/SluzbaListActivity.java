@@ -34,6 +34,8 @@ public class SluzbaListActivity extends BaseActivity {
      * device.
      */
 
+    Boolean samoJavni = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +96,11 @@ public class SluzbaListActivity extends BaseActivity {
                 setResult(RESULT_OK, intent);
                 finish();
             }
+            else if(samoJavni) {
+                setResult(RESULT_CANCELED, null);
+                finish();
+            }
+
         }
     }
 
@@ -115,7 +122,18 @@ public class SluzbaListActivity extends BaseActivity {
 
         public void addItems(List<Sluzba> sluzbe) {
             this.mValues = sluzbe;
+            if(sluzbe.size() == 1)
+            {
+                samoJavni = true;
+                Activity context = SluzbaListActivity.this;
+                Sluzba s = sluzbe.get(0);
+                Intent intent = new Intent(context, SluzbaDetailActivity.class);
+                intent.putExtra(SluzbaDetailActivity.ARG_ITEM_ID, Integer.toString(s.id));
+                intent.putExtra("naslov", s.naziv);
+                context.startActivityForResult(intent, 69);
+            }
             notifyDataSetChanged();
+
         }
 
         @Override

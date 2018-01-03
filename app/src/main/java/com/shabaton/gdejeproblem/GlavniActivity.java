@@ -25,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
@@ -58,7 +59,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_glavni);
-
+        Toast.makeText(this, Integer.toString(StaticDataProvider.opstine.size()), Toast.LENGTH_SHORT).show();
         Boolean prviPut = Boolean.valueOf(Alati.citajPref(GlavniActivity.this, PREF_USER_FIRST_TIME, "true"));
 
 
@@ -329,6 +330,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.popBackStack();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, fragment, tag).commit();
 
 

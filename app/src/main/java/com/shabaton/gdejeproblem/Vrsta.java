@@ -47,7 +47,7 @@ public class Vrsta implements Serializable {
         return naziv;
     }
 
-    public static void Dodaj(int id_sluzbe, String naziv, PregledSluzbeVrsteFragment frag, String token, Dialog loading)
+   /* public static void Dodaj(int id_sluzbe, String naziv, PregledSluzbeVrsteFragment frag, String token, Dialog loading)
     {
         RequestQueue queue = Volley.newRequestQueue(frag.getActivity());
         String url = "https://kspclient.geasoft.net/vrsta_api.php";
@@ -125,7 +125,7 @@ public class Vrsta implements Serializable {
             }
         };
         queue.add(postRequest);
-    }
+    }*/
 }
 
 

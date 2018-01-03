@@ -108,7 +108,7 @@ public class PocetniFragment extends Fragment {
                                         swajp.setRefreshing(false);
                                         txtBr.setText("0");
                                         txtBrRes.setText("0");
-                                        Glide.with(PocetniFragment.this).load(R.drawable.t0).fitCenter().into(img);
+                                        if(img != null && getActivity() != null) Glide.with(getActivity()).load(R.drawable.t0).fitCenter().into(img);
                                         ((TextView) v.findViewById(R.id.txtTitula)).setText(StaticDataProvider.titule.get(0).naziv);
                                         txtBrDoSledece.setText(Integer.toString(StaticDataProvider.titule.get(1).brProblema));
                                     }

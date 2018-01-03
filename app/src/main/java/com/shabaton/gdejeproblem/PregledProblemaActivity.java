@@ -120,7 +120,7 @@ public class PregledProblemaActivity extends BaseActivity {
             public void onClick(View view) {
                 SpisakStatusaFragment spisakStatusa = new SpisakStatusaFragment();
                 spisakStatusa.prob = p;
-                spisakStatusa.show(getSupportFragmentManager(), "SpisakStatusa");
+                spisakStatusa.show(PregledProblemaActivity.this.getSupportFragmentManager(), "SpisakStatusa");
 
             }
         });
