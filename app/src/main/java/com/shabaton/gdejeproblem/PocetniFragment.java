@@ -110,7 +110,7 @@ public class PocetniFragment extends Fragment {
                                         txtBrRes.setText("0");
                                         Glide.with(PocetniFragment.this).load(R.drawable.t0).fitCenter().into(img);
                                         ((TextView) v.findViewById(R.id.txtTitula)).setText(StaticDataProvider.titule.get(0).naziv);
-                                        txtBrRes.setText(StaticDataProvider.titule.get(1).brProblema);
+                                        txtBrDoSledece.setText(Integer.toString(StaticDataProvider.titule.get(1).brProblema));
                                     }
                                 }
                             });

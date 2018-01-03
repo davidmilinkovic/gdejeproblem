@@ -160,7 +160,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         String mesto = "";
         if(ima)
         {
-            adresa = addresses.get(0).getAddressLine(0);
+            adresa = Alati.Lat(addresses.get(0).getAddressLine(0));
             mesto = addresses.get(0).getLocality();
         }
         return new Pair<>(adresa, mesto);
