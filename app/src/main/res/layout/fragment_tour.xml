@@ -50,7 +50,7 @@
                 android:layout_gravity="center_horizontal"
                 android:paddingHorizontal="48dp"
                 android:text="Probni opisaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-                android:textColor="#BBB9C7" />
+                android:textColor="#FFFFFF" />
 
 
         </LinearLayout>

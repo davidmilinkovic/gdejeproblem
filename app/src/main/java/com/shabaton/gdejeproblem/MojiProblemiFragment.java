@@ -87,7 +87,7 @@ public class MojiProblemiFragment extends Fragment {
             }
         });
 
-        if(savedInstanceState == null) setupRecyclerView();
+        setupRecyclerView();
 
         return view;
     }

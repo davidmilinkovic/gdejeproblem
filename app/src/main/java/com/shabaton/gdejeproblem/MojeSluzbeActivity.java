@@ -57,15 +57,13 @@ public class MojeSluzbeActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final CharSequence[] items = {"Kreiraj službu", "Prijavi se za postojeću službu"};
+                final CharSequence[] items = {"Prijavi se za postojeću službu"};
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MojeSluzbeActivity.this);
-                builder.setTitle("Kreiranje službe");
+                builder.setTitle("Sluzbe");
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        if (item == 0) {
-                            // kreiranje sluzbe
-                        } else if (item == 1) {
+                       if (item == 0) {
                             Toast.makeText(MojeSluzbeActivity.this, "Nije još implementirano", Toast.LENGTH_LONG).show();
                         }
                     }

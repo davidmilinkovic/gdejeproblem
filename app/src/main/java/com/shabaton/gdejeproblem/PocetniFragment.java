@@ -57,17 +57,16 @@ public class PocetniFragment extends Fragment {
         swajp.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ucitajPodatke(v);
+                ucitajPodatke(v, true);
             }
         });
 
-        if(savedInstanceState == null)
-            ucitajPodatke(v);
+        ucitajPodatke(v, false);
 
         return v;
     }
 
-    private void ucitajPodatke(View v) {
+    private void ucitajPodatke(View v, Boolean osvezi) {
         swajp.setRefreshing(true);
 
         ((TextView)v.findViewById(R.id.txt_dobrodosli)).setText("Dobrodošli, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
@@ -77,6 +76,7 @@ public class PocetniFragment extends Fragment {
         TextView txtBr = v.findViewById(R.id.br_problema);
         TextView txtBrRes = v.findViewById(R.id.br_prihvacenih);
         TextView txtBrDoSledece = v.findViewById(R.id.br_dosledece);
+        ImageView img = (ImageView)v.findViewById(R.id.imgTitula);
         ProgressBar prog = v.findViewById(R.id.progressBar3);
 
         ((Button)v.findViewById(R.id.button4)).setOnClickListener(new View.OnClickListener() {
@@ -97,7 +97,7 @@ public class PocetniFragment extends Fragment {
                     public void onComplete(@NonNull Task<GetTokenResult> task) {
                         if (task.isSuccessful()) {
                             String idToken = task.getResult().getToken();
-                            model.problemi = null;
+                            if(osvezi) model.problemi = null;
                             Pair<MutableLiveData<List<ProblemViewModel.Problem>>, MutableLiveData<Boolean>> pp = model.dajProbleme(idToken);
 
                             pp.second.observe((AppCompatActivity) getActivity(), new Observer<Boolean>() {
@@ -108,6 +108,7 @@ public class PocetniFragment extends Fragment {
                                         swajp.setRefreshing(false);
                                         txtBr.setText("0");
                                         txtBrRes.setText("0");
+                                        Glide.with(PocetniFragment.this).load(R.drawable.t0).fitCenter().into(img);
                                         ((TextView) v.findViewById(R.id.txtTitula)).setText(StaticDataProvider.titule.get(0).naziv);
                                         txtBrRes.setText(StaticDataProvider.titule.get(1).brProblema);
                                     }
@@ -135,7 +136,7 @@ public class PocetniFragment extends Fragment {
                                                 trenutnaTitula = StaticDataProvider.titule.get(i);
                                                 if(i != StaticDataProvider.titule.size()-1) sledecaTitula = StaticDataProvider.titule.get(i+1);
                                             }
-
+                                        Glide.with(getActivity()).load(getResources().getIdentifier(trenutnaTitula.slika, "drawable", getActivity().getPackageName())).fitCenter().into(img);
                                         ((TextView) v.findViewById(R.id.txtTitula)).setText(trenutnaTitula.naziv);
                                         txtBrRes.setText(Integer.toString(resenih));
 

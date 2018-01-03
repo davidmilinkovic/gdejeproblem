@@ -50,7 +50,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:text="Probni opis"
-                android:textColor="#BBB9C7" />
+                android:textColor="#FFFFFF" />
 
 
         </LinearLayout>

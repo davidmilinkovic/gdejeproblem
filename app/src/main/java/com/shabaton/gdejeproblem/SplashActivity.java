@@ -53,25 +53,8 @@ public class SplashActivity extends BaseActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        SluzbaViewModel sluzbaViewModel = ViewModelProviders.of(this).get(SluzbaViewModel.class);
-        final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mUser.getToken(false)
-        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-           public void onComplete(@NonNull Task<GetTokenResult> task) {
-               if (task.isSuccessful()) {
-                   String idToken = task.getResult().getToken();
-                   sluzbaViewModel.dajSluzbe(idToken).observe(SplashActivity.this, new Observer<List<Sluzba>>() {
-                       @Override
-                       public void onChanged(@Nullable List<Sluzba> sluzbe) {
-                           // ucitane su sluzbe, a samim tim i vrste
-                           Intent intent = new Intent(SplashActivity.this, GlavniActivity.class);
-                           startActivity(intent);
-                           finish();
-                       }
-                   });
-               }
-           }
-       });
+        Intent intent = new Intent(SplashActivity.this, GlavniActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

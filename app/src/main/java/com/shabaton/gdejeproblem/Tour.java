@@ -34,10 +34,13 @@ public class Tour extends AppCompatActivity {
 
     private ImageView[] indikatori;
 
-    public static String[] naslovi = {"Ovo je prvi naslov", "A ovo je drugi", "Poslednji, treci"};
-    public static String[] opisi = {"Hehe", "Sus", "Haaaaaaaaaaaaj"};
-    public static String[] boje = {"#283593", "#c62828", "#2e7d32"};
-    public static int[] slike = {R.drawable.common_google_signin_btn_icon_dark_pressed, R.drawable.nemaslike, R.drawable.gloglo};
+    public static String[] naslovi = {"Gde je problem?", "Prijavite problem jednostavno", "Lista Vaših problema", "Neka nadmetanje za titulom počne!"};
+    public static String[] opisi = {"Aplikacija namenjena prijavljivanju problema u gradovima, firmama, udruženjima...",
+                                    "Izabertie službu kojoj problem prijavljujete, vrstu problema, lokaciju, a možete dodati i fotografiju i opis problema. To je sve!",
+                                    "U svakom trenutku možete videti sve probleme koje ste prijavili, kao i njihov status koji postavljaju nadležne službe.",
+                                    "Sa određenim brojem problema koje ste prijavili i koji su rešeni, dobijate određene titule."};
+    public static String[] boje = {"#b71c1c", "#0d47a1", "#33691e", "#fdd835"};
+    public static int[] slike = {R.drawable.a1, R.drawable.tur2, R.drawable.tur3, R.drawable.tur4};
 
 
     @Override
@@ -53,11 +56,12 @@ public class Tour extends AppCompatActivity {
         ImageView ind0 = (ImageView) findViewById(R.id.intro_indicator_0);
         ImageView ind1 = (ImageView) findViewById(R.id.intro_indicator_1);
         ImageView ind2 = (ImageView) findViewById(R.id.intro_indicator_2);
+        ImageView ind3 = (ImageView) findViewById(R.id.intro_indicator_3);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         CoordinatorLayout mCoordinator = (CoordinatorLayout) findViewById(R.id.main_content);
 
-        indikatori = new ImageView[]{ind0, ind1, ind2};
+        indikatori = new ImageView[]{ind0, ind1, ind2, ind3};
 
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -71,7 +75,7 @@ public class Tour extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                int colorUpdate = (Integer) evaluator.evaluate(positionOffset, Color.parseColor(boje[position]), Color.parseColor(boje[position == 2 ? position : position + 1]));
+                int colorUpdate = (Integer) evaluator.evaluate(positionOffset, Color.parseColor(boje[position]), Color.parseColor(boje[position == 3 ? position : position + 1]));
                 mViewPager.setBackgroundColor(colorUpdate);
             }
 
@@ -92,9 +96,12 @@ public class Tour extends AppCompatActivity {
                     case 2:
                         mViewPager.setBackgroundColor(Color.parseColor(boje[0]));
                         break;
+                    case 3:
+                        mViewPager.setBackgroundColor(Color.parseColor(boje[0]));
+                        break;
                 }
-                btnSledeci.setVisibility(position == 2 ? View.GONE : View.VISIBLE);
-                btnKraj.setVisibility(position == 2 ? View.VISIBLE : View.GONE);
+                btnSledeci.setVisibility(position == 3 ? View.GONE : View.VISIBLE);
+                btnKraj.setVisibility(position == 3 ? View.VISIBLE : View.GONE);
             }
 
             @Override

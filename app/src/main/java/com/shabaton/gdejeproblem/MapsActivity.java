@@ -68,7 +68,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng marker = new LatLng(getIntent().getDoubleExtra("latitude", 44.752993), getIntent().getDoubleExtra("longitude", 19.697438));
+        String lat, lng;
+        lat = getIntent().getStringExtra("latitude");
+        lng = getIntent().getStringExtra("longitude");
+        LatLng marker;
+        if(!lat.isEmpty()) marker = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        else marker = new LatLng(44.752993,  19.697438);
         editMode = getIntent().getBooleanExtra("potvrda", true);
         if(!editMode)
         {
@@ -207,7 +212,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
-            markerOptions.title(getString(R.string.prijavi_problem_content_trenutna_lokacija));
+            markerOptions.title(getString(R.string.onMapReady_izabrana_lokacija));
 
             tren = mMap.addMarker(markerOptions);
             ab.setTitle(LokacijaTekst().first);

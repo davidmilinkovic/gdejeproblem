@@ -233,8 +233,14 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 Intent intent = new Intent(this, MapsActivity.class);
                 if(curLocation != null)
                 {
-                    intent.putExtra("latitude", curLocation.getLatitude());
-                    intent.putExtra("longitude", curLocation.getLongitude());
+                    intent.putExtra("latitude", Double.toString(curLocation.getLatitude()));
+                    intent.putExtra("longitude", Double.toString(curLocation.getLongitude()));
+
+                }
+                else
+                {
+                    intent.putExtra("latitude", "44.752993");
+                    intent.putExtra("longitude", "19.697438");
                 }
                 intent.putExtra("potvrda", true);
                 startActivityForResult(intent, 420);
@@ -562,7 +568,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 if(resultCode == RESULT_OK) {
                     int idVrste = Integer.parseInt(data.getStringExtra("id_vrste"));
                     TextView txt = (TextView) findViewById(R.id.textView2);
-                    txt.setText(getString(R.string.prijavi_problem_izabrana_vrsta) + data.getStringExtra("naziv_vrste"));
+                    txt.setText(getString(R.string.prijavi_problem_izabrana_vrsta) + " " +data.getStringExtra("naziv_vrste"));
                     txt.setVisibility(View.VISIBLE);
                     izabranId = data.getStringExtra("id_vrste");
                 }

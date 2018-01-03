@@ -88,7 +88,9 @@ public class ProblemViewModel extends ViewModel {
                             JSONObject sta = statusi.getJSONObject(j);
                             Status s = StaticDataProvider.status(sta.getInt("id"));
                             String datum = sta.getString("datum");
-                            p.statusi.add(new StatusEntry(s, datum, "Nema komentara"));
+                            String komentar = sta.getString("komentar");
+                            if(komentar.isEmpty()) komentar = "Nema komentara";
+                            p.statusi.add(new StatusEntry(s, datum, komentar));
                         }
                         lista.add(p);
                     }

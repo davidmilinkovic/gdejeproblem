@@ -1,5 +1,7 @@
 package com.shabaton.gdejeproblem;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,10 +10,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,8 +31,13 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+
+import java.util.List;
 
 public class GlavniActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
          KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
@@ -47,6 +56,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_glavni);
 
         Boolean prviPut = Boolean.valueOf(Alati.citajPref(GlavniActivity.this, PREF_USER_FIRST_TIME, "true"));
@@ -97,15 +107,19 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         promeniKorisnika();
 
         if(mAuth.getCurrentUser() != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, new PocetniFragment(), "PocetniFragment").commit();
-            navigationView.setCheckedItem(R.id.nav_home);
+            if(savedInstanceState == null) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.fragment_container, new PocetniFragment(), "PocetniFragment").commit();
+                navigationView.setCheckedItem(R.id.nav_home);
+            }
         }
         else
         {
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, new KorisnikFragment(), "KorisnikFragment").commit();
             navigationView.setCheckedItem(R.id.nav_korisnik);
+
         }
 
 
@@ -187,7 +201,25 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
             txtNavPodNaslov.setText(currentUser.getEmail());
             Glide.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
             prijavljen = true;
-
+            SluzbaViewModel sluzbaViewModel = ViewModelProviders.of(this).get(SluzbaViewModel.class);
+            final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+            if(mUser != null) {
+                mUser.getToken(false)
+                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                if (task.isSuccessful()) {
+                                    String idToken = task.getResult().getToken();
+                                    sluzbaViewModel.dajSluzbe(idToken).observe(GlavniActivity.this, new Observer<List<Sluzba>>() {
+                                        @Override
+                                        public void onChanged(@Nullable List<Sluzba> sluzbe) {
+                                            // ucitane su sluzbe u Static Data Provider, a samim tim i vrste
+                                            // ovo je malko debilno, al jbg
+                                        }
+                                    });
+                                }
+                            }
+                        });
+            }
         } else {
             txtNavNaslov.setText(R.string.niste_prijavljeni);
             txtNavPodNaslov.setText("");

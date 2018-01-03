@@ -109,6 +109,7 @@ public class UploadSlikeService extends Service {
         int rotacija = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
         Bitmap bitmap = BitmapFactory.decodeFile(putanja);
+        bitmap = RotirajBitmap(bitmap, exifToDegrees(rotacija));
 
         int sirina = bitmap.getWidth();
         int visina = bitmap.getHeight();
@@ -130,7 +131,6 @@ public class UploadSlikeService extends Service {
         }
 
         bitmap = Bitmap.createScaledBitmap(bitmap, novaSirina, novaVisina, false);
-        bitmap = RotirajBitmap(bitmap, exifToDegrees(rotacija));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
