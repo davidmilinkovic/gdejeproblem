@@ -226,7 +226,7 @@ public class KorisnikFragment extends Fragment implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-
+                            /* Ipak ne
                             RequestQueue queue = Volley.newRequestQueue(getActivity());
                             String url = "https://kspclient.geasoft.net/kreiraj_korisnika.php?email="+user.getEmail();
                             StringRequest postRequest = new StringRequest(Request.Method.GET, url,
@@ -248,7 +248,7 @@ public class KorisnikFragment extends Fragment implements
                                         }
                                     }
                             );
-                            queue.add(postRequest);
+                            queue.add(postRequest); */
 
 
                             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());

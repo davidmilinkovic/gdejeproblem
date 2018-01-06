@@ -125,8 +125,18 @@
         <activity
             android:name=".PregledSluzbeActivity"
             android:label="Pregled službe"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <service
+            android:name=".NotifService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".PrijavaZaSluzbuActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"
-            />
+            android:theme="@style/AppTheme">
+
+        </activity>
     </application>
 
 </manifest>

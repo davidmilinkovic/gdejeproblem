@@ -23,6 +23,7 @@ public class SluzbaViewModel extends ViewModel {
 
     public MutableLiveData<List<Sluzba>> sluzbe = null;
     public MutableLiveData<List<Vrsta>> vrste = null;
+    public MutableLiveData<List<Sluzba>> sveSluzbe = null;
 
     public MutableLiveData<List<Sluzba>> dajSluzbe(String token) {
         if(sluzbe == null) {
@@ -31,6 +32,14 @@ public class SluzbaViewModel extends ViewModel {
             ucitajSluzbe(token);
         }
         return sluzbe;
+    }
+
+    public MutableLiveData<List<Sluzba>> dajSveSluzbe(String token) {
+        if(sveSluzbe == null) {
+            sveSluzbe = new MutableLiveData<>();
+            ucitajSveSluzbe(token);
+        }
+        return sveSluzbe;
     }
 
     public void ucitajSluzbe(String token) {
@@ -84,6 +93,46 @@ public class SluzbaViewModel extends ViewModel {
 
                     sluzbe.postValue(lstSluzbe);
                     vrste.postValue(lstVrste);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
+
+
+    }
+
+    public void ucitajSveSluzbe(String token) {
+        Thread thread = new Thread() {
+            public void run() {
+                try {
+                    final List<Sluzba> lstSluzbe = new ArrayList<>();
+                    URL uu = new URL("https://www.kspclient.geasoft.net/sluzba_api.php?tip=sve&token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
+                    connection.setRequestMethod("GET");
+                    InputStream rd = connection.getInputStream();
+                    InputStreamReader isw = new InputStreamReader(rd);
+                    String content = "";
+                    int data = isw.read();
+                    while (data != -1) {
+                        char current = (char) data;
+                        data = isw.read();
+                        content += current;
+                    }
+                    Log.i("Sluzbe JSON: ", content);
+
+                    JSONObject glavni = new JSONObject(content);
+
+                    JSONArray nizSluzbe = glavni.getJSONArray("sluzbe");
+                    for (int i = 0; i < nizSluzbe.length(); i++) {
+                        JSONObject sluzb = nizSluzbe.getJSONObject(i);
+                        Sluzba s = new Sluzba(sluzb.getInt("id"), sluzb.getString("naziv"), sluzb.getString("ikonica"), sluzb.getString("datum"));
+                        s.tip = sluzb.getInt("tip");
+                        lstSluzbe.add(s);
+                    }
+                    sveSluzbe.postValue(lstSluzbe);
 
                 } catch (Exception e) {
                     e.printStackTrace();

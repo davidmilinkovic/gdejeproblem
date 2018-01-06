@@ -1,9 +1,23 @@
 package com.shabaton.gdejeproblem;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,10 +32,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by david on 16.12.2017.
- */
+import static android.app.Activity.RESULT_OK;
 
 public class Alati {
 
@@ -48,6 +62,55 @@ public class Alati {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(settingName, settingValue);
         editor.apply();
+    }
+
+    public static void Sabskrajb(int id_sluzbe, Activity kontekst)
+    {
+        final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        mUser.getToken(false)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()) {
+                            String idToken = task.getResult().getToken();
+                            RequestQueue queue = Volley.newRequestQueue(kontekst);
+                            String url = "https://kspclient.geasoft.net/sluzba_api.php";
+                            StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                                    new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if (response.contains("OK"))
+                                            {
+                                                Toast.makeText(kontekst, "Uspešno ste se prijavili za službu. Na email ćemo Vam poslati obaveštenje o prijemu kada Vas administrator potvrdi.", Toast.LENGTH_LONG).show();
+                                                kontekst.finish();
+                                            }
+                                        }
+                                    },
+                                    new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(kontekst, error.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                            ) {
+                                @Override
+                                protected Map<String, String> getParams() {
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("email", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                    params.put("tip", "prijava");
+                                    params.put("id", Integer.toString(id_sluzbe));
+                                    params.put("token", idToken);
+                                    params.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                    return params;
+                                }
+                            };
+                            queue.add(postRequest);
+                        } else {
+                            Toast.makeText(kontekst, R.string.greska_token, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
     }
 
 }

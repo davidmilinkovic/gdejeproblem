@@ -64,7 +64,7 @@ public class MojeSluzbeActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
                        if (item == 0) {
-                            Toast.makeText(MojeSluzbeActivity.this, "Nije još implementirano", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(MojeSluzbeActivity.this, PrijavaZaSluzbuActivity.class));
                         }
                     }
                 });
