@@ -177,16 +177,15 @@ public class KorisnikFragment extends Fragment implements
     private void signOut() {
 
         mAuth.signOut();
-        /*
         Auth.GoogleSignInApi.signOut(((GlavniActivity)getActivity()).mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(@NonNull Status status) {
-
+                        ((GlavniActivity) getActivity()).promeniKorisnika();
+                        updateUI(null);
                     }
-                });*/
-        ((GlavniActivity) getActivity()).promeniKorisnika();
-        updateUI(null);
+                });
+
     }
 
 

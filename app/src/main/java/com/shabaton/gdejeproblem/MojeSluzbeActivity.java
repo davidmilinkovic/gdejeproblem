@@ -74,10 +74,10 @@ public class MojeSluzbeActivity extends BaseActivity {
 
         recyclerView = findViewById(R.id.sluzba_list);
         assert recyclerView != null;
-        final MojeSluzbeAdapter adapter = new MojeSluzbeAdapter(StaticDataProvider.sluzbe);
+        final MojeSluzbeAdapter adapter = new MojeSluzbeAdapter(new ArrayList<Sluzba>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-
+        osveziSluzbe();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -90,6 +90,7 @@ public class MojeSluzbeActivity extends BaseActivity {
     }
 
     private void osveziSluzbe() {
+        swajp.setRefreshing(true);
         SluzbaViewModel model = ViewModelProviders.of(this).get(SluzbaViewModel.class);
         FirebaseAuth.getInstance().getCurrentUser().getToken(false)
                 .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {

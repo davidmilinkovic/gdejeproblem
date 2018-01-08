@@ -28,7 +28,7 @@
         android:title="@string/pref_title_izgled">
 
         <ListPreference
-            android:defaultValue="1"
+            android:defaultValue="sr"
             android:entries="@array/array_jezici"
             android:entryValues="@array/array_jezici_values"
             android:key="list_jezik"

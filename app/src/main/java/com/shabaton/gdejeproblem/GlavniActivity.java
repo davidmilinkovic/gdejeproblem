@@ -88,39 +88,40 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         }
 
         if (prviPut) {
-            Intent introIntent = new Intent(this, Tour.class);
-            introIntent.putExtra(PREF_USER_FIRST_TIME, prviPut);
-            startActivity(introIntent);
-        }
+        Intent introIntent = new Intent(this, Tour.class);
+        introIntent.putExtra(PREF_USER_FIRST_TIME, prviPut);
+        startActivity(introIntent);
+    }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_c);
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_c);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
+    navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        View nav_header = navigationView.getHeaderView(0);
-        txtNavNaslov = nav_header.findViewById(R.id.header_naslov);
-        txtNavPodNaslov = nav_header.findViewById(R.id.header_podnaslov);
-        headerSlika = nav_header.findViewById(R.id.headerSlika);
+    View nav_header = navigationView.getHeaderView(0);
+    txtNavNaslov = nav_header.findViewById(R.id.header_naslov);
+    txtNavPodNaslov = nav_header.findViewById(R.id.header_podnaslov);
+    headerSlika = nav_header.findViewById(R.id.headerSlika);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
+    mGoogleApiClient = new GoogleApiClient.Builder(this)
+                //.enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+    mGoogleApiClient.connect();
         mAuth = FirebaseAuth.getInstance();
         promeniKorisnika();
 
@@ -427,6 +428,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Toast.makeText(this, "Greska prilikom povezivanja sa Google servisima.", Toast.LENGTH_SHORT).show();
     }
 }

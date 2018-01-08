@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@color/svetlo_siva"/>
-    <!--
-        <item android:gravity="center" android:drawable="@drawable/splash">
-        </item>
-        android:width="200dp" android:height="217dp"  -->
+
+    <item android:width="200dp" android:height="217dp" android:gravity="center" android:drawable="@drawable/splash">
+    </item>
+
 
 </layer-list>
