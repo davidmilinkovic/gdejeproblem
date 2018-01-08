@@ -16,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,7 +41,7 @@ import com.google.firebase.auth.GetTokenResult;
 import java.util.List;
 
 public class GlavniActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
-         KorisnikFragment.OnFragmentInteractionListener, GoogleApiClient.OnConnectionFailedListener
+          GoogleApiClient.OnConnectionFailedListener
 
 {
 
@@ -115,18 +116,14 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         }
         else
         {
-
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, new KorisnikFragment(), "KorisnikFragment").commit();
             navigationView.setCheckedItem(R.id.nav_korisnik);
-
         }
-
-
-        osveziServis();
     }
 
     private void osveziServis() {
+        Log.i("Osvezi servis", "eee");
         stopService(new Intent(this, ProveraStatusaService.class));
         if(FirebaseAuth.getInstance().getCurrentUser() == null) return;
 
@@ -212,8 +209,9 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                                     sluzbaViewModel.dajSluzbe(idToken).observe(GlavniActivity.this, new Observer<List<Sluzba>>() {
                                         @Override
                                         public void onChanged(@Nullable List<Sluzba> sluzbe) {
-                                            // ucitane su sluzbe u Static Data Provider, a samim tim i vrste
-                                            // ovo je malko debilno, al jbg
+                                            // ucitane su sluzbe u StaticDataProvider klasu, a samim tim i vrste problema
+                                            // ovo je malko debilno, mora se priznati
+                                            // ako bude vremena, osmisliti manje debilnu arhitekturu
                                         }
                                     });
                                 }
@@ -318,8 +316,8 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         }
         else if(id == R.id.nav_pomoc)
         {
-            Intent intent = new Intent(this, Tour.class);
-            startActivity(intent);
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.gdejeproblem.geasoft.net/pomoc/"));
+            startActivity(browserIntent);
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
@@ -338,14 +336,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         }
         return true;
     }
-
-
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

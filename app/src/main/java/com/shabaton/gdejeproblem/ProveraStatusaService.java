@@ -268,7 +268,9 @@ public class ProveraStatusaService extends Service {
                             JSONObject sta = statusi.getJSONObject(j);
                             Status s = status(sta.getInt("id"));
                             String datum = sta.getString("datum");
-                            p.statusi.add(new StatusEntry(s, datum, "Nema komentara"));
+                            String komentar = sta.getString("komentar");
+                            if(komentar.isEmpty()) komentar = "Nema komentara";
+                            p.statusi.add(new StatusEntry(s, datum, komentar));
                         }
                         lista.add(p);
                     }
@@ -292,7 +294,7 @@ public class ProveraStatusaService extends Service {
                                 Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                                 mBuilder.setSound(alarmSound);
                                 mBuilder.setAutoCancel(true);
-                                mBuilder.setVibrate(new long[] { 300, 300, 300, 300, 300, 300 });
+                                mBuilder.setVibrate(new long[] { 300, 300, 300, 300 });
                                 mBuilder.setLights(Color.BLUE, 1000, 1000);
 
                                 Intent resultIntent = new Intent(ProveraStatusaService.this, PregledProblemaActivity.class);

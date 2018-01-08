@@ -14,6 +14,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,12 +28,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class PrijavaZaSluzbuActivity extends BaseActivity {
 
     private SwipeRefreshLayout swajp;
     private RecyclerView recyclerView;
+    List<Sluzba> trenutna = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,39 @@ public class PrijavaZaSluzbuActivity extends BaseActivity {
         });
         swajp.setRefreshing(true);
         osvezi();
+
+        ((TextView)findViewById(R.id.txtSluzbaPretraga)).addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(trenutna != null) {
+                    String tekst = ((TextView)findViewById(R.id.txtSluzbaPretraga)).getText().toString();
+                    List<Sluzba> nova = new ArrayList<Sluzba>();
+                    for(int j = 0; j < trenutna.size(); j++)
+                    {
+                        Sluzba s = trenutna.get(j);
+                        if(Pattern.compile(Pattern.quote(tekst), Pattern.CASE_INSENSITIVE).matcher(s.naziv).find() || tekst.isEmpty())
+                            nova.add(s);
+                    }
+                    SubscribeSluzbaAdapter adap = new SubscribeSluzbaAdapter(nova);
+                    recyclerView.setAdapter(adap);
+                    if(nova.size() == 0)
+                        findViewById(R.id.nijednaSluzba).setVisibility(View.VISIBLE);
+                    else
+                        findViewById(R.id.nijednaSluzba).setVisibility(View.INVISIBLE);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -83,9 +121,15 @@ public class PrijavaZaSluzbuActivity extends BaseActivity {
                             model.dajSveSluzbe(idToken).observe(PrijavaZaSluzbuActivity.this, new Observer<List<Sluzba>>() {
                                 @Override
                                 public void onChanged(@Nullable List<Sluzba> sluzbe) {
+                                    trenutna = sluzbe;
                                     swajp.setRefreshing(false);
                                     SubscribeSluzbaAdapter adap = new SubscribeSluzbaAdapter(sluzbe);
                                     recyclerView.setAdapter(adap);
+
+                                    if(sluzbe.size() == 0)
+                                        findViewById(R.id.nijednaSluzba).setVisibility(View.VISIBLE);
+                                    else
+                                        findViewById(R.id.nijednaSluzba).setVisibility(View.INVISIBLE);
                                 }
                             });
                         }

@@ -32,6 +32,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+// Sluzi za obavestenja koje sluzbe salju
+// Sluzi i da obavesti korisnika da je primljen u sluzbu
+
 public class NotifService extends Service {
     public NotifService() {
     }
