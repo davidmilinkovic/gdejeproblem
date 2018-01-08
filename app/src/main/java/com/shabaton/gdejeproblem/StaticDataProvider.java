@@ -30,7 +30,6 @@ public class StaticDataProvider {
     public static List<Vrsta> vrste = new ArrayList<Vrsta>();
     public static List<Status> statusi = new ArrayList<Status>();
     public static List<Titula> titule = new ArrayList<Titula>();
-    public static List<String> opstine = new ArrayList<String>();
 
     public static  Thread thread;
 
@@ -57,7 +56,6 @@ public class StaticDataProvider {
                     JSONObject glavni = new JSONObject(content);
 
                     statusi.clear();
-                    opstine.clear();
                     titule.clear();
 
                     JSONArray jsonStatusi = glavni.getJSONArray("statusi");
@@ -74,14 +72,6 @@ public class StaticDataProvider {
                         JSONObject obj = jsonTitule.getJSONObject(i);
                         Titula t = new Titula(obj.getInt("id"), obj.getInt("br_problema"), obj.getString("naziv"), obj.getString("slika"));
                         titule.add(t);
-                    }
-
-                    JSONArray jsonOpstine = glavni.getJSONArray("opstine");
-                    for(int i = 0; i < jsonOpstine.length();i++)
-                    {
-                        JSONObject obj = jsonOpstine.getJSONObject(i);
-                        String t = Alati.Lat(obj.getString("naziv"));
-                        opstine.add(t);
                     }
 
                 } catch (Exception e) {

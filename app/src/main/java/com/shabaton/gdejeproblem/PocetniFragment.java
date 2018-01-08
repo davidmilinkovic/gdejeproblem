@@ -1,19 +1,28 @@
 package com.shabaton.gdejeproblem;
 
+import android.*;
 import android.animation.ObjectAnimator;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +46,7 @@ public class PocetniFragment extends Fragment {
 
 
     private SwipeRefreshLayout swajp;
+    private RecyclerView recObavestenja;
 
     public PocetniFragment() {
 
@@ -61,8 +71,14 @@ public class PocetniFragment extends Fragment {
             }
         });
 
-        ucitajPodatke(v, false);
 
+        Glide.with(getActivity()).load(R.drawable.city).fitCenter().into((ImageView)v.findViewById(R.id.imgGrad));
+        recObavestenja = v.findViewById(R.id.obavestenja_list);
+        LinearLayoutManager mng = new LinearLayoutManager(getActivity());
+        recObavestenja.setLayoutManager(mng);
+
+
+        ucitajPodatke(v, false);
         return v;
     }
 
@@ -90,6 +106,7 @@ public class PocetniFragment extends Fragment {
         int idStatusResen = 1;
 
         ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
+        ObavestenjeViewModel obModel = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ObavestenjeViewModel.class);
 
         final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
         mUser.getToken(false)
@@ -158,11 +175,82 @@ public class PocetniFragment extends Fragment {
                                 }
                             });
 
+                            String mesto = ((GlavniActivity)getActivity()).mesto;
+                            if(mesto != "") {
+                                obModel.obavestenja = null;
+                                mesto = Alati.Lat(mesto);
+                                Log.i("Pocetni fragment", "Trazim obavestenja za "+mesto);
+                                MutableLiveData<List<Obavestenje>> ob = obModel.dajObavestenja(idToken, mesto);
+                                ob.observe(getActivity(), new Observer<List<Obavestenje>>() {
+                                    @Override
+                                    public void onChanged(@Nullable List<Obavestenje> obavestenjes) {
+                                        final ObavestenjaAdapter adapter = new ObavestenjaAdapter(obavestenjes);
+                                        Log.i("Pocetni fragment", "Broj obavestenja: "+Integer.toString(obavestenjes.size()));
+                                        recObavestenja.setAdapter(adapter);
+                                    }
+                                });
+                            }
+                            else
+                                Toast.makeText(getActivity(), "Nema mesta", Toast.LENGTH_LONG).show();
+
                         } else {
                             Toast.makeText(getActivity(), R.string.greska_token, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+    }
+
+    public class ObavestenjaAdapter
+            extends RecyclerView.Adapter<ObavestenjaAdapter.ObavestenjaHolder> {
+
+        private List<Obavestenje> mValues;
+
+        public ObavestenjaAdapter(List<Obavestenje> items) {
+            mValues = items;
+        }
+
+        @Override
+        public ObavestenjaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.obavestenje_content, parent, false);
+            return new ObavestenjaHolder(view);
+        }
+
+        public void addItems(List<Obavestenje> obs) {
+            this.mValues = obs;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onBindViewHolder(final ObavestenjaHolder holder, int position) {
+            holder.mItem = mValues.get(position);
+            holder.txtNaslov.setText(holder.mItem.naslov);
+            holder.txtTekst.setText(holder.mItem.tekst);
+            holder.txtSluzba.setText(holder.mItem.sluzba.naziv);
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return mValues.size();
+        }
+
+        public class ObavestenjaHolder extends RecyclerView.ViewHolder {
+            public final View mView;
+            public Obavestenje mItem;
+            public final TextView txtNaslov;
+            public final TextView txtTekst;
+            public final TextView txtSluzba;
+
+
+            public ObavestenjaHolder(View view) {
+                super(view);
+                mView = view;
+                txtNaslov = (TextView) view.findViewById(R.id.obNaslov);
+                txtTekst = (TextView) view.findViewById(R.id.obTekst);
+                txtSluzba = (TextView) view.findViewById(R.id.obSluzba);
+            }
+
+        }
     }
 
 

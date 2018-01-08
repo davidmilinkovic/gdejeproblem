@@ -64,6 +64,7 @@ public class Alati {
         editor.apply();
     }
 
+
     public static void Sabskrajb(int id_sluzbe, Activity kontekst)
     {
         final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();

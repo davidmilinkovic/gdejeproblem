@@ -1,10 +1,17 @@
 package com.shabaton.gdejeproblem;
 
+import android.*;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.icu.text.UnicodeSetSpanner;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +19,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -24,8 +32,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
@@ -38,7 +49,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class GlavniActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
           GoogleApiClient.OnConnectionFailedListener
@@ -48,6 +61,9 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
     public static final String PREF_USER_FIRST_TIME = "prvi_put";
     public GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
+    private LocationManager lm;
+    private Location curLocation = null;
+    public String mesto = "";
     private TextView txtNavNaslov;
     private TextView txtNavPodNaslov;
     private ImageView headerSlika;
@@ -57,9 +73,10 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_glavni);
-
+        lm = (LocationManager) getSystemService(LOCATION_SERVICE);
         Boolean prviPut = Boolean.valueOf(Alati.citajPref(GlavniActivity.this, PREF_USER_FIRST_TIME, "true"));
 
 
@@ -147,6 +164,20 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         }
     }
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 10: // lokacija
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    pribaviLokaciju();
+                else {
+                    curLocation = null;
+                }
+                return;
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -185,6 +216,62 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         }
     }
 
+    private void pribaviLokaciju()
+    {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+            }, 10);
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION,
+            }, 10);
+            return;
+        }
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    android.Manifest.permission.INTERNET,
+            }, 10);
+            return;
+        }
+        try {
+            curLocation = lm.getLastKnownLocation("network");
+            Log.i("Glavni aktiviti", "Lokacija pribavljena NETWORK");
+            dzioKouduj();
+        } catch (Exception ex){
+            try {
+                curLocation = lm.getLastKnownLocation("gps");
+                dzioKouduj();
+                Log.i("Glavni aktiviti", "Lokacija pribavljena GPS");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Nemoguće pribaviti trenutnu lokaciju.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    private void dzioKouduj() {
+        Geocoder geocoder;
+        List<Address> addresses = new ArrayList<Address>();
+        geocoder = new Geocoder(this, Locale.getDefault());
+        boolean ima = true;
+
+        try {
+            addresses = geocoder.getFromLocation(curLocation.getLatitude(), curLocation.getLongitude(), 1);
+        } catch (Exception e) {
+            ima = false;
+        }
+        mesto = "";
+        if(ima)
+            mesto = addresses.get(0).getLocality();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -194,6 +281,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         FirebaseUser currentUser = mAuth.getCurrentUser();
         osveziServis();
         if (currentUser != null) {
+            pribaviLokaciju();
             txtNavNaslov.setText(currentUser.getDisplayName());
             txtNavPodNaslov.setText(currentUser.getEmail());
             Glide.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);

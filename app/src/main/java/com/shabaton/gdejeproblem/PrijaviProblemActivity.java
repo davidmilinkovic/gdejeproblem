@@ -294,7 +294,6 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 dbg("Nemoguće pribaviti trenutnu lokaciju.");
             }
         }
-
     }
 
     private void dzioKouduj() {
