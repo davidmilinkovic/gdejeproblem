@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,6 +43,7 @@ public class StaticDataProvider {
                 try {
                     java.net.URL uu;
                     uu =new URL("https://www.kspclient.geasoft.net/definicija.php");
+
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();

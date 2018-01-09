@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -72,7 +73,7 @@ public class PocetniFragment extends Fragment {
         });
 
 
-        Glide.with(getActivity()).load(R.drawable.city).fitCenter().into((ImageView)v.findViewById(R.id.imgGrad));
+        Glide.with(getActivity()).load(R.drawable.city).into((ImageView)v.findViewById(R.id.imgGrad));
         recObavestenja = v.findViewById(R.id.obavestenja_list);
         LinearLayoutManager mng = new LinearLayoutManager(getActivity());
         recObavestenja.setLayoutManager(mng);
@@ -226,6 +227,15 @@ public class PocetniFragment extends Fragment {
             holder.txtNaslov.setText(holder.mItem.naslov);
             holder.txtTekst.setText(holder.mItem.tekst);
             holder.txtSluzba.setText(holder.mItem.sluzba.naziv);
+
+            holder.btnDismiss.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mValues.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, mValues.size());
+                }
+            });
         }
 
 
@@ -240,6 +250,7 @@ public class PocetniFragment extends Fragment {
             public final TextView txtNaslov;
             public final TextView txtTekst;
             public final TextView txtSluzba;
+            public final ImageButton btnDismiss;
 
 
             public ObavestenjaHolder(View view) {
@@ -248,6 +259,7 @@ public class PocetniFragment extends Fragment {
                 txtNaslov = (TextView) view.findViewById(R.id.obNaslov);
                 txtTekst = (TextView) view.findViewById(R.id.obTekst);
                 txtSluzba = (TextView) view.findViewById(R.id.obSluzba);
+                btnDismiss = (ImageButton) view.findViewById(R.id.btnDismiss);
             }
 
         }
