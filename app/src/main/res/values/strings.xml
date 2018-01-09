@@ -2,7 +2,6 @@
     <string name="app_name" translatable="false">Gde je problem?</string>
     <string name="button_prijava_problema">Prijavi problem</string>
     <string name="button_moji_problemi">Moji problemi</string>
-    <string name="button_opcije">Opcije</string>
 
     <string name="niste_prijavljeni">Niste prijavljeni</string>
     <string name="prijavi_se">Prijavi se</string>
@@ -22,9 +21,6 @@
     <string name="hint_mape_pretraga">Pretraga</string>
     <string name="moji_problemi_niste_podneli_problem">Za sada niste podneli ni jedan problem</string>
     <string name="moji_problemi_vrsta_problema">Vrsta problema</string>
-    <string name="moji_problemi_status" translatable="false">"Status: "</string>
-    <string name="moji_problemi_lokacija">Lokacija</string>
-    <string name="pregled_problema_nema_slike">Nema slike</string>
     <string name="prijavi_problem_content_vrsta_problema">Vrsta problema</string>
     <string name="prijavi_problem_content_izaberi_vrstu">Izaberite vrstu problema</string>
     <string name="prijavi_problem_content_lokacija">Lokacija</string>
@@ -52,14 +48,11 @@
     <string name="prijavi_problem_charSequence2">Ukloni fotografiju</string>
     <string name="prijavi_problem_kamera_naslov">Izaberi fotografiju</string>
     <string name="prijavi_problem_izabrana_vrsta">Izabrana vrsta: </string>
-    <string name="pref_title_obavestenja">Obaveštenja</string>
     <string name="pref_ucestalost">Učestalost provere</string>
     <string name="pref_title_izgled">Izgled</string>
     <string name="upload_slike_u_toku">Postavljanje fotografije na server je u toku...</string>
     <string name="postavljanje_fotografije_zavrseno">Postavljanje fotografije završeno</string>
     <string name="service_promenjen_status">Jednom od vaših problema je promenjen status</string>
-    <string name="greska">Greška</string>
-    <string name="problem_uspesno_dodat">Problem uspesno dodat</string>
     <string name="priajvljivanje_problema">Prijavljivanje problema</string>
     <string name="pref_tema">Tema</string>
     <string name="prijavi_problem_activity_369">Dodavanje u toku...</string>
@@ -106,10 +99,7 @@
         <item>86400000</item>
     </string-array>
     <string name="title_activity_tour">Tour</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_moje_sluzbe">Moje službe</string>
 
 

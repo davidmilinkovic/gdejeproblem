@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primarna">#b44c1c</color>
-    <color name="sekundarna">#3f0000</color>
-    <color name="akcent">#3d5a00</color>
-    <color name="secondaryTextColor">#ffffff</color>
-    <color name="siva">#9e9e9e</color>
     <color name="tamna_siva">#707070</color>
     <color name="svetlo_siva">#E1E2E1</color>
-    <color name="titula">#ff6d00</color>
 </resources>

@@ -52,7 +52,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -77,7 +77,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         editMode = getIntent().getBooleanExtra("potvrda", true);
         if(!editMode)
         {
-            findViewById(R.id.frame_pretraga).setVisibility(View.GONE);
+            //findViewById(R.id.frame_pretraga).setVisibility(View.GONE);
             tren = mMap.addMarker(new MarkerOptions().position(marker).title(getIntent().getStringExtra("adresa")));
             tren.showInfoWindow();
         }

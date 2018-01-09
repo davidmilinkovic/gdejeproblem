@@ -1,21 +1,13 @@
 package com.shabaton.gdejeproblem;
 
-import android.*;
 import android.animation.ObjectAnimator;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -40,7 +32,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PocetniFragment extends Fragment {
@@ -73,7 +64,7 @@ public class PocetniFragment extends Fragment {
         });
 
 
-        Glide.with(getActivity()).load(R.drawable.city).into((ImageView)v.findViewById(R.id.imgGrad));
+        Glide.with(getActivity()).load(R.drawable.priroda).centerCrop().into((ImageView)v.findViewById(R.id.imgGrad));
         recObavestenja = v.findViewById(R.id.obavestenja_list);
         LinearLayoutManager mng = new LinearLayoutManager(getActivity());
         recObavestenja.setLayoutManager(mng);

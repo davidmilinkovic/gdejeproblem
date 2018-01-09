@@ -3,7 +3,6 @@
     <string name="setting_jezik">Language</string>
     <string name="button_prijava_problema">Report a problem</string>
     <string name="button_moji_problemi" translatable="false">My problems</string>
-    <string name="button_opcije" translatable="false">Options</string>
     <string name="niste_prijavljeni">You\'re not signed in</string>
     <string name="prijavi_se">Sign in</string>
     <string name="prijava_za_aplikaciju_ksp">Sign in for the app \"Gde je problem?\"</string>
@@ -20,8 +19,6 @@
     <string name="hint_mape_pretraga">Search</string>
     <string name="moji_problemi_niste_podneli_problem">You haven\'t added any problems</string>
     <string name="moji_problemi_vrsta_problema">Problem type</string>
-    <string name="moji_problemi_lokacija">Location</string>
-    <string name="pregled_problema_nema_slike">No picture</string>
     <string name="prijavi_problem_content_vrsta_problema">Problem type</string>
     <string name="prijavi_problem_content_izaberi_vrstu">Choose the type of problem</string>
     <string name="prijavi_problem_content_lokacija">Location</string>
@@ -49,7 +46,6 @@
     <string name="pref_tema">Theme</string>
     <string name="pref_ucestalost">Frequency of checking</string>
     <string name="pref_title_izgled">Appearance</string>
-    <string name="pref_title_obavestenja">Notifications</string>
 
     <string-array name="array_teme">
         <item>Red</item>
@@ -66,11 +62,9 @@
         <item>2 hours</item>
         <item>1 day</item>
     </string-array>
-    <string name="greska">Error</string>
     <string name="upload_slike_u_toku">Upolading the photo to the server...</string>
     <string name="postavljanje_fotografije_zavrseno">Uploading the photo complete</string>
     <string name="service_promenjen_status">One of your problems\' status has been changed</string>
-    <string name="problem_uspesno_dodat">Problem succesfully added</string>
     <string name="priajvljivanje_problema">Reporting a problem</string>
     <string name="prijavi_problem_activity_369">Upload in progress...</string>
 </resources>

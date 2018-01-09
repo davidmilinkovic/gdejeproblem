@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:id="@+id/g1" android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
@@ -15,13 +15,13 @@
             android:icon="@drawable/ic_format_list_bulleted_black_24dp"
             android:title="@string/button_moji_problemi" />
     </group>
-    <group android:id="@+id/g2" android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_moje_sluzbe"
             android:icon="@drawable/ic_content_paste_black_24dp"
             android:title="Moje službe" />
     </group>
-    <group android:id="@+id/g3" android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_opcije"
             android:icon="@drawable/ic_menu_manage"

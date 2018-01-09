@@ -29,7 +29,6 @@
     </FrameLayout>
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_fullscreen"
         android:layout_width="match_parent"
         app:elevation="0dp"
         android:layout_height="wrap_content"
