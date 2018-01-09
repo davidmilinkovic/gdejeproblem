@@ -135,7 +135,7 @@ public class ProblemViewModel extends ViewModel {
                                 kontekst.startService(intent);
                             }
                             Intent povratak = new Intent();
-                            povratak.putExtra("poruka", kontekst.getString(R.string.problem_uspesno_dodat));
+                            povratak.putExtra("poruka", "Problem uspešno dodat");
                             kontekst.setResult(RESULT_OK, povratak);
                             kontekst.finish();
                         }
@@ -143,7 +143,7 @@ public class ProblemViewModel extends ViewModel {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(kontekst, kontekst.getString(R.string.greska) + error.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(kontekst, "Greška: "+ error.getMessage(), Toast.LENGTH_LONG).show();
 
                         }
                     }
