@@ -4,7 +4,10 @@ import android.animation.ObjectAnimator;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +35,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PocetniFragment extends Fragment {
@@ -176,9 +180,60 @@ public class PocetniFragment extends Fragment {
                                 ob.observe(getActivity(), new Observer<List<Obavestenje>>() {
                                     @Override
                                     public void onChanged(@Nullable List<Obavestenje> obavestenjes) {
+                                        SQLiteObavestenja mDbHelper = new SQLiteObavestenja(getContext());
+                                        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+                                        String[] projection = {"id", "obrisano", "notif"};
+                                        Cursor cursor = db.query("obavestenja", projection, null, null, null, null, null);
+                                        List<Long> idS = new ArrayList<>();
+                                        List<Long> obrisanoS = new ArrayList<>();
+                                        List<Long> notifS = new ArrayList<>();
+                                        while(cursor.moveToNext()) {
+                                            long id = cursor.getLong(cursor.getColumnIndexOrThrow("id"));
+                                            long ob = cursor.getLong(cursor.getColumnIndexOrThrow("obrisano"));
+                                            long notif = cursor.getLong(cursor.getColumnIndexOrThrow("notif"));
+                                            idS.add(id);
+                                            obrisanoS.add(ob);
+                                            notifS.add(notif);
+                                        }
+                                        cursor.close();
+
+                                        for(long id : idS)
+                                            Log.i("OB", Long.toString(id));
+
+                                        List<Obavestenje> zaBrisanje = new ArrayList<>();
+
+                                        for(Obavestenje o : obavestenjes)
+                                        {
+                                            int ind = idS.indexOf((long)o.id);
+                                            if(ind == -1) {
+                                                ContentValues values = new ContentValues();
+                                                values.put("id", (long)o.id);
+                                                values.put("obrisano", 0);
+                                                values.put("notif", 1);
+                                                db.insert("obavestenja", null, values);
+                                            }
+                                            else
+                                            {
+                                                if(obrisanoS.get(ind) == 1)
+                                                    zaBrisanje.add(o);
+                                                idS.remove(ind);
+                                                obrisanoS.remove(ind);
+                                                notifS.remove(ind);
+                                            }
+                                        }
+
+                                        for(Obavestenje o : zaBrisanje)
+                                            obavestenjes.remove(o);
+
+                                        for(long id : idS) { // zaostala od pre
+                                            String[] args = { Long.toString(id) };
+                                            db.delete("obavestenja", "id = ?", args);
+                                        }
+
                                         final ObavestenjaAdapter adapter = new ObavestenjaAdapter(obavestenjes);
-                                        Log.i("Pocetni fragment", "Broj obavestenja: "+Integer.toString(obavestenjes.size()));
                                         recObavestenja.setAdapter(adapter);
+
+                                        db.close();
                                     }
                                 });
                             }
@@ -222,6 +277,20 @@ public class PocetniFragment extends Fragment {
             holder.btnDismiss.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    SQLiteObavestenja mDbHelper = new SQLiteObavestenja(getContext());
+                    SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+                    String[] args = { Integer.toString(holder.mItem.id) };
+                    db.delete("obavestenja", "id = ?", args);
+
+                    ContentValues values = new ContentValues();
+                    values.put("id", holder.mItem.id);
+                    values.put("obrisano", 1);
+                    values.put("notif", 1);
+                    db.insert("obavestenja", null, values);
+
+                    db.close();
+
                     mValues.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, mValues.size());

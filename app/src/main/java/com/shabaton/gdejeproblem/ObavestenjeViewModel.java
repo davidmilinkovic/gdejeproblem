@@ -43,7 +43,6 @@ public class ObavestenjeViewModel extends ViewModel {
                     URL uu = new URL("https://www.kspclient.geasoft.net/obavestenja_api.php?token=" + token + "&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "&uid=" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "&mesto=" + mesto);;
                     URI uri = new URI(uu.getProtocol(), uu.getUserInfo(), uu.getHost(), uu.getPort(), uu.getPath(), uu.getQuery(), uu.getRef());
                     uu = uri.toURL();
-                    Log.i("LINK", uu.getQuery());
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     connection.setRequestProperty("Content-Type", "text/html; charset=utf-8");

@@ -107,8 +107,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
 
             trenutnaLokacija = savedInstanceState.getBoolean("trenutnaLokacija");
 
-            if(trenutnaLokacija)
-            {
+            if(trenutnaLokacija) {
                 FrameLayout frejm = (FrameLayout) findViewById(R.id.lokacija_frame);
                 for (int i = 0; i < frejm.getChildCount(); i++) {
                     View vv = frejm.getChildAt(i);
@@ -117,7 +116,6 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 }
                 frejm.setVisibility(View.GONE);
             }
-
 
             if(lat != "")
             {
@@ -189,7 +187,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                     }
                     frejm.setVisibility(View.GONE);
                     ((TextView)findViewById(R.id.txtViewLok)).setText("Izaberite lokaciju problema");
-                    pribaviLokaciju();
+                    pribaviLokaciju(false);
                 }
                 else {
                     trenutnaLokacija = false;
@@ -202,21 +200,8 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                     curLocation = null;
                 }
                 break;
-            case R.id.button3:
-                Intent intent = new Intent(this, MapsActivity.class);
-                if(curLocation != null)
-                {
-                    intent.putExtra("latitude", Double.toString(curLocation.getLatitude()));
-                    intent.putExtra("longitude", Double.toString(curLocation.getLongitude()));
-
-                }
-                else
-                {
-                    intent.putExtra("latitude", "44.752993");
-                    intent.putExtra("longitude", "19.697438");
-                }
-                intent.putExtra("potvrda", true);
-                startActivityForResult(intent, 420);
+            case R.id.button3: // lokacija
+                pribaviLokaciju(true);
                 break;
             case R.id.fab:
                 izaberiSliku();
@@ -235,7 +220,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
         {
             case 10: // lokacija
                 if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    pribaviLokaciju();
+                    pribaviLokaciju(false);
                 else {
                     CheckBox boks = (CheckBox) findViewById(R.id.checkBox);
                     boks.setChecked(false);
@@ -260,27 +245,28 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
     
-    private void pribaviLokaciju()
+    private void pribaviLokaciju(boolean naMapu)
     {
+        int kod = 10;
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
-            }, 10);
+            }, kod);
             return;
         }
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_COARSE_LOCATION,
-            }, 10);
+            }, kod);
             return;
         }
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED)
         {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.INTERNET,
-            }, 10);
+            }, kod);
             return;
         }
         try {
@@ -293,6 +279,20 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
             } catch (Exception e) {
                 dbg("Nemoguće pribaviti trenutnu lokaciju.");
             }
+        }
+        if(naMapu)
+        {
+            Intent intent = new Intent(this, MapsActivity.class);
+            if(curLocation != null) {
+                intent.putExtra("latitude", Double.toString(curLocation.getLatitude()));
+                intent.putExtra("longitude", Double.toString(curLocation.getLongitude()));
+            }
+            else {
+                intent.putExtra("latitude", "44.752993");
+                intent.putExtra("longitude", "19.697438");
+            }
+            intent.putExtra("potvrda", true);
+            startActivityForResult(intent, 420);
         }
     }
 

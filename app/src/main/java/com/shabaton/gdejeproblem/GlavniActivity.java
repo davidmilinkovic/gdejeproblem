@@ -1,8 +1,10 @@
 package com.shabaton.gdejeproblem;
 
 import android.*;
+import android.app.ActivityManager;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -88,67 +90,62 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         }
 
         if (prviPut) {
-        Intent introIntent = new Intent(this, Tour.class);
-        introIntent.putExtra(PREF_USER_FIRST_TIME, prviPut);
-        startActivity(introIntent);
-    }
+            Intent introIntent = new Intent(this, Tour.class);
+            introIntent.putExtra(PREF_USER_FIRST_TIME, prviPut);
+            startActivity(introIntent);
+        }
 
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_c);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_c);
+            drawer.setDrawerListener(toggle);
+            toggle.syncState();
 
-    navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
-    View nav_header = navigationView.getHeaderView(0);
-    txtNavNaslov = nav_header.findViewById(R.id.header_naslov);
-    txtNavPodNaslov = nav_header.findViewById(R.id.header_podnaslov);
-    headerSlika = nav_header.findViewById(R.id.headerSlika);
+        View nav_header = navigationView.getHeaderView(0);
+        txtNavNaslov = nav_header.findViewById(R.id.header_naslov);
+        txtNavPodNaslov = nav_header.findViewById(R.id.header_podnaslov);
+        headerSlika = nav_header.findViewById(R.id.headerSlika);
 
-    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build();
-
-    mGoogleApiClient = new GoogleApiClient.Builder(this)
-                //.enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
                 .build();
 
-    mGoogleApiClient.connect();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    //.enableAutoManage(this, this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+
+        mGoogleApiClient.connect();
         mAuth = FirebaseAuth.getInstance();
         promeniKorisnika();
+    }
 
-        if(mAuth.getCurrentUser() != null) {
-            if(savedInstanceState == null) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.fragment_container, new PocetniFragment(), "PocetniFragment").commit();
-                navigationView.setCheckedItem(R.id.nav_home);
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
             }
         }
-        else
-        {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, new KorisnikFragment(), "KorisnikFragment").commit();
-            navigationView.setCheckedItem(R.id.nav_korisnik);
-        }
+        return false;
     }
 
     private void osveziServis() {
         Log.i("Osvezi servis", "eee");
-        stopService(new Intent(this, ProveraStatusaService.class));
         if(FirebaseAuth.getInstance().getCurrentUser() == null) return;
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
 
-        if(obavestenja && mAuth.getCurrentUser() != null) {
+        if(obavestenja && !isMyServiceRunning(ProveraStatusaService.class)) {
             Intent intent = new Intent(this, ProveraStatusaService.class);
             startService(intent);
         }
@@ -209,10 +206,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                     }, 1500);
 
                 }
-                break;
-            case 111:
-                startActivity(getIntent());
-                finish();
                 break;
         }
     }
@@ -278,6 +271,22 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         super.onResume();
     }
 
+    private void ucitajPocetniFragment() {
+        findViewById(R.id.progPocetni).setVisibility(View.GONE);
+        if(mAuth.getCurrentUser() != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, new PocetniFragment(), "PocetniFragment").commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+        else
+        {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, new KorisnikFragment(), "KorisnikFragment").commit();
+            navigationView.setCheckedItem(R.id.nav_korisnik);
+        }
+    }
+
+
     public void promeniKorisnika() { // menja header navigacije na osnovu trenutnog korisnika
         FirebaseUser currentUser = mAuth.getCurrentUser();
         osveziServis();
@@ -301,7 +310,10 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                                             // ucitane su sluzbe u StaticDataProvider klasu, a samim tim i vrste problema
                                             // ovo je malko debilno, mora se priznati
                                             // ako bude vremena, osmisliti manje debilnu arhitekturu
+                                            ucitajPocetniFragment();
                                         }
+
+
                                     });
                                 }
                             }
@@ -395,7 +407,8 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         else if (id == R.id.nav_opcije)
         {
             Intent intent = new Intent(this, PodesavanjaActivity.class);
-            startActivityForResult(intent, 111);
+            startActivity(intent);
+            finish();
             drawer.closeDrawer(GravityCompat.START);
             return false;
         }
