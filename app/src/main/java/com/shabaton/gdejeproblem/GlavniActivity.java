@@ -324,6 +324,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
             txtNavPodNaslov.setText("");
             headerSlika.setImageResource(android.R.drawable.sym_def_app_icon);
             prijavljen = false;
+            ucitajPocetniFragment();
         }
     }
 

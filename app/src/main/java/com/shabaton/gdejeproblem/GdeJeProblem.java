@@ -33,7 +33,7 @@ public class GdeJeProblem extends Application {
 
             SharedPreferences.Editor edit = force_pref.edit();
             String tmp="";
-            tmp= Locale.getDefault().toString().substring(0, 2);
+            tmp = "sr";
 
             edit.putString(FORCE_LOCAL, tmp);
             edit.commit();

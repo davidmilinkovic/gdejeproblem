@@ -89,6 +89,8 @@ public class PodesavanjaActivity extends AppCompatPreferenceActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Intent intent = new Intent(this, GlavniActivity.class);
+        startActivity(intent);
         finish();
     }
 
