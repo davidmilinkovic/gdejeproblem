@@ -82,7 +82,7 @@ public class Alati {
                                         public void onResponse(String response) {
                                             if (response.contains("OK"))
                                             {
-                                                Toast.makeText(kontekst, "Uspešno ste se prijavili za službu. Na email ćemo Vam poslati obaveštenje o prijemu kada Vas administrator potvrdi.", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(kontekst, R.string.toast_novaSluzba, Toast.LENGTH_LONG).show();
                                                 kontekst.finish();
                                             }
                                         }

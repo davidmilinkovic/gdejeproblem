@@ -20,23 +20,23 @@
     <string name="meni_korisnik">Korisnik</string>
     <string name="hint_mape_pretraga">Pretraga</string>
     <string name="moji_problemi_niste_podneli_problem">Za sada niste podneli ni jedan problem</string>
-    <string name="moji_problemi_vrsta_problema">Vrsta problema</string>
-    <string name="prijavi_problem_content_vrsta_problema">Vrsta problema</string>
-    <string name="prijavi_problem_content_izaberi_vrstu">Izaberite vrstu problema</string>
-    <string name="prijavi_problem_content_lokacija">Lokacija</string>
+    <string name="moji_problemi_vrsta_problema">"Vrsta problema "</string>
+    <string name="prijavi_problem_content_vrsta_problema">"Vrsta problema "</string>
+    <string name="prijavi_problem_content_izaberi_vrstu">"Izaberite vrstu problema "</string>
+    <string name="prijavi_problem_content_lokacija">"Lokacija "</string>
     <string name="prijavi_problem_content_izaberi_lokaciju">Izaberite lokaciju problema</string>
     <string name="prijavi_problem_content_trenutna_lokacija">Problem je na trenutnoj lokaciji</string>
     <string name="prijavi_problem_slika_landscape">Zadržite da dodate fotograiju</string>
     <string name="navigation_drawer_open" translatable="false" />
     <string name="navigation_drawer_c" translatable="false" />
-    <string name="pregled_content_vrsta_problema">Vrsta problema</string>
+    <string name="pregled_content_vrsta_problema">"Vrsta problema "</string>
     <string name="pregled_content_status" translatable="false">"Status: "</string>
-    <string name="pregled_content_lokacija">Lokacija</string>
+    <string name="pregled_content_lokacija">"Lokacija "</string>
     <string name="pregled_content_nema_opisa">Nema opisa</string>
-    <string name="sluzba_list_content_vrsta">Vrsta problema</string>
+    <string name="sluzba_list_content_vrsta">"Vrsta problema "</string>
     <string name="podesavanja_obavestenje_status">Obavesti me o svakoj promeni statusa mojih problema</string>
     <string name="podesavanja_obavestenje_status_opis">Obaveštenja pri promeni statusa</string>
-    <string name="popup_greska">Greška</string>
+    <string name="popup_greska">"Greška "</string>
     <string name="popup_greska_prijava_problema">Morate biti prijavljeni kako biste prijavili problem</string>
     <string name="popup_greska_pregled_problema">Morate biti prijavljeni kako biste videli listu Vaših problema</string>
     <string name="onMapReady_izabrana_lokacija">Izabrana lokacija</string>
@@ -98,9 +98,52 @@
         <item>7200000</item>
         <item>86400000</item>
     </string-array>
-    <string name="title_activity_tour">Tour</string>
+    <string name="title_activity_tour">Tura</string>
 
     <string name="title_activity_moje_sluzbe">Moje službe</string>
+    <string name="problem_uspesno_dodat">Problem uspešno dodat</string>
+    <string name="greska">"Greška: "</string>
+    <string name="toast_novaSluzba">Uspešno ste se prijavili za službu. Pristup službi ćete dobiti kad Vas administrator odobri.</string>
+    <string name="glavniAc_nemaLokacije">Nemoguće pribaviti trenutnu lokaciju</string>
+    <string name="glavniAc_greskaGoogleServisi">Greska prilikom povezivanja sa Google servisima</string>
+    <string name="mojeSluzbe_prijava">Prijavi se za postojeću službu</string>
+    <string name="mojeSluzbe_title">Sluzbe</string>
+    <string name="mojeSluzbe_tipoviJavna">Javna služba</string>
+    <string name="mojeSluzbe_tipoviKreirana">Služba koju ste kreirali</string>
+    <string name="mojeSluzbe_tipoviPrijavljena">Služba za koju ste prijavljeni</string>
+    <string name="mojeSluzbe_odjava">Odjava sa službe</string>
+    <string name="mojeSluzbe_odjavaPt1">Da li ste sigurni da želite da se odjavite sa službe</string>
+    <string name="mojeSluzbe_odjavaPt2">\? Svi Vaši problemi koje ste prijavili u okviru ove službe biće izbrisani.</string>
+    <string name="mojeSluzbe_uspesnaOdjava">Uspešno ste se odjavili sa službe</string>
+    <string name="str_da">Da</string>
+    <string name="str_ne">Ne</string>
+    <string name="home_welcome">Dobrodošli,</string>
+    <string name="home_gegaraDobrodosao">Drago nam je što ste ovde!</string>
+    <string name="home_maxTitula">Dostigli ste najvišu titulu!</string>
+    <string name="prijavaZaSluzbu_title">Prijava za službu</string>
+    <string name="prijavaZaSluzbu_jesiSiguran">Da li ste sigurni da želite da se prijavite za službu?</string>
+    <string name="onb_vrstaProb">Vrsta problema</string>
+    <string name="onb_lokacija">Lokacija</string>
+    <string name="onb_foto">Fotografija</string>
+    <string name="onb_vrsProbOpis">Vrste problema predstavljaju najčešće probleme</string>
+    <string name="onb_LokOpis">Izaberite lokaciju problema</string>
+    <string name="onb_FotoOpis">Možete dodati fotografiju problema</string>
+    <string name="istorijaStatusa">Istorija statusa</string>
+    <string name="str_zatvori">Zatvori</string>
+    <string name="nemaKom">Nema komentara</string>
+    <string name="opis_mojeSluzbe">Izaberite službu za koju želite da se prijavite. Ako vas administrator službe odobri, moći ćete da prijavljujete probleme u okviru te službe.</string>
+    <string name="pomoc" >Pomoć</string>
+    <string name="prijaviProbAc_izabVrsta">Izabrana vrsta:</string>
+    <string name="home_statistika" >Statistika</string>
+    <string name="meni_pocetak" >Početak</string>
+    <string name="statistika_broj">Broj problema koje ste prijavili</string>
+    <string name="statistika_reseno">Od toga je rešeno</string>
+    <string name="statistika_dosledece" >Broj rešenih problema do sledeće titule</string>
+    <string name="statistika_hvala">Hvala Vam što vodite računa o svom gradu!</string>
+    <string name="home_nemaProblema">Grad bez problema</string>
+    <string name="home_ispodSlike">Neka Vaš grad postane lepše mesto za život</string>
+    <string name="home_dugmePrijava">Prijavite problem</string>
+    <string name="problemViewModel_uspesnoDodat">Problem uspešno dodat</string>
 
 
 </resources>

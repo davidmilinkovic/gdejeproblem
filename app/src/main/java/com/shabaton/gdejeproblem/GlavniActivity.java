@@ -255,7 +255,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                 Log.i("Glavni aktiviti", "Lokacija pribavljena GPS");
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(this, "Nemoguće pribaviti trenutnu lokaciju.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.glavniAc_nemaLokacije, Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -451,6 +451,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Greska prilikom povezivanja sa Google servisima.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.glavniAc_greskaGoogleServisi, Toast.LENGTH_SHORT).show();
     }
 }

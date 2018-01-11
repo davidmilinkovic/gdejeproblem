@@ -543,7 +543,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 if(resultCode == RESULT_OK) {
                     int idVrste = Integer.parseInt(data.getStringExtra("id_vrste"));
                     TextView txt = (TextView) findViewById(R.id.textView2);
-                    txt.setText(getString(R.string.prijavi_problem_izabrana_vrsta) + " " +data.getStringExtra("naziv_vrste"));
+                    txt.setText(getString(R.string.prijaviProbAc_izabVrsta) + " " +data.getStringExtra("naziv_vrste"));
                     txt.setVisibility(View.VISIBLE);
                     izabranId = data.getStringExtra("id_vrste");
                 }

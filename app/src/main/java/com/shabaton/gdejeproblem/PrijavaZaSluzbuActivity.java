@@ -46,7 +46,7 @@ public class PrijavaZaSluzbuActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Prijava za službu");
+        getSupportActionBar().setTitle(R.string.prijavaZaSluzbu_title);
 
 
         recyclerView = findViewById(R.id.sluzbe_risajkl);
@@ -166,15 +166,15 @@ public class PrijavaZaSluzbuActivity extends BaseActivity {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(PrijavaZaSluzbuActivity.this);
-                    builder.setTitle("Prijava za službu");
-                    builder.setMessage("Da li ste sigurni da želite da se prijavite za službu " + holder.mItem.naziv);
-                    builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                    builder.setTitle(R.string.prijavaZaSluzbu_title);
+                    builder.setMessage(getString(R.string.prijavaZaSluzbu_jesiSiguran) + holder.mItem.naziv);
+                    builder.setPositiveButton(R.string.str_da, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Sabskrajb na datu sluzbu
                             Alati.Sabskrajb(holder.mItem.id, PrijavaZaSluzbuActivity.this);
                         }
                     });
-                    builder.setNegativeButton("Ne", new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.str_ne, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
 
                         }

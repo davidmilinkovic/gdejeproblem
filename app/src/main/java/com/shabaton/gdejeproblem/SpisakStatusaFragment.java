@@ -111,8 +111,8 @@ public class SpisakStatusaFragment extends DialogFragment {
         });
 
         builder.setView(v)
-                .setTitle("Istorija statusa")
-                .setNegativeButton("Zatvori", new DialogInterface.OnClickListener() {
+                .setTitle(R.string.istorijaStatusa)
+                .setNegativeButton(R.string.str_zatvori, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         SpisakStatusaFragment.this.getDialog().cancel();
                     }

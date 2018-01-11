@@ -116,7 +116,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:text="Statistika"
+                            android:text="@string/home_statistika"
                             android:textColor="@android:color/black"
                             android:textSize="18sp" />
 
@@ -137,7 +137,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Broj problema koje ste prijavili" />
+                                android:text="@string/statistika_broj" />
 
                             <TextView
                                 android:id="@+id/br_problema"
@@ -151,7 +151,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="Od toga je rešeno" />
+                                android:text="@string/statistika_reseno" />
 
                             <TextView
                                 android:id="@+id/br_prihvacenih"
@@ -196,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
-                        android:text="Broj rešenih problema do sledeće titule" />
+                        android:text="@string/statistika_dosledece" />
 
                     <TextView
                         android:id="@+id/br_dosledece"
@@ -218,7 +218,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginVertical="4dp"
-                        android:text="Hvala Vam što vodite računa o svom gradu!"
+                        android:text="@string/statistika_hvala"
                         android:textAlignment="center"
                         android:textStyle="italic" />
 
@@ -250,7 +250,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
-                        android:text="Grad bez problema"
+                        android:text="@string/home_nemaProblema"
                         android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
@@ -261,7 +261,7 @@
                         android:layout_marginBottom="4dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="4dp"
-                        android:text="Neka Vaš grad postane lepše mesto za život"
+                        android:text="@string/home_ispodSlike"
                         android:textAlignment="textStart" />
 
                     <Button
@@ -270,7 +270,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
-                        android:text="Prijavite problem"
+                        android:text="@string/home_dugmePrijava"
                         android:textAlignment="textEnd" />
 
                 </LinearLayout>

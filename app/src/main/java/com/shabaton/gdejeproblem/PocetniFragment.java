@@ -81,8 +81,8 @@ public class PocetniFragment extends Fragment {
     private void ucitajPodatke(View v, Boolean osvezi) {
         swajp.setRefreshing(true);
 
-        ((TextView) v.findViewById(R.id.txt_dobrodosli)).setText("Dobrodošli, " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        ((TextView) v.findViewById(R.id.txt_porukica)).setText("Drago nam je što ste ovde!");
+        ((TextView) v.findViewById(R.id.txt_dobrodosli)).setText(getString(R.string.home_welcome) + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        ((TextView) v.findViewById(R.id.txt_porukica)).setText(R.string.home_gegaraDobrodosao);
         Glide.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).fitCenter().into((ImageView) v.findViewById(R.id.img_korisnik));
 
         TextView txtBr = v.findViewById(R.id.br_problema);
@@ -168,7 +168,7 @@ public class PocetniFragment extends Fragment {
                                                 }
                                                 else
                                                 {
-                                                    txtBrDoSledece.setText("Dostigli ste najvišu titulu!");
+                                                    txtBrDoSledece.setText(R.string.home_maxTitula);
                                                 }
 
 
@@ -245,7 +245,7 @@ public class PocetniFragment extends Fragment {
                                         });
                                     }
                                     else
-                                        Toast.makeText(getActivity(), "Nemoguće pribaviti trenutnu lokaciju.", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), R.string.glavniAc_nemaLokacije, Toast.LENGTH_LONG).show();
 
                                 }
                             });

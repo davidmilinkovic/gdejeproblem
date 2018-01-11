@@ -71,9 +71,9 @@ public class MojeSluzbeActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final CharSequence[] items = {"Prijavi se za postojeću službu"};
+                final CharSequence[] items = {getString(R.string.mojeSluzbe_prijava)};
                 android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(MojeSluzbeActivity.this);
-                builder.setTitle("Sluzbe");
+                builder.setTitle(R.string.mojeSluzbe_title);
                 builder.setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
@@ -133,7 +133,7 @@ public class MojeSluzbeActivity extends BaseActivity {
     public class MojeSluzbeAdapter extends RecyclerView.Adapter<MojeSluzbeAdapter.MojeSluzbeHolder> {
 
         private List<Sluzba> mValues;
-        private String[] tipovi = {"Javna služba", "Služba koju ste kreirali", "Služba za koju ste prijavljeni"};
+        private String[] tipovi = {getString(R.string.mojeSluzbe_tipoviJavna), getString(R.string.mojeSluzbe_tipoviKreirana), getString(R.string.mojeSluzbe_tipoviPrijavljena)};
 
         public MojeSluzbeAdapter(List<Sluzba> items) {
             mValues = items;
@@ -163,9 +163,9 @@ public class MojeSluzbeActivity extends BaseActivity {
                     @Override
                     public void onClick(View view) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MojeSluzbeActivity.this);
-                        builder.setTitle("Odjava sa službe");
-                        builder.setMessage("Da li ste sigurni da želite da se odjavite sa službe " + holder.mItem.naziv + "? Svi Vaši problemi koje ste prijavili u okviru ove službe biće izbrisani.");
-                        builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                        builder.setTitle(R.string.mojeSluzbe_odjava);
+                        builder.setMessage(getString(R.string.mojeSluzbe_odjavaPt1) + holder.mItem.naziv + getString(R.string.mojeSluzbe_odjavaPt2));
+                        builder.setPositiveButton(R.string.str_da, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // Odjava sa sluyzbe
                                 final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -182,7 +182,7 @@ public class MojeSluzbeActivity extends BaseActivity {
                                                                 @Override
                                                                 public void onResponse(String response) {
                                                                     if (response.contains("OK")) {
-                                                                        Toast.makeText(MojeSluzbeActivity.this, "Uspešno ste se odjavili sa službe.", Toast.LENGTH_LONG).show();
+                                                                        Toast.makeText(MojeSluzbeActivity.this, R.string.mojeSluzbe_uspesnaOdjava, Toast.LENGTH_LONG).show();
                                                                         osveziSluzbe();
                                                                         Intent intent=new Intent();
                                                                         intent.putExtra("imaPromena", true);
@@ -210,13 +210,13 @@ public class MojeSluzbeActivity extends BaseActivity {
                                                     };
                                                     queue.add(postRequest);
                                                 } else {
-                                                    Toast.makeText(MojeSluzbeActivity.this, "Greška.", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(MojeSluzbeActivity.this, R.string.greska, Toast.LENGTH_LONG).show();
                                                 }
                                             }
                                         });
                             }
                         });
-                        builder.setNegativeButton("Ne", new DialogInterface.OnClickListener() {
+                        builder.setNegativeButton(R.string.str_ne, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
                             }

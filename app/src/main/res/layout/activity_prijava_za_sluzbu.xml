@@ -41,7 +41,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:text="Izaberite službu za koju želite da se prijavite. Ako vas administrator službe odobri, moći ćete da prijavljujete probleme u okviru te službe."
+            android:text="@string/opis_mojeSluzbe"
             android:textColor="@android:color/black" />
 
     </LinearLayout>
@@ -55,7 +55,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="4dp"
         android:ems="10"
-        android:hint="Pretraga"
+        android:hint="@string/hint_mape_pretraga"
         android:inputType="textPersonName" />
 
     <FrameLayout

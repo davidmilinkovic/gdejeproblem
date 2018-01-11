@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="Početak" />
+            android:title="@string/meni_pocetak" />
         <item
             android:id="@+id/nav_prijava"
             android:icon="@drawable/ic_add_circle_black_24dp"
@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_moje_sluzbe"
             android:icon="@drawable/ic_content_paste_black_24dp"
-            android:title="Moje službe" />
+            android:title="@string/title_activity_moje_sluzbe" />
     </group>
     <group android:id="@+id/g3" android:checkableBehavior="single">
         <item
@@ -33,7 +33,7 @@
         <item
             android:id="@+id/nav_pomoc"
             android:icon="@drawable/ic_help_black_24dp"
-            android:title="Pomoć" />
+            android:title="@string/pomoc" />
     </group>
 
 
