@@ -167,7 +167,7 @@ public class PrijavaZaSluzbuActivity extends BaseActivity {
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(PrijavaZaSluzbuActivity.this);
                     builder.setTitle(R.string.prijavaZaSluzbu_title);
-                    builder.setMessage(getString(R.string.prijavaZaSluzbu_jesiSiguran) + holder.mItem.naziv);
+                    builder.setMessage(getString(R.string.prijavaZaSluzbu_jesiSiguran) + holder.mItem.naziv+"?");
                     builder.setPositiveButton(R.string.str_da, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // Sabskrajb na datu sluzbu

@@ -89,7 +89,7 @@
     <string name="home_gegaraDobrodosao">We are glad you\'re here!</string>
     <string name="home_maxTitula">You have reached the highest title!</string>
     <string name="prijavaZaSluzbu_title">Subscribe to a service</string>
-    <string name="prijavaZaSluzbu_jesiSiguran">Are you sure you want to subscribe to this service?</string>
+    <string name="prijavaZaSluzbu_jesiSiguran">"Are you sure you want to subscribe to this service "</string>
     <string name="nemaKom">No comment</string>
     <string name="str_zatvori">Close</string>
     <string name="onb_vrstaProb">"Problem type "</string>
@@ -106,7 +106,7 @@
     <string name="meni_pocetak">Home</string>
     <string name="statistika_broj">Number of problems you have reported</string>
     <string name="statistika_reseno">Number of solved problems</string>
-    <string name="statistika_dosledece">Number of solved problems required for the next title</string>
+    <string name="statistika_dosledece">Number of solved problems required for the next rank</string>
     <string name="statistika_hvala">Thank you for taking care of your city!</string>
     <string name="home_nemaProblema">City without problems</string>
     <string name="home_ispodSlike">Make your city a better place to live in</string>
