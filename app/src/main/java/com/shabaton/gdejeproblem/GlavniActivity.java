@@ -25,6 +25,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.View;
@@ -207,6 +208,16 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
                 }
                 break;
+            case 444:
+                if(resultCode == 444)
+                {
+                    if(data.getBooleanExtra("imaPromena", false))
+                    {
+                        finish();
+                        startActivity(getIntent());
+                    }
+                }
+                break;
         }
     }
 
@@ -292,6 +303,8 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         osveziServis();
         if (currentUser != null) {
             pribaviLokaciju();
+            ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) this).get(ProblemViewModel.class);
+            model.problemi = null;
             txtNavNaslov.setText(currentUser.getDisplayName());
             txtNavPodNaslov.setText(currentUser.getEmail());
             Glide.with(this).load(currentUser.getPhotoUrl()).into(headerSlika);
@@ -308,8 +321,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                                         @Override
                                         public void onChanged(@Nullable List<Sluzba> sluzbe) {
                                             // ucitane su sluzbe u StaticDataProvider klasu, a samim tim i vrste problema
-                                            // ovo je malko debilno, mora se priznati
-                                            // ako bude vremena, osmisliti manje debilnu arhitekturu
                                             ucitajPocetniFragment();
                                         }
                                     });
@@ -368,7 +379,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
             {
                 drawer.closeDrawer(GravityCompat.START);
                 Intent intent = new Intent(this, MojeSluzbeActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 444);
                 return false;
             }
             else {

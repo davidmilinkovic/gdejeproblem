@@ -43,7 +43,7 @@ public class SpisakStatusaFragment extends DialogFragment {
     public ProblemViewModel.Problem prob;
 
 
-    // neki bag je prisutan, rekli da mora ovako
+    // neki bag je prisutan, rekli na forumu da mora ovako
     @Override
     public void onDestroyView() {
         Dialog dialog = getDialog();

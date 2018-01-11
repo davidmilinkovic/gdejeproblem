@@ -11,7 +11,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,17 +21,29 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static android.view.View.GONE;
 
 public class MojeSluzbeActivity extends BaseActivity {
 
@@ -75,8 +89,11 @@ public class MojeSluzbeActivity extends BaseActivity {
         recyclerView = findViewById(R.id.sluzba_list);
         assert recyclerView != null;
         final MojeSluzbeAdapter adapter = new MojeSluzbeAdapter(new ArrayList<Sluzba>());
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager mng = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mng);
         recyclerView.setAdapter(adapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), mng.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
         osveziSluzbe();
     }
 
@@ -140,22 +157,75 @@ public class MojeSluzbeActivity extends BaseActivity {
             holder.txtNaziv.setText(holder.mItem.naziv);
             holder.txtTip.setText(tipovi[holder.mItem.tip]);
             holder.mImgView.setImageResource(getResources().getIdentifier(holder.mItem.ikonica, "drawable", getPackageName()));
-            /* ZBOGOM
-            holder.mView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(holder.mItem.tip == 1)
-                    {
-                        Intent intent = new Intent(MojeSluzbeActivity.this, PregledSluzbeActivity.class);
-                        intent.putExtra("sluzba", holder.mItem);
-                        startActivity(intent);
+            if(holder.mItem.tip < 2) holder.btnOdjava.setVisibility(GONE);
+            else {
+                holder.btnOdjava.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MojeSluzbeActivity.this);
+                        builder.setTitle("Odjava sa službe");
+                        builder.setMessage("Da li ste sigurni da želite da se odjavite sa službe " + holder.mItem.naziv + "? Svi Vaši problemi koje ste prijavili u okviru ove službe biće izbrisani.");
+                        builder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Odjava sa sluyzbe
+                                final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                                mUser.getToken(false)
+                                        .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                                            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                                                if (task.isSuccessful()) {
+                                                    String idToken = task.getResult().getToken();
+                                                    RequestQueue queue = Volley.newRequestQueue(MojeSluzbeActivity.this);
+                                                    String url = "https://kspclient.geasoft.net/sluzba_api.php";
+                                                    StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                                                            new Response.Listener<String>() {
+                                                                @Override
+                                                                public void onResponse(String response) {
+                                                                    if (response.contains("OK")) {
+                                                                        Toast.makeText(MojeSluzbeActivity.this, "Uspešno ste se odjavili sa službe.", Toast.LENGTH_LONG).show();
+                                                                        osveziSluzbe();
+                                                                        Intent intent=new Intent();
+                                                                        intent.putExtra("imaPromena", true);
+                                                                        setResult(444, intent);
+                                                                    }
+                                                                }
+                                                            },
+                                                            new Response.ErrorListener() {
+                                                                @Override
+                                                                public void onErrorResponse(VolleyError error) {
+                                                                    Toast.makeText(MojeSluzbeActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }
+                                                    ) {
+                                                        @Override
+                                                        protected Map<String, String> getParams() {
+                                                            Map<String, String> params = new HashMap<String, String>();
+                                                            params.put("email", FirebaseAuth.getInstance().getCurrentUser().getEmail());
+                                                            params.put("tip", "odjava");
+                                                            params.put("id", Integer.toString(holder.mItem.id));
+                                                            params.put("token", idToken);
+                                                            params.put("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                            return params;
+                                                        }
+                                                    };
+                                                    queue.add(postRequest);
+                                                } else {
+                                                    Toast.makeText(MojeSluzbeActivity.this, "Greška.", Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        });
+                        builder.setNegativeButton("Ne", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                            }
+                        });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
-                    else if(holder.mItem.tip == 2)
-                    {
-                        Toast.makeText(MojeSluzbeActivity.this, "Pregled sluzbe ze koju sam prijavljen", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });*/
+                });
+            }
         }
 
 
@@ -169,6 +239,7 @@ public class MojeSluzbeActivity extends BaseActivity {
             public final TextView txtNaziv;
             public final TextView txtTip;
             public final ImageView mImgView;
+            public final ImageButton btnOdjava;
             public Sluzba mItem;
 
             public MojeSluzbeHolder(View view) {
@@ -177,6 +248,7 @@ public class MojeSluzbeActivity extends BaseActivity {
                 txtNaziv = (TextView) view.findViewById(R.id.naziv_sluzbe);
                 txtTip = (TextView) view.findViewById(R.id.tip_sluzbe);
                 mImgView = (ImageView) view.findViewById(R.id.ikonica_sluzba);
+                btnOdjava = (ImageButton) view.findViewById(R.id.btnOdjava);
             }
         }
     }

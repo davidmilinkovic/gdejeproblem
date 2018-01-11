@@ -2,13 +2,6 @@ package com.shabaton.gdejeproblem;
 
 import java.io.Serializable;
 
-/**
- * Helper class for providing sample content for user interfaces created by
- * Android template wizards.
- * <p>
- * TODO: Replace all uses of this class before publishing your app.
- */
-
 
 public class Sluzba implements Serializable {
     public final int id;

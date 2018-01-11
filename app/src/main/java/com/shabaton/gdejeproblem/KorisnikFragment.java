@@ -130,36 +130,9 @@ public class KorisnikFragment extends Fragment implements
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
-                            /* Ipak ne
-                            RequestQueue queue = Volley.newRequestQueue(getActivity());
-                            String url = "https://kspclient.geasoft.net/kreiraj_korisnika.php?email="+user.getEmail();
-                            StringRequest postRequest = new StringRequest(Request.Method.GET, url,
-                                    new Response.Listener<String>() {
-                                        @Override
-                                        public void onResponse(String response) {
-                                            if(response.contains("da"))
-                                            {
-                                                HoumtaunFragment frag = new HoumtaunFragment();
-                                                frag.show(getActivity().getSupportFragmentManager(), "Houmtaunt");
-                                            }
-                                        }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(getActivity(), getActivity().getString(R.string.greska) + error.getMessage(), Toast.LENGTH_LONG).show();
-
-                                        }
-                                    }
-                            );
-                            queue.add(postRequest); */
-
-
                             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                             Boolean obavestenja = sharedPref.getBoolean("notif_status", false);
                             ((GlavniActivity) getActivity()).promeniKorisnika();
-                            ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
-                            model.problemi = null;
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             updateUI(null);

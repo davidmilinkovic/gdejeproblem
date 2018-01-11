@@ -140,7 +140,10 @@ public class SluzbaViewModel extends ViewModel {
             }
         };
         thread.start();
+    }
 
+    public static void odjavaSaSluzbe(int id, String token)
+    {
 
     }
 }

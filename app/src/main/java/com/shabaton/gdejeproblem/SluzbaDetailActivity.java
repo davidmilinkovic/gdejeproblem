@@ -32,16 +32,11 @@ public class SluzbaDetailActivity extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_sluzba);
         setSupportActionBar(toolbar);
 
-        // Show the Up button in the action bar.
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
-        // Load the dummy content specified by the fragment
-        // arguments. In a real-world scenario, use a Loader
-        // to load content from a content provider.
         final int id = Integer.parseInt(getIntent().getStringExtra(ARG_ITEM_ID));
         trenutni_id = id;
 
@@ -52,13 +47,6 @@ public class SluzbaDetailActivity extends BaseActivity {
         }
         getSupportActionBar().setTitle(izabranaSluzba.naziv);
 
-        /*
-                OVAKO SE VRACA ODGOVOR
-                Intent intent=new Intent();
-                intent.putExtra("poruka", "hehe");
-                getActivity().setResult(69, intent);
-                getActivity().finish();
-*/
         View recyclerView = findViewById(R.id.vrsta_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -80,15 +68,6 @@ public class SluzbaDetailActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setAdapter(recyclerViewAdapter);
-/*
-        VrstaViewModel model = ViewModelProviders.of(this).get(VrstaViewModel.class);
-
-        model.dajVrste(trenutni_id).observe(this, new Observer<List<VrstaViewModel.Vrsta>>() {
-            @Override
-            public void onChanged(@Nullable List<VrstaViewModel.Vrsta> vrste) {
-                recyclerViewAdapter.addItems(vrste);
-            }
-        });*/
 
         List<Vrsta> lista = new ArrayList<Vrsta>();
         for (Vrsta v : StaticDataProvider.vrste) {
