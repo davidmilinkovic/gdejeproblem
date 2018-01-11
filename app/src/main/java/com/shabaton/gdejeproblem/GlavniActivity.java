@@ -312,8 +312,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                                             // ako bude vremena, osmisliti manje debilnu arhitekturu
                                             ucitajPocetniFragment();
                                         }
-
-
                                     });
                                 }
                             }

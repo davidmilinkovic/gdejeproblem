@@ -29,6 +29,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class SpisakStatusaFragment extends DialogFragment {
@@ -176,7 +179,16 @@ public class SpisakStatusaFragment extends DialogFragment {
             holder.mItem = mValues.get(position);
             holder.txtStatus.setText(holder.mItem.status.naziv);
             holder.txtStatus.setTextColor(Color.parseColor(holder.mItem.status.boja));
-            holder.txtDatum.setText(holder.mItem.datum);
+
+            SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat f2 = new SimpleDateFormat("dd.MM.yyyy. HH:mm:ss");
+            try {
+                Date date = f1.parse(holder.mItem.datum);
+                holder.txtDatum.setText(f2.format(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                holder.txtDatum.setText(holder.mItem.datum);
+            }
             holder.txtKomentar.setText(holder.mItem.komentar);
         }
 

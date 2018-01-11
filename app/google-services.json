@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "998383730262-2c9ocmdim3kk2ohlnd4m7inj3gdarjk4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shabaton.gdejeproblem",
+            "certificate_hash": "77d7088de8d0e5385ebc329430c2dbb35c897fa2"
+          }
+        },
+        {
           "client_id": "998383730262-47rkt3205g1vncvqgh9a3ekrfpic30el.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -53,7 +61,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDgnnVkWmHCaa8BxNY9pwzPesHI35fMI0o"
+          "current_key": "AIzaSyA6U_74kQ42ZjfuLDJ4UxuRjE1jifoPPRE"
         }
       ],
       "services": {
