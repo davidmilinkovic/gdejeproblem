@@ -324,17 +324,6 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
     private void dodaj(String token)
     {
         ProblemViewModel.Problem problem = new ProblemViewModel.Problem();
-
-        if(izabranId == "") {
-            greska( getString(R.string.prijavi_problem_greska_vrsta));
-            return;
-        }
-        if(curLocation == null) {
-            greska(getString(R.string.onOptionsItemSelected_greska_lokacija));
-            return;
-        }
-
-
         int id_vrste = Integer.parseInt(izabranId);
         for(Vrsta v : StaticDataProvider.vrste)
         {
@@ -377,7 +366,6 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                     imaSlike = false;
                     ((TextView) findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                     findViewById(R.id.imageView).setVisibility(View.GONE);
-
                 }
             }
         });
@@ -493,6 +481,18 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 return true;
             case R.id.menu_prijava_otkacaj:
                 item.setEnabled(false);
+
+                if(izabranId == "") {
+                    item.setEnabled(true);
+                    greska( getString(R.string.prijavi_problem_greska_vrsta));
+                    return true;
+                }
+                if(curLocation == null) {
+                    item.setEnabled(true);
+                    greska(getString(R.string.onOptionsItemSelected_greska_lokacija));
+                    return true;
+                }
+
                 final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
                 mUser.getToken(false)
@@ -515,7 +515,6 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
     private void greska(String tekst)
     {
         Snackbar.make(findViewById(R.id.koordinator_prijava), tekst, Snackbar.LENGTH_LONG).show();
-        ((MenuItem)findViewById(R.id.menu_prijava_otkacaj)).setEnabled(true);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
