@@ -24,7 +24,8 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swajp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -33,12 +34,11 @@
             android:id="@+id/sluzba_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:paddingTop="8dp"
             android:clipToPadding="false"
+            android:paddingTop="8dp"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/sluzba_list_content" />
-        </FrameLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </android.support.design.widget.CoordinatorLayout>

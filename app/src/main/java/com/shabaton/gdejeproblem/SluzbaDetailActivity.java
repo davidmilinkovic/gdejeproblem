@@ -21,7 +21,6 @@ import java.util.List;
 public class SluzbaDetailActivity extends BaseActivity {
 
     private Sluzba izabranaSluzba;
-    public int trenutni_id;
 
     public static final String ARG_ITEM_ID = "item_id";
 
@@ -37,14 +36,7 @@ public class SluzbaDetailActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        final int id = Integer.parseInt(getIntent().getStringExtra(ARG_ITEM_ID));
-        trenutni_id = id;
-
-        for (Sluzba s: StaticDataProvider.sluzbe) {
-            if(s.id == id) {
-                izabranaSluzba = s;
-            }
-        }
+        izabranaSluzba = (Sluzba) getIntent().getSerializableExtra("sluzba");
         getSupportActionBar().setTitle(izabranaSluzba.naziv);
 
         View recyclerView = findViewById(R.id.vrsta_list);
@@ -69,11 +61,7 @@ public class SluzbaDetailActivity extends BaseActivity {
 
         recyclerView.setAdapter(recyclerViewAdapter);
 
-        List<Vrsta> lista = new ArrayList<Vrsta>();
-        for (Vrsta v : StaticDataProvider.vrste) {
-            if(v.sluzba.id == trenutni_id)
-                lista.add(v);
-        }
+        List<Vrsta> lista = (ArrayList<Vrsta>) getIntent().getSerializableExtra("vrste");
         recyclerViewAdapter.addItems(lista);
 
     }
@@ -120,8 +108,7 @@ public class SluzbaDetailActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent();
-                    intent.putExtra("id_vrste", Integer.toString(holder.mItem.id));
-                    intent.putExtra("naziv_vrste", holder.mItem.naziv);
+                    intent.putExtra("izabranaVrsta", holder.mItem);
                     setResult(RESULT_OK, intent);
                     finish();
                 }

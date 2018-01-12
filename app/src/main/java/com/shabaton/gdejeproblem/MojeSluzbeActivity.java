@@ -59,7 +59,7 @@ public class MojeSluzbeActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        swajp = findViewById(R.id.swipe);
+        swajp = (SwipeRefreshLayout)findViewById(R.id.swipe);
         swajp.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -86,7 +86,7 @@ public class MojeSluzbeActivity extends BaseActivity {
             }
         });
 
-        recyclerView = findViewById(R.id.sluzba_list);
+        recyclerView = (RecyclerView) findViewById(R.id.sluzba_list);
         assert recyclerView != null;
         final MojeSluzbeAdapter adapter = new MojeSluzbeAdapter(new ArrayList<Sluzba>());
         LinearLayoutManager mng = new LinearLayoutManager(this);
@@ -167,7 +167,7 @@ public class MojeSluzbeActivity extends BaseActivity {
                         builder.setMessage(getString(R.string.mojeSluzbe_odjavaPt1) + holder.mItem.naziv + getString(R.string.mojeSluzbe_odjavaPt2));
                         builder.setPositiveButton(R.string.str_da, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                // Odjava sa sluyzbe
+                                // Odjava sa sluzbe
                                 final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
                                 mUser.getToken(false)
@@ -176,7 +176,7 @@ public class MojeSluzbeActivity extends BaseActivity {
                                                 if (task.isSuccessful()) {
                                                     String idToken = task.getResult().getToken();
                                                     RequestQueue queue = Volley.newRequestQueue(MojeSluzbeActivity.this);
-                                                    String url = "https://kspclient.geasoft.net/sluzba_api.php";
+                                                    String url = "https://portal.gdejeproblem.geasoft.net/sluzba_api.php";
                                                     StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                                                             new Response.Listener<String>() {
                                                                 @Override

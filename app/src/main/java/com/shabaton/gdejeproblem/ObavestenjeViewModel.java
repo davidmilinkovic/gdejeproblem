@@ -19,28 +19,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// pribavlja sluzbe i vrste za prijavljenog korisnika
 public class ObavestenjeViewModel extends ViewModel {
 
     public MutableLiveData<List<Obavestenje>> obavestenja = null;
 
 
-    public MutableLiveData<List<Obavestenje>> dajObavestenja(String token, String mesto) {
+    public MutableLiveData<List<Obavestenje>> dajObavestenja(String token, String mesto, List<Sluzba> sluzbe) {
         if (obavestenja == null) {
             obavestenja = new MutableLiveData<>();
-            ucitajObavestenja(token, mesto);
+            ucitajObavestenja(token, mesto, sluzbe);
         }
         return obavestenja;
     }
 
 
-    public void ucitajObavestenja(String token, String mesto) {
+    public void ucitajObavestenja(String token, String mesto, List<Sluzba> sluzbe) {
         Thread thread = new Thread() {
             public void run() {
                 try {
                     final List<Obavestenje> lst = new ArrayList<>();
 
-                    URL uu = new URL("https://www.kspclient.geasoft.net/obavestenja_api.php?token=" + token + "&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "&uid=" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "&mesto=" + mesto);;
+                    URL uu = new URL("https://www.portal.gdejeproblem.geasoft.net/obavestenja_api.php?token=" + token + "&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "&uid=" + FirebaseAuth.getInstance().getCurrentUser().getUid() + "&mesto=" + mesto);;
                     URI uri = new URI(uu.getProtocol(), uu.getUserInfo(), uu.getHost(), uu.getPort(), uu.getPath(), uu.getQuery(), uu.getRef());
                     uu = uri.toURL();
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
@@ -61,7 +60,14 @@ public class ObavestenjeViewModel extends ViewModel {
 
                     for (int i = 0; i < glavni.length(); i++) {
                         JSONObject ob = glavni.getJSONObject(i);
-                        Obavestenje o = new Obavestenje(ob.getInt("id"), ob.getString("naslov"), ob.getString("tekst"), ob.getInt("id_sluzbe"), ob.isNull("kraj"));
+                        Sluzba s = null;
+                        int id_sluzbe = ob.getInt("id_sluzbe");
+                        for(Sluzba ss : sluzbe)
+                            if(ss.id == id_sluzbe) {
+                                s = ss;
+                                break;
+                            }
+                        Obavestenje o = new Obavestenje(ob.getInt("id"), ob.getString("naslov"), ob.getString("tekst"), s, ob.isNull("kraj"));
                         lst.add(o);
                     }
                     obavestenja.postValue(lst);

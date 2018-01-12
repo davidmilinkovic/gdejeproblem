@@ -3,10 +3,12 @@ package com.shabaton.gdejeproblem;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -63,6 +65,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setTitle(R.string.pregled_content_lokacija);
+
     }
 
     @Override
@@ -77,7 +80,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Go
         editMode = getIntent().getBooleanExtra("potvrda", true);
         if(!editMode)
         {
-            //findViewById(R.id.frame_pretraga).setVisibility(View.GONE);
+            findViewById(R.id.frame_pretraga).setVisibility(View.GONE);
             tren = mMap.addMarker(new MarkerOptions().position(marker).title(getIntent().getStringExtra("adresa")));
             tren.showInfoWindow();
         }

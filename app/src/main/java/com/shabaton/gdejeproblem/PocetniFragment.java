@@ -118,7 +118,7 @@ public class PocetniFragment extends Fragment {
                                     // ucitane su sluzbe, mozemo dalje
 
                                     if(osvezi) model.problemi = null;
-                                    Pair<MutableLiveData<List<ProblemViewModel.Problem>>, MutableLiveData<Boolean>> pp = model.dajProbleme(idToken);
+                                    Pair<MutableLiveData<List<ProblemViewModel.Problem>>, MutableLiveData<Boolean>> pp = model.dajProbleme(idToken, sluzbaViewModel.vrste.getValue());
 
                                     pp.second.observe((AppCompatActivity) getActivity(), new Observer<Boolean>() {
                                         @Override
@@ -128,6 +128,7 @@ public class PocetniFragment extends Fragment {
                                                 swajp.setRefreshing(false);
                                                 txtBr.setText("0");
                                                 txtBrRes.setText("0");
+                                                prog.setProgress(0);
                                                 if(img != null && getActivity() != null) Glide.with(getActivity()).load(R.drawable.t0).fitCenter().into(img);
                                                 ((TextView) v.findViewById(R.id.txtTitula)).setText(StaticDataProvider.titule.get(0).naziv);
                                                 txtBrDoSledece.setText(Integer.toString(StaticDataProvider.titule.get(1).brProblema));
@@ -183,7 +184,7 @@ public class PocetniFragment extends Fragment {
                                         obModel.obavestenja = null;
                                         mesto = Alati.Lat(mesto);
                                         Log.i("Pocetni fragment", "Trazim obavestenja za "+mesto);
-                                        MutableLiveData<List<Obavestenje>> ob = obModel.dajObavestenja(idToken, mesto);
+                                        MutableLiveData<List<Obavestenje>> ob = obModel.dajObavestenja(idToken, mesto, sluzbe);
                                         ob.observe(getActivity(), new Observer<List<Obavestenje>>() {
                                             @Override
                                             public void onChanged(@Nullable List<Obavestenje> obavestenjes) {

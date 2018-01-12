@@ -49,7 +49,7 @@ public class SluzbaViewModel extends ViewModel {
                     final List<Sluzba> lstSluzbe = new ArrayList<>();
                     final List<Vrsta> lstVrste = new ArrayList<>();
 
-                    URL uu = new URL("https://www.kspclient.geasoft.net/sluzba_api.php?token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    URL uu = new URL("https://www.portal.gdejeproblem.geasoft.net/sluzba_api.php?token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -88,11 +88,9 @@ public class SluzbaViewModel extends ViewModel {
                         Vrsta v = new Vrsta(vrsta.getInt("id"), vrsta.getString("naziv"), ss);
                         lstVrste.add(v);
                     }
-                    StaticDataProvider.sluzbe = lstSluzbe;
-                    StaticDataProvider.vrste = lstVrste;
 
-                    sluzbe.postValue(lstSluzbe);
                     vrste.postValue(lstVrste);
+                    sluzbe.postValue(lstSluzbe);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -109,7 +107,7 @@ public class SluzbaViewModel extends ViewModel {
             public void run() {
                 try {
                     final List<Sluzba> lstSluzbe = new ArrayList<>();
-                    URL uu = new URL("https://www.kspclient.geasoft.net/sluzba_api.php?tip=sve&token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    URL uu = new URL("https://www.portal.gdejeproblem.geasoft.net/sluzba_api.php?tip=sve&token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();

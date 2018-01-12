@@ -75,7 +75,7 @@ public class Alati {
                         if (task.isSuccessful()) {
                             String idToken = task.getResult().getToken();
                             RequestQueue queue = Volley.newRequestQueue(kontekst);
-                            String url = "https://kspclient.geasoft.net/sluzba_api.php";
+                            String url = "https://portal.gdejeproblem.geasoft.net/sluzba_api.php";
                             StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                                     new Response.Listener<String>() {
                                         @Override

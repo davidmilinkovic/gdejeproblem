@@ -71,8 +71,9 @@ public class MojiProblemiFragment extends Fragment {
         mSwipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh() {
-                osveziProbleme();
+            public void onRefresh()
+            {
+                ucitajProbleme(true);
             }
         });
 
@@ -97,10 +98,10 @@ public class MojiProblemiFragment extends Fragment {
         final ProblemiRecyclerAdapter recyclerViewAdapter = new ProblemiRecyclerAdapter(new ArrayList<ProblemViewModel.Problem>());
         lista.setLayoutManager(new LinearLayoutManager(getActivity()));
         lista.setAdapter(recyclerViewAdapter);
-        ucitajProbleme();
+        ucitajProbleme(false);
     }
 
-    public void ucitajProbleme()
+    public void ucitajProbleme(boolean nulovano)
     {
         try {
             mSwipeRefreshLayout.setRefreshing(true);
@@ -108,7 +109,14 @@ public class MojiProblemiFragment extends Fragment {
             final ProblemiRecyclerAdapter recyclerViewAdapter = (ProblemiRecyclerAdapter)lista.getAdapter();
 
             ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
+            SluzbaViewModel modelS = ViewModelProviders.of((AppCompatActivity) getActivity()).get(SluzbaViewModel.class);
 
+            if(nulovano)
+            {
+                modelS.vrste = null;
+                modelS.sluzbe = null;
+                model.problemi = null;
+            }
             final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
             mUser.getToken(false)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -116,35 +124,41 @@ public class MojiProblemiFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 String idToken = task.getResult().getToken();
 
-                                Pair<MutableLiveData<List<ProblemViewModel.Problem>>, MutableLiveData<Boolean>> pp = model.dajProbleme(idToken);
-
-                                 pp.second.observe((AppCompatActivity) getActivity(), new Observer<Boolean>() {
+                                modelS.dajSluzbe(idToken).observe(getActivity(), new Observer<List<Sluzba>>() {
                                     @Override
-                                    public void onChanged(@Nullable Boolean prazna) {
-                                        if(prazna)
-                                        {
-                                            mSwipeRefreshLayout.setRefreshing(false);
-                                            nemaProblema.setVisibility(View.VISIBLE);
-                                            lista.removeAllViews();
-                                            recyclerViewAdapter.addItems(new ArrayList<ProblemViewModel.Problem>());
-                                        }
+                                    public void onChanged(@Nullable List<Sluzba> sluzbas) {
+
+                                        Pair<MutableLiveData<List<ProblemViewModel.Problem>>, MutableLiveData<Boolean>> pp = model.dajProbleme(idToken, modelS.vrste.getValue());
+                                        pp.second.observe((AppCompatActivity) getActivity(), new Observer<Boolean>() {
+                                            @Override
+                                            public void onChanged(@Nullable Boolean prazna) {
+                                                if(prazna)
+                                                {
+                                                    mSwipeRefreshLayout.setRefreshing(false);
+                                                    nemaProblema.setVisibility(View.VISIBLE);
+                                                    lista.removeAllViews();
+                                                    recyclerViewAdapter.addItems(new ArrayList<ProblemViewModel.Problem>());
+                                                }
+                                            }
+                                        });
+
+
+                                        pp.first.observe((AppCompatActivity) getActivity(), new Observer<List<ProblemViewModel.Problem>>() {
+                                            @Override
+                                            public void onChanged(@Nullable List<ProblemViewModel.Problem> problemi) {
+                                                try {
+                                                    nemaProblema.setVisibility(View.GONE);
+                                                    mSwipeRefreshLayout.setRefreshing(false);
+                                                    recyclerViewAdapter.addItems(problemi);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
                                     }
                                 });
 
 
-                                pp.first.observe((AppCompatActivity) getActivity(), new Observer<List<ProblemViewModel.Problem>>() {
-                                    @Override
-                                    public void onChanged(@Nullable List<ProblemViewModel.Problem> problemi) {
-                                        try {
-                                            nemaProblema.setVisibility(View.GONE);
-                                            mSwipeRefreshLayout.setRefreshing(false);
-                                            recyclerViewAdapter.addItems(problemi);
-                                            // Toast.makeText(getActivity(), "Hehe", Toast.LENGTH_SHORT).show();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
 
                             } else {
                                 Toast.makeText(getActivity(), R.string.greska_token, Toast.LENGTH_LONG).show();
@@ -154,30 +168,6 @@ public class MojiProblemiFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void osveziProbleme()
-    {
-        mSwipeRefreshLayout.setRefreshing(true);
-
-        final ProblemiRecyclerAdapter recyclerViewAdapter = (ProblemiRecyclerAdapter)lista.getAdapter();
-
-        ProblemViewModel model = ViewModelProviders.of((AppCompatActivity) getActivity()).get(ProblemViewModel.class);
-        // StatusViewModel modelS = ViewModelProviders.of((AppCompatActivity) getActivity()).get(StatusViewModel.class);
-
-        final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mUser.getToken(false)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        if (task.isSuccessful()) {
-                            String idToken = task.getResult().getToken();
-                            model.ucitajProbleme(idToken);
-
-                        } else {
-                            Toast.makeText(getActivity(), R.string.greska_token, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
     }
 
 
@@ -257,23 +247,8 @@ public class MojiProblemiFragment extends Fragment {
 
                     Intent intent = new Intent(getActivity(), PregledProblemaActivity.class);
 
-                    // +++ pre Hrista
-
-                    /*intent.putExtra("vrsta", holder.mItem.vrsta.naziv);
-                    intent.putExtra("lokacija", holder.txtLokacija.getText());
-                    intent.putExtra("opis", holder.mItem.opis);
-                    intent.putExtra("slika", holder.mItem.slika);
-                    intent.putExtra("status", holder.txtStatus.getText());
-                    intent.putExtra("statusBoja", boja[0]);
-                    intent.putExtra("latitude", holder.mItem.latitude);
-                    intent.putExtra("longitude", holder.mItem.longitude);*/
-
-                    /// posle Hrista +++
-
                     intent.putExtra("problem", holder.mItem);
                     getActivity().startActivity(intent);
-
-                    // hvala Isusu na uproscavanju koda
                 }
             });
             setAnimation(holder.itemView, position);

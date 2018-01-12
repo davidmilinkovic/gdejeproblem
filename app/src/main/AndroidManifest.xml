@@ -119,18 +119,6 @@
             android:name=".MojeSluzbeActivity"
             android:label="@string/title_activity_moje_sluzbe"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".KreirajSluzbuActivity"
-            android:label="Kreiraj službu" />
-        <activity
-            android:name=".PregledSluzbeActivity"
-            android:label="Pregled službe"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
-
-        <service
-            android:name=".NotifService"
-            android:enabled="true"
-            android:exported="true" />
 
         <activity android:name=".PrijavaZaSluzbuActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"

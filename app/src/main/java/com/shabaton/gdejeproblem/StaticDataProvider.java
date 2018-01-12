@@ -27,14 +27,10 @@ public class StaticDataProvider {
 
     public static boolean ucitano = false;
 
-    public static List<Sluzba> sluzbe = new ArrayList<Sluzba>();
-    public static List<Vrsta> vrste = new ArrayList<Vrsta>();
     public static List<Status> statusi = new ArrayList<Status>();
     public static List<Titula> titule = new ArrayList<Titula>();
 
     public static  Thread thread;
-
-
 
     public static void init()
     {
@@ -42,7 +38,7 @@ public class StaticDataProvider {
             public void run() {
                 try {
                     java.net.URL uu;
-                    uu =new URL("https://www.kspclient.geasoft.net/definicija.php");
+                    uu =new URL("https://www.portal.gdejeproblem.geasoft.net/definicija.php");
 
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
@@ -86,21 +82,6 @@ public class StaticDataProvider {
 
     }
 
-    public static Sluzba sluzba(int id)
-    {
-        for(Sluzba s : sluzbe)
-            if(s.id == id)
-                return s;
-        return null;
-    }
-
-    public static Vrsta vrsta(int id)
-    {
-        for(Vrsta v : vrste)
-            if(v.id == id)
-                return v;
-        return null;
-    }
 
     public static Status status(int id)
     {

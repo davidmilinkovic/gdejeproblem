@@ -60,7 +60,7 @@ public class ProveraStatusaService extends Service {
             public void run() {
                 try {
                     java.net.URL uu;
-                    uu = new URL("https://www.kspclient.geasoft.net/definicija.php");
+                    uu = new URL("https://www.portal.gdejeproblem.geasoft.net/definicija.php");
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -83,7 +83,7 @@ public class ProveraStatusaService extends Service {
                         statusi.add(s);
                     }
 
-                    uu = new URL("https://www.kspclient.geasoft.net/sluzba_api.php?token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    uu = new URL("https://www.portal.gdejeproblem.geasoft.net/sluzba_api.php?token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
                     connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     rd = connection.getInputStream();
@@ -236,7 +236,7 @@ public class ProveraStatusaService extends Service {
             public void run() {
                 try {
                     final List<ProblemViewModel.Problem> lista = new ArrayList<>();
-                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?tip=svi&token="+token+"&email=" + email+"&uid="+uid);
+                    URL uu = new URL("https://www.portal.gdejeproblem.geasoft.net/problem_api.php?tip=svi&token="+token+"&email=" + email+"&uid="+uid);
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();

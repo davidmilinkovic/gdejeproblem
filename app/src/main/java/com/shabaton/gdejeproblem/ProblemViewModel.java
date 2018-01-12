@@ -37,21 +37,21 @@ public class ProblemViewModel extends ViewModel {
     public MutableLiveData<List<ProblemViewModel.Problem>> problemi = null;
     public MutableLiveData<Boolean> prazna = new MutableLiveData<Boolean>();
 
-    public Pair<MutableLiveData<List<Problem>>, MutableLiveData<Boolean>> dajProbleme(String token) {
+    public Pair<MutableLiveData<List<Problem>>, MutableLiveData<Boolean>> dajProbleme(String token, List<Vrsta> vrste) {
         if(problemi == null) {
             prazna.postValue(false);
             problemi = new MutableLiveData<>();
-            ucitajProbleme(token);
+            ucitajProbleme(token, vrste);
         }
         return new Pair<MutableLiveData<List<Problem>>, MutableLiveData<Boolean>>(problemi, prazna);
     }
 
-    public void ucitajProbleme(String token) {
+    public void ucitajProbleme(String token, List<Vrsta> vrste) {
         Thread thread = new Thread() {
             public void run() {
                 try {
                     final List<Problem> lista = new ArrayList<>();
-                    URL uu = new URL("https://www.kspclient.geasoft.net/problem_api.php?tip=svi&token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    URL uu = new URL("https://www.portal.gdejeproblem.geasoft.net/problem_api.php?tip=svi&token="+token+"&email=" + FirebaseAuth.getInstance().getCurrentUser().getEmail()+"&uid="+FirebaseAuth.getInstance().getCurrentUser().getUid());
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
                     connection.setRequestMethod("GET");
                     InputStream rd = connection.getInputStream();
@@ -71,7 +71,7 @@ public class ProblemViewModel extends ViewModel {
                         ProblemViewModel.Problem p = new ProblemViewModel.Problem();
                         p.id = prob.getInt("id");
                         int id_vrste = prob.getInt("id_vrste");
-                        for (Vrsta v : StaticDataProvider.vrste) {
+                        for (Vrsta v : vrste) {
                             if (v.id == id_vrste) {
                                 p.vrsta = v;
                                 break;
@@ -123,7 +123,7 @@ public class ProblemViewModel extends ViewModel {
 
         public static void Dodaj(final Problem pr, final Activity kontekst, final String token) {
             RequestQueue queue = Volley.newRequestQueue(kontekst);
-            String url = "https://kspclient.geasoft.net/problem_api.php";
+            String url = "https://portal.gdejeproblem.geasoft.net/problem_api.php";
             StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override

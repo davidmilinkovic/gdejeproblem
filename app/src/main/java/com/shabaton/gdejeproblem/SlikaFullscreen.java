@@ -23,9 +23,9 @@ public class SlikaFullscreen extends BaseActivity {
         setContentView(R.layout.activity_slika_fullscreen);
         setSupportActionBar((Toolbar) findViewById(R.id.fulscreen_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ImageView img = findViewById(R.id.img_fullscreen);
+        ImageView img = (ImageView) findViewById(R.id.img_fullscreen);
         getSupportActionBar().setTitle("");
-        ProgressBar progressBar = findViewById(R.id.progressBar_fullscreen);
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar_fullscreen);
         Glide.with(this).load(Uri.parse(getIntent().getStringExtra("slika"))).fitCenter()
                 .listener(new RequestListener<Uri, GlideDrawable>() {
                     @Override

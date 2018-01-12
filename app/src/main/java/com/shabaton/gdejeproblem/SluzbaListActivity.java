@@ -1,9 +1,13 @@
 package com.shabaton.gdejeproblem;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,26 +19,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An activity representing a list of Sluzbe. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link SluzbaDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
- * item details side-by-side using two vertical panes.
- */
+
 public class SluzbaListActivity extends BaseActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-
     Boolean samoJavni = false;
+    public List<Sluzba> sluzbe;
+    public List<Vrsta> vrste;
+    private SwipeRefreshLayout swajp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +52,48 @@ public class SluzbaListActivity extends BaseActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+
         View recyclerView = findViewById(R.id.sluzba_list);
         assert recyclerView != null;
+
+        swajp = (SwipeRefreshLayout) findViewById(R.id.swajp);
+        swajp.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setupRecyclerView((RecyclerView) recyclerView);
+            }
+        });
+
         setupRecyclerView((RecyclerView) recyclerView);
 
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
 
+        swajp.setRefreshing(true);
         final SimpleItemRecyclerViewAdapter recyclerViewAdapter = new SimpleItemRecyclerViewAdapter(new ArrayList<Sluzba>());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerViewAdapter);
-        recyclerViewAdapter.addItems(StaticDataProvider.sluzbe);
+        SluzbaViewModel sluzbaViewModel = ViewModelProviders.of(this).get(SluzbaViewModel.class);
+        final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+        mUser.getToken(false)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                   public void onComplete(@NonNull Task<GetTokenResult> task) {
+                       if (task.isSuccessful()) {
+                           String idToken = task.getResult().getToken();
+                           sluzbaViewModel.sluzbe = null;
+                           sluzbaViewModel.dajSluzbe(idToken).observe(SluzbaListActivity.this, new Observer<List<Sluzba>>() {
+                               @Override
+                               public void onChanged(@Nullable List<Sluzba> sluzbe) {
+                                   SluzbaListActivity.this.sluzbe = sluzbe;
+                                   SluzbaListActivity.this.vrste = sluzbaViewModel.vrste.getValue();
+                                   recyclerViewAdapter.addItems(sluzbe);
+                                   swajp.setRefreshing(false);
+                               }
+                           });
+                       }
+                   }
+               });
     }
 
 
@@ -85,14 +119,12 @@ public class SluzbaListActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 69) {
             if(resultCode == RESULT_OK) {
                 Intent intent = new Intent();
-                intent.putExtra("id_vrste", data.getStringExtra("id_vrste"));
-                intent.putExtra("naziv_vrste", data.getStringExtra("naziv_vrste"));
-
+                intent.putExtra("izabranaVrsta", data.getSerializableExtra("izabranaVrsta"));
                 setResult(RESULT_OK, intent);
                 finish();
             }
@@ -121,7 +153,7 @@ public class SluzbaListActivity extends BaseActivity {
         }
 
         public void addItems(List<Sluzba> sluzbe) {
-            this.mValues = sluzbe;
+            this.mValues = sluzbe;/* Obsolete, cudno izgleda
             if(sluzbe.size() == 1)
             {
                 samoJavni = true;
@@ -129,9 +161,15 @@ public class SluzbaListActivity extends BaseActivity {
                 Sluzba s = sluzbe.get(0);
                 Intent intent = new Intent(context, SluzbaDetailActivity.class);
                 intent.putExtra(SluzbaDetailActivity.ARG_ITEM_ID, Integer.toString(s.id));
-                intent.putExtra("naslov", s.naziv);
+                intent.putExtra("sluzba", s);
+                List<Vrsta> listaVrste = new ArrayList<Vrsta>();
+                for (Vrsta vv : vrste) {
+                    if(vv.sluzba.id == s.id)
+                        listaVrste.add(vv);
+                }
+                intent.putExtra("vrste", (Serializable) listaVrste);
                 context.startActivityForResult(intent, 69);
-            }
+            } */
             notifyDataSetChanged();
 
         }
@@ -148,10 +186,14 @@ public class SluzbaListActivity extends BaseActivity {
 
                     Activity context = (Activity) v.getContext();
                     Intent intent = new Intent(context, SluzbaDetailActivity.class);
-                    intent.putExtra(SluzbaDetailActivity.ARG_ITEM_ID, Integer.toString(holder.mItem.id));
-                    intent.putExtra("naslov", holder.mItem.naziv);
+                    intent.putExtra("sluzba", holder.mItem);
+                    List<Vrsta> listaVrste = new ArrayList<Vrsta>();
+                    for (Vrsta vv : vrste) {
+                        if(vv.sluzba.id == holder.mItem.id)
+                            listaVrste.add(vv);
+                    }
+                    intent.putExtra("vrste", (Serializable) listaVrste);
                     context.startActivityForResult(intent, 69);
-
                 }
             });
         }

@@ -35,16 +35,15 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:orientation="vertical"
             xmlns:tools="http://schemas.android.com/tools">
+
             <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/vrsta_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:paddingTop="8dp"
-                android:layout_marginRight="16dp"
                 android:clipToPadding="false"
+                android:paddingTop="8dp"
                 app:layoutManager="LinearLayoutManager"
                 tools:listitem="@layout/vrsta_list_content" />
         </LinearLayout>

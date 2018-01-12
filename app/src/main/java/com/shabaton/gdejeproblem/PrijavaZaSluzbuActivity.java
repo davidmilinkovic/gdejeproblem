@@ -49,14 +49,14 @@ public class PrijavaZaSluzbuActivity extends BaseActivity {
         getSupportActionBar().setTitle(R.string.prijavaZaSluzbu_title);
 
 
-        recyclerView = findViewById(R.id.sluzbe_risajkl);
+        recyclerView = (RecyclerView)findViewById(R.id.sluzbe_risajkl);
         assert recyclerView != null;
         LinearLayoutManager mng = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mng);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), mng.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
-        swajp = findViewById(R.id.swipe);
+        swajp = (SwipeRefreshLayout) findViewById(R.id.swipe);
         swajp.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

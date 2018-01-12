@@ -67,10 +67,10 @@ public class PregledProblemaActivity extends BaseActivity {
         }
         else ((TextView)findViewById(R.id.tekstOpisPregled)).setText(R.string.pregled_content_nema_opisa);
 
-        ProgressBar progressBar = findViewById(R.id.progressBar2);
+        ProgressBar progressBar = (ProgressBar)findViewById(R.id.progressBar2);
         String slika = p.slika;
         if(slika.length() > 0) {
-            ImageView img = findViewById(R.id.imageView_pregled);
+            ImageView img = (ImageView)findViewById(R.id.imageView_pregled);
             ((TextView)findViewById(R.id.textView3pregled)).setVisibility(View.GONE);
             img.setVisibility(View.VISIBLE);
             Glide.with(this)

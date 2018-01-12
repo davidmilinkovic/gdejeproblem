@@ -1,9 +1,5 @@
 package com.shabaton.gdejeproblem;
 
-/**
- * Created by david on 28.12.2017.
- */
-
 public class Titula {
     public int id;
     public int brProblema;

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -60,7 +61,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
     private Location curLocation;
     private boolean imaSlike = false;
     private String slikaStr = "";
-    private String izabranId = "";
+    private Vrsta izabranaVrsta = null;
     private boolean trenutnaLokacija = false;
     private String adresa = "";
     private String mesto = "";
@@ -137,7 +138,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 ((TextView)findViewById(R.id.textView3)).setVisibility(View.VISIBLE);
                 findViewById(R.id.imageView).setVisibility(View.GONE);
             }
-            izabranId = savedInstanceState.getString("izabranId");
+            izabranaVrsta = (Vrsta) savedInstanceState.getSerializable("izabranaVrsta");
         }
     }
 
@@ -166,7 +167,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
         }
         else outState.putBoolean("imaSlike", false);
         outState.putBoolean("trenutnaLokacija", trenutnaLokacija);
-        outState.putString("izabranId", izabranId);
+        outState.putSerializable("izabranaVrsta", izabranaVrsta);
 
     }
 
@@ -324,14 +325,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
     private void dodaj(String token)
     {
         ProblemViewModel.Problem problem = new ProblemViewModel.Problem();
-        int id_vrste = Integer.parseInt(izabranId);
-        for(Vrsta v : StaticDataProvider.vrste)
-        {
-            if(v.id == id_vrste) {
-                problem.vrsta = v;
-                break;
-            }
-        }
+        problem.vrsta = izabranaVrsta;
         problem.latitude = Double.toString(curLocation.getLatitude());
         problem.longitude = Double.toString(curLocation.getLongitude());
         problem.slika = "";
@@ -415,8 +409,13 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
 
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             cameraIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            cameraIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-
+            List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(cameraIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                grantUriPermission(packageName, outputUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
             startActivityForResult(cameraIntent, REQUEST_CAMERA);
         }
         catch (Exception e) {
@@ -482,7 +481,7 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
             case R.id.menu_prijava_otkacaj:
                 item.setEnabled(false);
 
-                if(izabranId == "") {
+                if(izabranaVrsta == null) {
                     item.setEnabled(true);
                     greska( getString(R.string.prijavi_problem_greska_vrsta));
                     return true;
@@ -540,11 +539,10 @@ public class PrijaviProblemActivity extends BaseActivity implements View.OnClick
                 break;
             case 666:
                 if(resultCode == RESULT_OK) {
-                    int idVrste = Integer.parseInt(data.getStringExtra("id_vrste"));
+                    izabranaVrsta = (Vrsta) data.getSerializableExtra("izabranaVrsta");
                     TextView txt = (TextView) findViewById(R.id.textView2);
-                    txt.setText(getString(R.string.prijaviProbAc_izabVrsta) + " " +data.getStringExtra("naziv_vrste"));
+                    txt.setText(getString(R.string.prijaviProbAc_izabVrsta) + " " + izabranaVrsta.naziv);
                     txt.setVisibility(View.VISIBLE);
-                    izabranId = data.getStringExtra("id_vrste");
                 }
                 break;
             case 420:

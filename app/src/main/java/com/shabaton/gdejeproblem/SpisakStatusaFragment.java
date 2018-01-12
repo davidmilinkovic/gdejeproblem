@@ -74,32 +74,39 @@ public class SpisakStatusaFragment extends DialogFragment {
         swajp.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ProblemViewModel model = ViewModelProviders.of(SpisakStatusaFragment.this).get(ProblemViewModel.class);
+                ProblemViewModel model = ViewModelProviders.of(getActivity()).get(ProblemViewModel.class);
+                SluzbaViewModel modelS = ViewModelProviders.of(getActivity()).get(SluzbaViewModel.class);
                 final FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
                 mUser.getToken(false)
                         .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                             public void onComplete(@NonNull Task<GetTokenResult> task) {
                                 if (task.isSuccessful()) {
                                     String idToken = task.getResult().getToken();
-                                    model.problemi = null;
-                                    model.dajProbleme(idToken).first.observe(SpisakStatusaFragment.this, new Observer<List<ProblemViewModel.Problem>>() {
+
+                                    modelS.dajSluzbe(idToken).observe(getActivity(), new Observer<List<Sluzba>>() {
                                         @Override
-                                        public void onChanged(@Nullable List<ProblemViewModel.Problem> problemi) {
-                                            try {
-                                               for(ProblemViewModel.Problem p : problemi) {
-                                                   if (p.id == prob.id) {
-                                                       Log.i("Info", "Id je " + Integer.toString(p.id));
-                                                       prob = p;
-                                                       swajp.setRefreshing(false);
-                                                       adapter.addItems(prob.statusi);
-                                                       break;
-                                                   }
-                                               }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
+                                        public void onChanged(@Nullable List<Sluzba> sluzbas) {
+                                            model.problemi = null;
+                                            model.dajProbleme(idToken, modelS.vrste.getValue()).first.observe(getActivity(), new Observer<List<ProblemViewModel.Problem>>() {
+                                                @Override
+                                                public void onChanged(@Nullable List<ProblemViewModel.Problem> problemi) {
+                                                    try {
+                                                        for(ProblemViewModel.Problem p : problemi) {
+                                                            if (p.id == prob.id) {
+                                                                prob = p;
+                                                                swajp.setRefreshing(false);
+                                                                adapter.addItems(prob.statusi);
+                                                                break;
+                                                            }
+                                                        }
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
                                         }
                                     });
+
 
                                 } else {
                                     Toast.makeText(getActivity(), R.string.greska_token, Toast.LENGTH_LONG).show();

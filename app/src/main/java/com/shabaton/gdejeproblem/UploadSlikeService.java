@@ -63,7 +63,7 @@ public class UploadSlikeService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        throw new UnsupportedOperationException("NYI");
     }
 
     @Override
@@ -163,7 +163,7 @@ public class UploadSlikeService extends Service {
         Thread thread = new Thread() {
             public void run() {
                 try {
-                    URL uu = new URL("https://www.kspclient.geasoft.net/upload_slike.php");
+                    URL uu = new URL("https://www.portal.gdejeproblem.geasoft.net/upload_slike.php");
                     HttpURLConnection connection = (HttpURLConnection) uu.openConnection();
 
                     connection.setReadTimeout(100000);

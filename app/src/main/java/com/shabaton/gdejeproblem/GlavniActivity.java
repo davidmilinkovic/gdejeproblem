@@ -202,7 +202,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                         @Override
                         public void run() {
                             MojiProblemiFragment mpf = (MojiProblemiFragment)getSupportFragmentManager().findFragmentByTag("MojiProblemi");
-                            mpf.osveziProbleme();
+                            mpf.ucitajProbleme(true); // da li nulovati?
                         }
                     }, 1500);
 
@@ -320,7 +320,6 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                                     sluzbaViewModel.dajSluzbe(idToken).observe(GlavniActivity.this, new Observer<List<Sluzba>>() {
                                         @Override
                                         public void onChanged(@Nullable List<Sluzba> sluzbe) {
-                                            // ucitane su sluzbe u StaticDataProvider klasu, a samim tim i vrste problema
                                             ucitajPocetniFragment();
                                         }
                                     });

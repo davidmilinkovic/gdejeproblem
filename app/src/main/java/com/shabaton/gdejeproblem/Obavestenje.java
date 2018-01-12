@@ -12,14 +12,15 @@ public class Obavestenje {
     public final boolean obavesteno;
     public final boolean uklonjeno;
 
-    public Obavestenje(int id, String naslov, String tekst, int id_sluzbe, boolean imaKraj) {
+    public Obavestenje(int id, String naslov, String tekst, Sluzba sluzba, boolean imaKraj) {
         this.id = id;
         this.naslov = naslov;
         this.tekst = tekst;
-        this.sluzba = StaticDataProvider.sluzba(id_sluzbe);
+        this.sluzba = sluzba;
         this.imaKraj = imaKraj;
         this.obavesteno = false;
         this.uklonjeno = false;
     }
+
 
 }
