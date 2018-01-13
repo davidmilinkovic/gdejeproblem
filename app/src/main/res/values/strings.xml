@@ -80,7 +80,6 @@
     </string-array>
 
     <string-array name="array_vremena">
-        <item>5 sekundi (test)</item>
         <item>5 minuta</item>
         <item>15 minuta</item>
         <item>30 minuta</item>
@@ -90,7 +89,6 @@
     </string-array>
 
     <string-array name="array_vremena_values">
-        <item>5000</item>
         <item>300000</item>
         <item>900000</item>
         <item>1800000</item>
