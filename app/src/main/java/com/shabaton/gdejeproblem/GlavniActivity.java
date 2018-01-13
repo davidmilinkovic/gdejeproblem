@@ -72,6 +72,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
     private ImageView headerSlika;
     private boolean prijavljen;
     private NavigationView navigationView;
+    public DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,11 +100,13 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_c);
             drawer.setDrawerListener(toggle);
             toggle.syncState();
+
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -202,7 +205,7 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
                         @Override
                         public void run() {
                             MojiProblemiFragment mpf = (MojiProblemiFragment)getSupportFragmentManager().findFragmentByTag("MojiProblemi");
-                            mpf.ucitajProbleme(true); // da li nulovati?
+                            mpf.ucitajProbleme(false);
                         }
                     }, 1500);
 
@@ -284,7 +287,9 @@ public class GlavniActivity extends BaseActivity implements NavigationView.OnNav
 
     private void ucitajPocetniFragment() {
         findViewById(R.id.progPocetni).setVisibility(View.GONE);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         if(mAuth.getCurrentUser() != null) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, new PocetniFragment(), "PocetniFragment").commit();
             navigationView.setCheckedItem(R.id.nav_home);

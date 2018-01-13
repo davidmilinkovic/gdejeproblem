@@ -13,6 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -80,7 +81,7 @@ public class PocetniFragment extends Fragment {
 
     private void ucitajPodatke(View v, Boolean osvezi) {
         swajp.setRefreshing(true);
-
+        ((GlavniActivity)getActivity()).drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         ((TextView) v.findViewById(R.id.txt_dobrodosli)).setText(getString(R.string.home_welcome) + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         ((TextView) v.findViewById(R.id.txt_porukica)).setText(R.string.home_gegaraDobrodosao);
         Glide.with(this).load(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl()).fitCenter().into((ImageView) v.findViewById(R.id.img_korisnik));
@@ -242,6 +243,7 @@ public class PocetniFragment extends Fragment {
                                                 recObavestenja.setAdapter(adapter);
 
                                                 db.close();
+                                                ((GlavniActivity)getActivity()).drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                                             }
                                         });
                                     }

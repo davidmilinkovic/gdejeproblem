@@ -157,7 +157,7 @@ public class MojeSluzbeActivity extends BaseActivity {
             holder.txtNaziv.setText(holder.mItem.naziv);
             holder.txtTip.setText(tipovi[holder.mItem.tip]);
             holder.mImgView.setImageResource(getResources().getIdentifier(holder.mItem.ikonica, "drawable", getPackageName()));
-            if(holder.mItem.tip < 2) holder.btnOdjava.setVisibility(GONE);
+            if(holder.mItem.tip == 0) holder.btnOdjava.setVisibility(GONE);
             else {
                 holder.btnOdjava.setOnClickListener(new View.OnClickListener() {
                     @Override

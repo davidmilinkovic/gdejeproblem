@@ -126,9 +126,11 @@ public class SluzbaViewModel extends ViewModel {
                     JSONArray nizSluzbe = glavni.getJSONArray("sluzbe");
                     for (int i = 0; i < nizSluzbe.length(); i++) {
                         JSONObject sluzb = nizSluzbe.getJSONObject(i);
-                        Sluzba s = new Sluzba(sluzb.getInt("id"), sluzb.getString("naziv"), sluzb.getString("ikonica"), sluzb.getString("datum"));
-                        s.tip = sluzb.getInt("tip");
-                        lstSluzbe.add(s);
+                        if(sluzb.getInt("potvrdjena") == 1) {
+                            Sluzba s = new Sluzba(sluzb.getInt("id"), sluzb.getString("naziv"), sluzb.getString("ikonica"), sluzb.getString("datum"));
+                            s.tip = sluzb.getInt("tip");
+                            lstSluzbe.add(s);
+                        }
                     }
                     sveSluzbe.postValue(lstSluzbe);
 

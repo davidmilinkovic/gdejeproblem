@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -104,6 +105,7 @@ public class MojiProblemiFragment extends Fragment {
     public void ucitajProbleme(boolean nulovano)
     {
         try {
+            ((GlavniActivity)getActivity()).drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             mSwipeRefreshLayout.setRefreshing(true);
 
             final ProblemiRecyclerAdapter recyclerViewAdapter = (ProblemiRecyclerAdapter)lista.getAdapter();
@@ -138,6 +140,7 @@ public class MojiProblemiFragment extends Fragment {
                                                     nemaProblema.setVisibility(View.VISIBLE);
                                                     lista.removeAllViews();
                                                     recyclerViewAdapter.addItems(new ArrayList<ProblemViewModel.Problem>());
+                                                    ((GlavniActivity)getActivity()).drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                                                 }
                                             }
                                         });
@@ -150,6 +153,7 @@ public class MojiProblemiFragment extends Fragment {
                                                     nemaProblema.setVisibility(View.GONE);
                                                     mSwipeRefreshLayout.setRefreshing(false);
                                                     recyclerViewAdapter.addItems(problemi);
+                                                    ((GlavniActivity)getActivity()).drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
                                                 }
